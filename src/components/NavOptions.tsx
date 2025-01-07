@@ -16,6 +16,7 @@ import {
 import HomeScreen from './HomeScreen.js'
 import OrdersScreen from './Orders.js'
 import ClientsScreen from './Clients.js'
+import TransactionsScreen from './TransactionsScreen.js';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -26,7 +27,7 @@ function classNames(...classes: string[]): string {
 
 
 
-const TransactionsScreen = () => <div>Transactions Content</div>
+
 
 export default function NavOptions() {
   const [activeScreen, setActiveScreen] = React.useState('Home')

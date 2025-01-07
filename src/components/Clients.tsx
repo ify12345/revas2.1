@@ -1,11 +1,10 @@
-import * as React from 'react';
-
+import * as React from 'react'
 
 import { IoPeopleOutline } from 'react-icons/io5'
 
 import { CiCalendar } from 'react-icons/ci'
-import SearchInput from './Search.js';
-import Status from './Status.js';
+import SearchInput from './Search.js'
+import Status from './Status.js'
 
 const people = [
   {
@@ -21,13 +20,27 @@ const people = [
 ]
 
 export default function ClientsScreen() {
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
+
+  const openModal = () => {
+    setIsModalOpen(true)
+    document.body.style.overflow = 'hidden' // Disable scrolling
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    document.body.style.overflow = 'auto' // Enable scrolling
+  }
   return (
     <div className="flex flex-col">
       <div className=" py-4">
         <div className="sm:flex sm:items-center">
           <p className="sm:flex-auto text-2xl font-semibold">Clients</p>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            <button className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px] flex gap-2 items-center">
+            <button
+              onClick={openModal}
+              className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px] flex gap-2 items-center"
+            >
               <p className="text-[#fff]">New Supplier</p>
               <IoPeopleOutline color="white" />
             </button>
@@ -111,6 +124,91 @@ export default function ClientsScreen() {
                     ))}
                   </tbody>
                 </table>
+
+                {/* Modal */}
+                {isModalOpen && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div
+                      className="absolute inset-0 bg-primary opacity-50 transition-all duration-500"
+                      onClick={closeModal}
+                    ></div>
+                    <div className="relative z-10 bg-[#ffff] rounded-[12px] shadow-lg w-[90%] max-w-[388px] overflow-y-auto">
+                      <h2 className="text-lg font-bold mb-4 border-stroke border-b px-6 py-[22px]">
+                        New Supplier
+                      </h2>
+                      <form className="my-6 mx-3 px-5 py-[22px] rounded-[12px] border-stroke border">
+                        {/* Company Name */}
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium mb-2 text-[#757575]">
+                            Company Name
+                          </label>
+                          <input
+                            type="text"
+                            className="w-full p-2 border border-stroke rounded-md"
+                          />
+                        </div>
+
+                        {/* Product Dropdown */}
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium mb-2 text-[#757575]">
+                            Product
+                          </label>
+                          <select className="w-full p-2 border border-stroke rounded-md">
+                            <option value="">Select Product</option>
+                            <option value="product1">Product 1</option>
+                            <option value="product2">Product 2</option>
+                            <option value="product3">Product 3</option>
+                          </select>
+                        </div>
+
+                        {/* Capacity (MT) */}
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium mb-2 text-[#757575]">
+                            Capacity (MT)
+                          </label>
+                          <input
+                            type="number"
+                            className="w-full p-2 border border-stroke rounded-md"
+                            placeholder="Enter capacity in MT"
+                          />
+                        </div>
+
+                        {/* Price per tonne (USD) */}
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium mb-2 text-[#757575]">
+                            Price/Tonne (USD)
+                          </label>
+                          <input
+                            type="number"
+                            className="w-full p-2 border border-stroke rounded-md"
+                            placeholder="Enter price in USD"
+                          />
+                        </div>
+
+                        {/* Location Dropdown */}
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium mb-2 text-[#757575]">
+                            Location
+                          </label>
+                          <select className="w-full p-2 border border-stroke rounded-md">
+                            <option value="">Select Location</option>
+                            <option value="location1">Location 1</option>
+                            <option value="location2">Location 2</option>
+                            <option value="location3">Location 3</option>
+                          </select>
+                        </div>
+
+                        {/* Submit Button */}
+                        <button
+                          type="submit"
+                          className="bg-[#050505] text-[#ffff] py-[10px] px-[12px] rounded-[8px] w-full"
+                        >
+                          Create
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
