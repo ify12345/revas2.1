@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import Status from './Status.js'
 import { IoMdClose } from "react-icons/io";
+import { Person } from './typings/page.js';
 
-const people = [
+
+
+const people: Person[] = [
   {
     companyName: 'EcoPET Solutions',
     product: 'Clear PET Flakes',
@@ -18,9 +21,9 @@ const people = [
 export default function OrdersScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
-  const [selectedPerson, setSelectedPerson] = useState(null)
+  const [selectedPerson, setSelectedPerson] =  useState<Person | null>(null);
   
-  const openDetailsModal = (person: React.SetStateAction<null>) => {
+  const openDetailsModal = (person: Person): void => {
     setSelectedPerson(person)
     setIsDetailsModalOpen(true)
     document.body.style.overflow = 'hidden'

@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode } from "react";
+import { Dispatch, JSX, ReactNode } from "react";
 
 export type actionProps = {
   type: string;
@@ -53,6 +53,15 @@ export type authStateType = {
   data: USERDATA | null;
   error: any;
 };
+export interface Person {
+  companyName: string;
+  product: string;
+  capacity: string;
+  price: string;
+  status: JSX.Element;
+  location: string;
+  grade: string;
+}
 
 export interface USERDATA {
   token: string;
