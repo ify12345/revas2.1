@@ -5,9 +5,13 @@ import Home from './screens/home/index.js';
 
 const App = () => (
   <Router>
+
     <Routes>
+
       <Route path="/" element={<Home />} />
+
     </Routes>
+    
   </Router>
 )
 
