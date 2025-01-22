@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { CiCalendar } from 'react-icons/ci'
+
 import Badge from './Badge.js';
-import SearchInput from './Search.js';
+
 import { RiDraftLine } from "react-icons/ri";
 import { FaMoneyBill } from "react-icons/fa";
 import { CiWallet } from "react-icons/ci";
@@ -29,8 +29,22 @@ const people = [
   },
   // More people...
 ]
+interface Person {
+  id: string;
+  name: string;
+  status: React.JSX.Element;
+  price: string;
+  country: string;
+  capacity: string;
+  grade: string;
+}
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  data: Person | null;
+}
 
-function Modal({ isOpen, onClose, data }) {
+function Modal({ isOpen, onClose, data }: ModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -88,7 +102,7 @@ export default function HomeScreen() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedRowData, setSelectedRowData] = React.useState(null);
 
-  const openModalWithRowData = (rowData) => {
+  const openModalWithRowData = (rowData: Person) => {
     setSelectedRowData(rowData);
     setIsModalOpen(true);
   };

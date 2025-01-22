@@ -11,6 +11,9 @@ import HomeScreen from '../HomeScreen'
 import OrdersScreen from '../Orders'
 import ClientsScreen from '../Clients'
 import TransactionsScreen from '../TransactionsScreen'
+interface LayoutProps {
+  children: React.ReactNode; // This specifies that the component expects children
+}
 
 // Components for views
 const Home = () => <HomeScreen/>
@@ -19,7 +22,7 @@ const People = () => <ClientsScreen/>
 const Receipts = () => <TransactionsScreen/>
 const Support = () => <div>Support Page</div>
 
-const Layout: React.FC = () => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [activeView, setActiveView] = useState<string>('Home') // Tracks the active view
 
@@ -194,6 +197,10 @@ const Layout: React.FC = () => {
           ) : (
             links.find(link => link.id === activeView)?.component
           )}
+        </div>
+        <div className="hidden">
+
+        {children}
         </div>
       </div>
     </div>
