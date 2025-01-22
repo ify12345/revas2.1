@@ -100,7 +100,7 @@ function Modal({ isOpen, onClose, data }: ModalProps) {
 
 export default function HomeScreen() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [selectedRowData, setSelectedRowData] = React.useState(null);
+  const [selectedRowData, setSelectedRowData] = React.useState<Person | null>(null);
 
   const openModalWithRowData = (rowData: Person) => {
     setSelectedRowData(rowData);
