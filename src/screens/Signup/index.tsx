@@ -1,6 +1,7 @@
 import onboarding from '@/assets/images/onboarding.png'
 import background from '@/assets/images/background.png'
 import logo from '@/assets/logo.png'
+import { Link } from 'react-router-dom'
 
 export default function Signup() {
   return (
@@ -92,7 +93,7 @@ export default function Signup() {
             </div>
 
           
-              <a className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex ' href="/sign-in">Get started</a>
+              <Link className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex' to="/sign-in">Get started</Link>
           
         </form>
       </div>

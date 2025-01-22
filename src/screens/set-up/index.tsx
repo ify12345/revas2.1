@@ -1,6 +1,7 @@
 import onboarding from '@/assets/images/onboarding.png'
 import background from '@/assets/images/background.png'
 import logo from '@/assets/logo.png'
+import { Link } from 'react-router-dom'
 
 export default function SetUp() {
   return (
@@ -89,7 +90,7 @@ export default function SetUp() {
          
 
         
-              <a className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex' href="/dashboard">Go to Dashboard</a>
+              <Link className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex' to="/dashboard">Go to Dashboard</Link>
           
         </form>
       </div>
