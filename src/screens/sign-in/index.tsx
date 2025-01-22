@@ -4,8 +4,8 @@ import logo from '@/assets/logo.png'
 
 export default function Signin() {
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-y-hidden p-6">
-      <div className="w-1/2 rounded-2xl max-h-full relative">
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-6">
+      <div className="hidden lg:block w-1/2 rounded-2xl max-h-full relative">
         <img src={onboarding} className="rounded-2xl w-full h-screen" alt="" />
         <img
           src={background}
@@ -60,7 +60,7 @@ export default function Signin() {
           </div>
         </div>
       </div>
-      <div className="w-1/2 flex flex-col p-[88px]">
+      <div className=" lg:w-1/2 flex flex-col lg:p-[88px]">
         <img src={logo} className='max-w-[172px] mb-[60px]' alt="" />
         <form action="" className='text-[#98A2B3] flex flex-col gap-[24px]'>
           <p className='text-primary text-3xl'>Sign in</p>
@@ -76,13 +76,13 @@ export default function Signin() {
             </div>
         
 
-            <button className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex mt-4'>
-              <a href="/set-up">Sign in</a>
-            </button>
+          
+              <a  className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex mt-4' href="/set-up">Sign in</a>
+           
         </form>
 
         <div className="flex justify-center items-center mx-auto text-sm text-[#757575] font-light my-4 gap-1">
-        Don't have an account? <a href="/sign-up" className='font-medium text-primary text-base'> Sign Up</a>
+        Don't have an account? <a href="/" className='font-medium text-primary text-base'> Sign Up</a>
         </div>
       </div>
     </div>

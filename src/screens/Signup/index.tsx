@@ -4,8 +4,8 @@ import logo from '@/assets/logo.png'
 
 export default function Signup() {
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-y-hidden p-6">
-      <div className="w-1/2 rounded-2xl max-h-full relative">
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-6">
+      <div className="hidden lg:block w-1/2 rounded-2xl max-h-full relative">
         <img src={onboarding} className="rounded-2xl w-full h-screen" alt="" />
         <img
           src={background}
@@ -60,7 +60,7 @@ export default function Signup() {
           </div>
         </div>
       </div>
-      <div className="w-1/2 flex flex-col p-[88px]">
+      <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px]">
         <img src={logo} className='max-w-[172px] mb-[60px]' alt="" />
         <form action="" className='text-[#98A2B3] flex flex-col gap-[24px]'>
           <p className='text-primary text-3xl'>Create your account</p>
@@ -91,9 +91,9 @@ export default function Signup() {
               <input type="text" placeholder='password' className='w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md' />
             </div>
 
-            <button className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex'>
-              <a href="/sign-in">Get started</a>
-            </button>
+          
+              <a className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex ' href="/sign-in">Get started</a>
+          
         </form>
       </div>
     </div>

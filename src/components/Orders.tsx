@@ -3,7 +3,16 @@ import Status from './Status.js'
 import { IoMdClose } from "react-icons/io";
 import { Person } from './typings/page.js';
 
+import { FaMoneyBill } from "react-icons/fa";
+import { CiWallet } from "react-icons/ci";
+import { FaCheckCircle } from "react-icons/fa";
 
+
+const details = [
+  { name: 'Total orders', numer: '2',icon: <FaMoneyBill color="#0030FF" /> },
+  { name: 'Pending orders', numer: '10',icon: <CiWallet color="#F26F03" /> },
+  { name: 'Completed orders', numer: '2',icon: <FaCheckCircle color="#059669" /> },
+]
 
 const people: Person[] = [
   {
@@ -60,6 +69,23 @@ export default function OrdersScreen() {
             </button>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-[13.5px] mt-4">
+        {details.map((item, index) => {
+          return (
+            <div className="bg-white rounded-[12px] p-[15px] border border-[#E2E8F0]   flex flex-col gap-[24px]">
+               {item.icon}
+              <div className="">
+              <p className="text-[#8F8F8F] text-sm">{item.name}</p>
+              <p className="text-black text-2xl font-[500]">{item.numer}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+
+
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -151,12 +177,12 @@ export default function OrdersScreen() {
       </div>
 
       {isDetailsModalOpen && selectedPerson && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-end p-4">
           <div
             className="absolute inset-0 bg-primary opacity-50 transition-all duration-500"
             onClick={closeDetailsModal}
           ></div>
-          <div className="relative z-10 bg-[#ffff] rounded-[12px] shadow-lg w-[90%] max-w-[388px] overflow-y-auto ">
+          <div className="relative right-0 z-10 bg-[#ffff] rounded-[12px] shadow-lg w-[90%] max-w-[388px] overflow-y-auto h-full">
             <h2 className="text-lg font-normal mb-4 border-stroke border-b px-6 py-[22px]">
             {selectedPerson.companyName}
             </h2>
@@ -214,16 +240,18 @@ export default function OrdersScreen() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex justify-end p-8">
           <div
-            className="absolute inset-0 bg-primary opacity-50 transition-all duration-500"
+            className="absolute inset-0  bg-primary opacity-50 transition-all duration-500"
             onClick={closeModal}
           ></div>
-          <div className="relative z-10 bg-[#ffff] rounded-[12px] shadow-lg w-[90%] max-w-[388px] overflow-y-auto">
+          <div className="relative right-0 z-10 bg-[#ffff] rounded-[12px] shadow-lg w-full lg:w-[90%] max-w-[388px] h-full">
             <h2 className="text-lg font-bold mb-4 border-stroke border-b px-6 py-[22px]">
               Create Order
             </h2>
-            <form className="my-6 mx-3 px-5  py-[22px] rounded-[12px] border-stroke border">
+            <form className="my-6 mx-3 px-5  py-[22px] rounded-[12px] border-stroke border flex justify-between flex-col h-[85%]">
+            <div className="h-full">
+
               {/* Company Name */}
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2 text-[#757575]">
@@ -284,14 +312,24 @@ export default function OrdersScreen() {
                   <option value="location3">Location 3</option>
                 </select>
               </div>
+            </div>
+<div className="flex justify-end items-center gap-2">
 
-              {/* Submit Button */}
               <button
+            
                 type="submit"
-                className="bg-[#050505] text-[#ffff] py-[10px] px-[12px] rounded-[8px] w-full"
+                className="bg-[#fff] text-[#000] border border-stroke py-[10px] px-[12px] rounded-[8px]"
+              >
+                Save as draft
+              </button>
+              <button
+            
+                type="submit"
+                className="bg-[#050505] text-[#ffff] py-[10px] px-[12px] rounded-[8px]"
               >
                 Create
               </button>
+</div>
             </form>
           </div>
         </div>

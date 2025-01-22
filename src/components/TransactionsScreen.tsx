@@ -10,6 +10,16 @@ import All from './All'
 import Received from './Received'
 import Sent from './Sent'
 import { IoPeopleOutline } from 'react-icons/io5'
+import { FaMoneyBill } from "react-icons/fa";
+import { CiWallet } from "react-icons/ci";
+import { FaCheckCircle } from "react-icons/fa";
+
+
+const details = [
+  { name: 'Total transactions', numer: '2',icon: <FaMoneyBill color="#0030FF" /> },
+  { name: 'Pending', numer: '10',icon: <CiWallet color="#F26F03" /> },
+  { name: 'Completed', numer: '2',icon: <FaCheckCircle color="#059669" /> },
+]
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ')
@@ -19,9 +29,9 @@ const TransactionsScreen = () => {
   const [activeScreen, setActiveScreen] = React.useState('All')
 
   const navigation = [
-    { name: 'All', key: '24' },
-    { name: 'Recieved', key: '10' },
-    { name: 'Sent', key: 'Clients' },
+    { name: 'All Transactions', key: '24' },
+    { name: 'Pending', key: '10' },
+    { name: 'Completed', key: 'Clients' },
   ]
 
   const getActiveScreen = () => {
@@ -52,6 +62,20 @@ const TransactionsScreen = () => {
             </button>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-[13.5px] my-4">
+        {details.map((item, index) => {
+          return (
+            <div className="bg-white rounded-[12px] p-[15px] border border-[#E2E8F0]   flex flex-col gap-[24px]">
+               {item.icon}
+              <div className="">
+              <p className="text-[#8F8F8F] text-sm">{item.name}</p>
+              <p className="text-black text-2xl font-[500]">{item.numer}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     
 
       <div className="min-h-full">

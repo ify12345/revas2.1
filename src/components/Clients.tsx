@@ -1,10 +1,19 @@
 import * as React from 'react'
 
-import { IoPeopleOutline } from 'react-icons/io5'
+import { FaMoneyBill } from "react-icons/fa";
+import { CiWallet } from "react-icons/ci";
+import { FaCheckCircle } from "react-icons/fa";
+
 
 import { CiCalendar } from 'react-icons/ci'
 import SearchInput from './Search.js'
 import Status from './Status.js'
+
+
+const details = [
+  { name: 'All Buyers', numer: '2',icon: <FaMoneyBill color="#0030FF" /> },
+  { name: 'Unregistered', numer: '2',icon: <FaCheckCircle color="#059669" /> },
+]
 
 const people = [
   {
@@ -35,17 +44,32 @@ export default function ClientsScreen() {
     <div className="flex flex-col">
       <div className=" py-4">
         <div className="sm:flex sm:items-center">
-          <p className="sm:flex-auto text-2xl font-semibold">Clients</p>
+          <p className="sm:flex-auto text-2xl font-semibold">Buyer</p>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <button
               onClick={openModal}
               className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px] flex gap-2 items-center"
             >
-              <p className="text-[#fff]">New Supplier</p>
-              <IoPeopleOutline color="white" />
+              <p className="text-[#fff]">New Buyer</p>
+              {/* <IoPeopleOutline color="white" /> */}
             </button>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[13.5px] my-4">
+        {details.map((item, index) => {
+          return (
+            <div className="bg-white rounded-[12px] p-[15px] border border-[#E2E8F0]   flex flex-col gap-[24px]">
+               {item.icon}
+              <div className="">
+              <p className="text-[#8F8F8F] text-sm">{item.name}</p>
+              <p className="text-black text-2xl font-[500]">{item.numer}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
         <div className="sm:flex sm:items-center pt-[30px]">
           <div className="sm:flex-auto">
             <SearchInput />
