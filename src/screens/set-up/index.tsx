@@ -62,36 +62,58 @@ export default function SetUp() {
         </div>
       </div>
       <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px]">
-        <img src={logo} className='max-w-[172px] mb-[60px]' alt="" />
-        <form action="" className='text-[#98A2B3] flex flex-col gap-[24px]'>
-          <p className='text-primary text-3xl'>Welcome, Daniel</p>
-          <p className='text-primary text-lg'>Setup your account</p>
+        <img src={logo} className="max-w-[172px] mb-[60px]" alt="" />
+        <form action="" className="text-[#98A2B3] flex flex-col gap-[24px]">
+          <p className="text-primary text-3xl">Welcome, Daniel</p>
+          <p className="text-primary text-lg">Setup your account</p>
           <div className="w-full">
-              <label htmlFor="">Company Name</label>
-              <input type="text" placeholder='Revas' className='w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md' />
-            </div>
-        
-          <div className="w-full">
-              <label htmlFor="">Product</label>
-              <input type="text" placeholder='pet flakes' className='w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md' />
-            </div>
-          <div className="w-full">
-              <label htmlFor="">Capacity (MT/month)</label>
-              <input type="text" placeholder='1000' className='w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md' />
-            </div>
-          <div className="w-full">
-              <label htmlFor="">Price/tonne (USD)</label>
-              <input type="text" placeholder='123' className='w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md' />
-            </div>
-          <div className="w-full">
-              <label htmlFor="">Location</label>
-              <input type="text" placeholder='United Kingdom' className='w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md' />
-            </div>
-         
+            <label htmlFor="">Company Name</label>
+            <input
+              type="text"
+              placeholder="Revas"
+              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
+            />
+          </div>
 
-        
-              <Link className='py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex' to="/dashboard">Go to Dashboard</Link>
-          
+          <div className="w-full">
+            <label htmlFor="">Product</label>
+            <input
+              type="text"
+              placeholder="pet flakes"
+              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
+            />
+          </div>
+          <div className="w-full">
+            <label htmlFor="">Capacity (MT/month)</label>
+            <input
+              type="text"
+              placeholder="1000"
+              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
+            />
+          </div>
+          <div className="w-full">
+            <label htmlFor="">Price/tonne (USD)</label>
+            <input
+              type="text"
+              placeholder="123"
+              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
+            />
+          </div>
+          <div className="w-full">
+            <label htmlFor="">Location</label>
+            <input
+              type="text"
+              placeholder="United Kingdom"
+              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
+            />
+          </div>
+
+          <Link
+            className="py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex"
+            to="/dashboard"
+          >
+            Go to Dashboard
+          </Link>
         </form>
       </div>
     </div>
