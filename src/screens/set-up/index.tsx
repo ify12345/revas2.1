@@ -3,6 +3,7 @@ import background from '@/assets/images/background.png'
 import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom'
 
+
 export default function SetUp() {
   return (
     <div className="w-full flex flex-col lg:flex-row overflow-hidden p-6">
