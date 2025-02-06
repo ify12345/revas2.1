@@ -7,7 +7,7 @@ import CustomInput from '@/components/CustomInput';
 
 export default function Signup() {
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-7 max-h-screen">
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden lg:p-7 max-h-screen">
       <div className="hidden lg:block w-1/2 rounded-2xl max-h-full relative">
         <img src={onboarding} className="rounded-2xl w-full h-full" alt="" />
         <img
@@ -67,14 +67,14 @@ export default function Signup() {
 
 
 
-      <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px]">
+      <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px] overflow-y-auto p-7">
         <img src={logo} className="max-w-[172px] mb-[60px]" alt="" />
         <form action="" className="text-[#98A2B3] flex flex-col gap-[24px]">
           <p className="text-primary text-3xl">Create your account</p>
 
           {/* First Name and Last Name */}
-          <div className="w-full flex gap-[14px]">
-            <div className="w-1/2">
+          <div className="w-full flex flex-col lg:flex-row gap-[14px]">
+            <div className="w-full lg:w-1/2">
               <CustomInput
                 label="First Name"
                 type="text"
@@ -82,7 +82,7 @@ export default function Signup() {
                 required
               />
             </div>
-            <div className="w-1/2">
+            <div className="w-full lg:w-1/2">
               <CustomInput
                 label="Last Name"
                 type="text"

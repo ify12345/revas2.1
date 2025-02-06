@@ -2,16 +2,16 @@ import onboarding from '@/assets/images/onboarding.png'
 import background from '@/assets/images/background.png'
 import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom'
-
+import CustomInput from '@/components/CustomInput'
 
 export default function SetUp() {
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-6">
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-7 max-h-screen">
       <div className="hidden lg:block w-1/2 rounded-2xl max-h-full relative">
-        <img src={onboarding} className="rounded-2xl w-full h-screen" alt="" />
+        <img src={onboarding} className="rounded-2xl w-full h-full" alt="" />
         <img
           src={background}
-          className="absolute rounded-2xl w-full h-screen inset-0 "
+          className="absolute rounded-2xl w-full h-full inset-0 "
           alt=""
         />
         <div className="flex flex-col inset-0 justify-end text-white absolute z-30 px-[40px] gap-[17px] py-10">
@@ -67,48 +67,48 @@ export default function SetUp() {
         <form action="" className="text-[#98A2B3] flex flex-col gap-[24px]">
           <p className="text-primary text-3xl">Welcome, Daniel</p>
           <p className="text-primary text-lg">Setup your account</p>
-          <div className="w-full">
-            <label htmlFor="">Company Name</label>
-            <input
-              type="text"
-              placeholder="Revas"
-              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
-            />
-          </div>
 
-          <div className="w-full">
-            <label htmlFor="">Product</label>
-            <input
-              type="text"
-              placeholder="pet flakes"
-              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
-            />
-          </div>
-          <div className="w-full">
-            <label htmlFor="">Capacity (MT/month)</label>
-            <input
-              type="text"
-              placeholder="1000"
-              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
-            />
-          </div>
-          <div className="w-full">
-            <label htmlFor="">Price/tonne (USD)</label>
-            <input
-              type="text"
-              placeholder="123"
-              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
-            />
-          </div>
-          <div className="w-full">
-            <label htmlFor="">Location</label>
-            <input
-              type="text"
-              placeholder="United Kingdom"
-              className="w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md"
-            />
-          </div>
+          {/* Company Name */}
+          <CustomInput
+            label="Company Name"
+            type="text"
+            placeholder="Revas"
+            required
+          />
 
+          {/* Product */}
+          <CustomInput
+            label="Product"
+            type="text"
+            placeholder="pet flakes"
+            required
+          />
+
+          {/* Capacity (MT/month) */}
+          <CustomInput
+            label="Capacity (MT/month)"
+            type="text"
+            placeholder="1000"
+            required
+          />
+
+          {/* Price/tonne (USD) */}
+          <CustomInput
+            label="Price/tonne (USD)"
+            type="text"
+            placeholder="123"
+            required
+          />
+
+          {/* Location */}
+          <CustomInput
+            label="Location"
+            type="text"
+            placeholder="United Kingdom"
+            required
+          />
+
+          {/* Submit Button */}
           <Link
             className="py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex"
             to="/dashboard"
