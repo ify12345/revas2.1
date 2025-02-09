@@ -1,12 +1,41 @@
 import * as React from 'react';
+import {  FaTimesCircle, FaClock } from "react-icons/fa";
+import PiAirlineSeat from './svg/PiAirlineSeat';
 
-import { FaCheckCircle } from "react-icons/fa";
+type StatusType = "matched" | "not_matched" | "pending";
 
-export default function Badge(){
-    return(
-      <div className='bg-[#F8FAFC] flex gap-2 text-[#059669] items-center py-[2px] px-[12px] rounded-[12px] w-[80px]'>
-        <FaCheckCircle color="#059669" />
-        <p>Active</p>
-      </div>
-    )
-  }
+interface BadgeProps {
+  status: StatusType;
+}
+
+const statusConfig: Record<StatusType, { text: string; color: string; bgColor: string; icon: JSX.Element }> = {
+  matched: {
+    text: "Matched",
+    color: "#32ADE6", 
+    bgColor: "#F8FAFC",
+    icon: <PiAirlineSeat/>,
+  },
+  not_matched: {
+    text: "Not Matched",
+    color: "#036B26", // Red
+    bgColor: "#E7F6EC",
+    icon: '',
+  },
+  pending: {
+    text: "Pending",
+    color: "#D97706", // Yellow
+    bgColor: "#FFFBEB",
+    icon: <FaClock color="#D97706" />,
+  },
+};
+
+export default function Badge({ status }: BadgeProps) {
+  const { text, color, bgColor, icon } = statusConfig[status];
+
+  return (
+    <div className="flex gap-2 items-center py-1 px-3 rounded-xl w-[50%]" style={{ backgroundColor: bgColor, color }}>
+      {icon}
+      <p>{text}</p>
+    </div>
+  );
+}

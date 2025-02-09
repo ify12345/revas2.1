@@ -25,6 +25,7 @@ export default function SetUp() {
             <p className="text">Director of Operations, WasteNot Solutions</p>
           </div>
           <div className="flex items-center gap-2">
+            
             <svg
               width="33"
               height="32"

@@ -1,57 +1,51 @@
-import React, { useState } from 'react'
-import logo from '@/assets/images/dash-icon.png'
-import { CiHome, CiDeliveryTruck } from 'react-icons/ci'
-import { MdPeopleOutline } from 'react-icons/md'
-import { IoReceiptOutline } from 'react-icons/io5'
-import { TfiHeadphoneAlt } from 'react-icons/tfi'
-import { FiMenu } from 'react-icons/fi' // Hamburger icon
-import { IoClose } from 'react-icons/io5' // Close icon
-import { FaCaretDown } from 'react-icons/fa'
-import HomeScreen from '../HomeScreen'
-import OrdersScreen from '../Orders'
-import ClientsScreen from '../Clients'
-import TransactionsScreen from '../TransactionsScreen'
+import React, { useState } from 'react';
+import logo from '@/assets/images/dash-icon.png';
+import { CiHome, CiDeliveryTruck } from 'react-icons/ci';
+import { MdPeopleOutline } from 'react-icons/md';
+import { IoReceiptOutline } from 'react-icons/io5';
+import { TfiHeadphoneAlt } from 'react-icons/tfi';
+import { FiMenu } from 'react-icons/fi'; // Hamburger icon
+import { IoClose } from 'react-icons/io5'; // Close icon
+import { FaCaretDown } from 'react-icons/fa';
+import HomeScreen from '../HomeScreen';
+import OrdersScreen from '../Orders';
+import ClientsScreen from '../Clients';
+import TransactionsScreen from '../TransactionsScreen';
+
 interface LayoutProps {
   children: React.ReactNode; // This specifies that the component expects children
 }
 
 // Components for views
-const Home = () => <HomeScreen/>
-const Delivery = () => <OrdersScreen/>
-const People = () => <ClientsScreen/>
-const Receipts = () => <TransactionsScreen/>
-const Support = () => <div>Support Page</div>
+const Home = () => <HomeScreen onCreateOrder={() => {}} />;
+const Delivery = () => <OrdersScreen />;
+const People = () => <ClientsScreen />;
+const Receipts = () => <TransactionsScreen />;
+const Support = () => <div>Support Page</div>;
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [activeView, setActiveView] = useState<string>('Home') // Tracks the active view
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeView, setActiveView] = useState<string>('Home'); // Tracks the active view
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
-  }
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleCreateOrder = () => {
+    setActiveView('Orders');
+    setIsOrderModalOpen(true);
+    console.log('clicked');
+    
+  };
 
   // Links for dynamic rendering
   const links = [
-    { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home /> },
-    {
-      id: 'Orders',
-      label: 'Delivery',
-      icon: <CiDeliveryTruck />,
-      component: <Delivery />,
-    },
-    {
-      id: 'Buyer',
-      label: 'Buyer',
-      icon: <MdPeopleOutline />,
-      component: <People />,
-    },
-    {
-      id: 'Transactions',
-      label: 'Transactions',
-      icon: <IoReceiptOutline />,
-      component: <Receipts />,
-    },
-  ]
+    { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home onCreateOrder={handleCreateOrder} /> },
+    { id: 'Orders', label: 'Delivery', icon: <CiDeliveryTruck />, component: <Delivery /> },
+    { id: 'Buyer', label: 'Buyer', icon: <MdPeopleOutline />, component: <People /> },
+    { id: 'Transactions', label: 'Transactions', icon: <IoReceiptOutline />, component: <Receipts /> },
+  ];
 
   return (
     <div className="h-screen lg:flex overflow-x-hidden">
@@ -64,10 +58,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <ul className="flex flex-col items-center space-y-6">
           {/* Logo */}
           <li>
-            <a
-              href="#logo"
-              className="flex items-center space-x-3 text-lg max-w-[52px]"
-            >
+            <a href="#logo" className="flex items-center space-x-3 text-lg max-w-[52px]">
               <img src={logo} className="w-full" alt="Logo" />
             </a>
           </li>
@@ -78,9 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <button
                 onClick={() => setActiveView(link.id)}
                 className={`flex items-center space-x-3 text-lg p-3 rounded-2xl ${
-                  activeView === link.id
-                    ? 'bg-primary text-white'
-                    : 'text-gray-400'
+                  activeView === link.id ? 'bg-primary text-white' : 'text-gray-400'
                 }`}
               >
                 {React.cloneElement(link.icon, {
@@ -95,14 +84,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <button
               onClick={() => setActiveView('support')}
               className={`flex items-center space-x-3 text-lg p-3 rounded-2xl ${
-                activeView === 'support'
-                  ? 'bg-primary text-white'
-                  : 'text-gray-400'
+                activeView === 'support' ? 'bg-primary text-white' : 'text-gray-400'
               }`}
             >
-              <TfiHeadphoneAlt
-                color={activeView === 'support' ? 'white' : 'gray'}
-              />
+              <TfiHeadphoneAlt color={activeView === 'support' ? 'white' : 'gray'} />
             </button>
           </li>
         </ul>
@@ -112,7 +97,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex-1 flex flex-col">
         {/* Navbar */}
         <header
-          className={`bg-green-500 text-white p-6 border-b border-[#E7E7E7] shadow-md flex items-center ${
+          className={`bg-green-500 text-white p-3 px-6 border-b border-[#E7E7E7] shadow-md flex items-center ${
             !isSidebarOpen ? 'justify-between' : 'justify-start'
           }`}
         >
@@ -127,9 +112,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </button>
 
           {/* Title */}
-          {!isSidebarOpen && (
-            <h1 className="text-base font-medium">{activeView}</h1>
-          )}
+          {!isSidebarOpen && <h1 className="text-base font-medium">{activeView}</h1>}
 
           {/* User Info */}
           {!isSidebarOpen && (
@@ -156,11 +139,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   />
                 </svg>
 
-                <svg width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.96875 18C0.96875 8.05888 9.02763 0 18.9688 0C28.9099 0 36.9688 8.05888 36.9688 18C36.9688 27.9411 28.9099 36 18.9688 36C9.02763 36 0.96875 27.9411 0.96875 18Z" fill="#F1F5F9"/>
-<path d="M23.9661 16.3327C23.9661 15.0066 23.4394 13.7348 22.5017 12.7971C21.564 11.8595 20.2922 11.3327 18.9661 11.3327C17.6401 11.3327 16.3683 11.8595 15.4306 12.7971C14.4929 13.7348 13.9661 15.0066 13.9661 16.3327V22.9993H23.9661V16.3327ZM25.6328 23.5552L25.9661 23.9994C26.0126 24.0613 26.0408 24.1349 26.0478 24.2119C26.0547 24.289 26.0401 24.3665 26.0055 24.4357C25.9709 24.5049 25.9177 24.5631 25.8519 24.6038C25.786 24.6445 25.7102 24.666 25.6328 24.666H12.2995C12.2221 24.666 12.1462 24.6445 12.0804 24.6038C12.0146 24.5631 11.9614 24.5049 11.9268 24.4357C11.8922 24.3665 11.8775 24.289 11.8845 24.2119C11.8914 24.1349 11.9197 24.0613 11.9661 23.9994L12.2995 23.5552V16.3327C12.2995 14.5646 13.0019 12.8689 14.2521 11.6186C15.5023 10.3684 17.198 9.66602 18.9661 9.66602C20.7343 9.66602 22.4299 10.3684 23.6802 11.6186C24.9304 12.8689 25.6328 14.5646 25.6328 16.3327V23.5552ZM16.8828 25.4993H21.0495C21.0495 26.0519 20.83 26.5818 20.4393 26.9725C20.0486 27.3632 19.5187 27.5827 18.9661 27.5827C18.4136 27.5827 17.8837 27.3632 17.493 26.9725C17.1023 26.5818 16.8828 26.0519 16.8828 25.4993Z" fill="#334155"/>
+                <svg
+                  width="37"
+                  height="36"
+                  viewBox="0 0 37 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.96875 18C0.96875 8.05888 9.02763 0 18.9688 0C28.9099 0 36.9688 8.05888 36.9688 18C36.9688 27.9411 28.9099 36 18.9688 36C9.02763 36 0.96875 27.9411 0.96875 18Z"
+                    fill="#F1F5F9"
+                  />
+                  <path
+                    d="M23.9661 16.3327C23.9661 15.0066 23.4394 13.7348 22.5017 12.7971C21.564 11.8595 20.2922 11.3327 18.9661 11.3327C17.6401 11.3327 16.3683 11.8595 15.4306 12.7971C14.4929 13.7348 13.9661 15.0066 13.9661 16.3327V22.9993H23.9661V16.3327ZM25.6328 23.5552L25.9661 23.9994C26.0126 24.0613 26.0408 24.1349 26.0478 24.2119C26.0547 24.289 26.0401 24.3665 26.0055 24.4357C25.9709 24.5049 25.9177 24.5631 25.8519 24.6038C25.786 24.6445 25.7102 24.666 25.6328 24.666H12.2995C12.2221 24.666 12.1462 24.6445 12.0804 24.6038C12.0146 24.5631 11.9614 24.5049 11.9268 24.4357C11.8922 24.3665 11.8775 24.289 11.8845 24.2119C11.8914 24.1349 11.9197 24.0613 11.9661 23.9994L12.2995 23.5552V16.3327C12.2995 14.5646 13.0019 12.8689 14.2521 11.6186C15.5023 10.3684 17.198 9.66602 18.9661 9.66602C20.7343 9.66602 22.4299 10.3684 23.6802 11.6186C24.9304 12.8689 25.6328 14.5646 25.6328 16.3327V23.5552ZM16.8828 25.4993H21.0495C21.0495 26.0519 20.83 26.5818 20.4393 26.9725C20.0486 27.3632 19.5187 27.5827 18.9661 27.5827C18.4136 27.5827 17.8837 27.3632 17.493 26.9725C17.1023 26.5818 16.8828 26.0519 16.8828 25.4993Z"
+                    fill="#334155"
+                  />
                 </svg>
-
               </div>
               {/* Profile Section */}
               <div className="flex lg:gap-4 ml-1 lg:mx-[24px] border border-[#E7E7E7] p-[4px] items-center rounded-lg">
@@ -195,16 +189,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {activeView === 'support' ? (
             <Support />
           ) : (
-            links.find(link => link.id === activeView)?.component
+            React.cloneElement(links.find(link => link.id === activeView)?.component || <div />, {
+              onCreateOrder: handleCreateOrder,
+            })
           )}
         </div>
-        <div className="hidden">
-
-        {children}
-        </div>
+        <div className="hidden">{children}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
