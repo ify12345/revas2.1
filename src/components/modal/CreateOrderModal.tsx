@@ -15,7 +15,7 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-end bg-[#000] bg-opacity-50 p-6"
-      onClick={onClose} // Close when clicking outside
+      onClick={onClose}
     >
       <div
         className="bg-[#FFF] w-full max-w-md h-full shadow-lg rounded-xl flex justify-between flex-col"
@@ -29,7 +29,12 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
             method=""
             className="border border-stroke p-5 rounded-lg mx-3 mt-6 gap-4 flex-col flex"
           >
-            <CustomInput label="Company Name" value="Revas Exchange" />
+            <CustomInput
+              label="Company Name"
+              value="Revas Exchange"
+              type={''}
+              placeholder={''}
+            />
             <div className="flex flex-col text-[#98A2B3] gap-2">
               <label htmlFor="buyer">Product</label>
               <select
@@ -41,8 +46,18 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
                 <option value="buyer2">Buyer 2</option>
               </select>
             </div>
-            <CustomInput label="Capacity (MT)" value="" />
-            <CustomInput label="Price/tonne (USD)" value="500" />
+            <CustomInput
+              label="Capacity (MT)"
+              value=""
+              type={''}
+              placeholder={''}
+            />
+            <CustomInput
+              label="Price/tonne (USD)"
+              value="500"
+              type={''}
+              placeholder={''}
+            />
             <div className="flex flex-col text-[#98A2B3] gap-2">
               <label htmlFor="buyer">Product</label>
               <select

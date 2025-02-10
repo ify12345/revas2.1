@@ -1,75 +1,95 @@
-import React, { useState } from 'react';
-import logo from '@/assets/images/dash-icon.png';
-import { CiHome, CiDeliveryTruck } from 'react-icons/ci';
-import { MdPeopleOutline } from 'react-icons/md';
-import { IoReceiptOutline } from 'react-icons/io5';
-import { TfiHeadphoneAlt } from 'react-icons/tfi';
-import { FiMenu } from 'react-icons/fi'; // Hamburger icon
-import { IoClose } from 'react-icons/io5'; // Close icon
-import { FaCaretDown } from 'react-icons/fa';
-import HomeScreen from '../HomeScreen';
-import OrdersScreen from '../Orders';
-import ClientsScreen from '../Clients';
-import TransactionsScreen from '../TransactionsScreen';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react'
+import logo from '@/assets/images/dash-icon.png'
+import { CiHome, CiDeliveryTruck } from 'react-icons/ci'
+import { MdPeopleOutline } from 'react-icons/md'
+import { IoReceiptOutline } from 'react-icons/io5'
+import { TfiHeadphoneAlt } from 'react-icons/tfi'
+import { FiMenu } from 'react-icons/fi' 
+import { IoClose } from 'react-icons/io5' 
+import { FaCaretDown } from 'react-icons/fa'
+import HomeScreen from '../HomeScreen'
+import OrdersScreen from '../Orders'
+import ClientsScreen from '../Clients'
+import TransactionsScreen from '../TransactionsScreen'
 
 interface LayoutProps {
-  children: React.ReactNode; // This specifies that the component expects children
+  children: React.ReactNode 
 }
 
 // Components for views
-const Home = () => <HomeScreen onCreateOrder={() => {}} />;
-const Delivery = () => <OrdersScreen />;
-const People = () => <ClientsScreen />;
-const Receipts = () => <TransactionsScreen />;
-const Support = () => <div>Support Page</div>;
+const Home = () => <HomeScreen />
+const Delivery = () => <OrdersScreen />
+const People = () => <ClientsScreen />
+const Receipts = () => <TransactionsScreen />
+const Support = () => <div>Support Page</div>
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState<string>('Home'); // Tracks the active view
+  const [activeView, setActiveView] = useState<string>('Home');
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
+  }
 
   const handleCreateOrder = () => {
-    setActiveView('Orders');
-    setIsOrderModalOpen(true);
-    console.log('clicked');
-    
-  };
+    setActiveView('Orders')
+    setIsOrderModalOpen(true)
+    console.log('clicked')
+  }
 
   // Links for dynamic rendering
   const links = [
-    { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home onCreateOrder={handleCreateOrder} /> },
-    { id: 'Orders', label: 'Delivery', icon: <CiDeliveryTruck />, component: <Delivery /> },
-    { id: 'Buyer', label: 'Buyer', icon: <MdPeopleOutline />, component: <People /> },
-    { id: 'Transactions', label: 'Transactions', icon: <IoReceiptOutline />, component: <Receipts /> },
-  ];
+    { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home /> },
+    {
+      id: 'Orders',
+      label: 'Delivery',
+      icon: <CiDeliveryTruck />,
+      component: <Delivery />,
+    },
+    {
+      id: 'Buyer',
+      label: 'Buyer',
+      icon: <MdPeopleOutline />,
+      component: <People />,
+    },
+    {
+      id: 'Transactions',
+      label: 'Transactions',
+      icon: <IoReceiptOutline />,
+      component: <Receipts />,
+    },
+  ]
 
   return (
     <div className="h-screen lg:flex overflow-x-hidden">
-      {/* Sidebar */}
+     
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? 'translate-x-0 bg-[#fff]' : '-translate-x-full'
         } md:relative md:translate-x-0 w-20 bg-gray-800 text-white p-4 border-r border-[#E7E7E7] transition-transform duration-300 ease-in-out z-50`}
       >
         <ul className="flex flex-col items-center space-y-6">
-          {/* Logo */}
+          
           <li>
-            <a href="#logo" className="flex items-center space-x-3 text-lg max-w-[52px]">
+            <a
+              href="#logo"
+              className="flex items-center space-x-3 text-lg max-w-[52px]"
+            >
               <img src={logo} className="w-full" alt="Logo" />
             </a>
           </li>
 
-          {/* Dynamic Links */}
+        
           {links.map(link => (
             <li key={link.id}>
               <button
                 onClick={() => setActiveView(link.id)}
                 className={`flex items-center space-x-3 text-lg p-3 rounded-2xl ${
-                  activeView === link.id ? 'bg-primary text-white' : 'text-gray-400'
+                  activeView === link.id
+                    ? 'bg-primary text-white'
+                    : 'text-gray-400'
                 }`}
               >
                 {React.cloneElement(link.icon, {
@@ -79,29 +99,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </li>
           ))}
 
-          {/* Contact Link */}
           <li className="pt-[60px] border-t border-[#E7E7E7]">
             <button
               onClick={() => setActiveView('support')}
               className={`flex items-center space-x-3 text-lg p-3 rounded-2xl ${
-                activeView === 'support' ? 'bg-primary text-white' : 'text-gray-400'
+                activeView === 'support'
+                  ? 'bg-primary text-white'
+                  : 'text-gray-400'
               }`}
             >
-              <TfiHeadphoneAlt color={activeView === 'support' ? 'white' : 'gray'} />
+              <TfiHeadphoneAlt
+                color={activeView === 'support' ? 'white' : 'gray'}
+              />
             </button>
           </li>
         </ul>
       </div>
 
-      {/* Main Content Area */}
+     
       <div className="flex-1 flex flex-col">
-        {/* Navbar */}
+    
         <header
           className={`bg-green-500 text-white p-3 px-6 border-b border-[#E7E7E7] shadow-md flex items-center ${
             !isSidebarOpen ? 'justify-between' : 'justify-start'
           }`}
         >
-          {/* Hamburger Menu */}
+        
           <button
             onClick={toggleSidebar}
             className={`block md:hidden text-white text-2xl focus:outline-none ${
@@ -111,13 +134,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {isSidebarOpen ? <IoClose /> : <FiMenu />}
           </button>
 
-          {/* Title */}
-          {!isSidebarOpen && <h1 className="text-base font-medium">{activeView}</h1>}
+          {!isSidebarOpen && (
+            <h1 className="text-base font-medium">{activeView}</h1>
+          )}
 
-          {/* User Info */}
+
           {!isSidebarOpen && (
             <div className="flex items-center">
-              {/* Icons Section */}
+        
               <div className="flex gap-4 lg:px-[24px] pr-1 border-r border-[#E7E7E7]">
                 <svg
                   width="37"
@@ -184,20 +208,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           )}
         </header>
 
-        {/* Body Content */}
         <div className="p-[23px]">
           {activeView === 'support' ? (
             <Support />
           ) : (
-            React.cloneElement(links.find(link => link.id === activeView)?.component || <div />, {
-              onCreateOrder: handleCreateOrder,
-            })
+            React.cloneElement(
+              links.find(link => link.id === activeView)?.component || <div />,
+              {
+                onCreateOrder: handleCreateOrder,
+              }
+            )
           )}
         </div>
+
         <div className="hidden">{children}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default Layout;

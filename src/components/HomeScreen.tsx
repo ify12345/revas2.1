@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react'
 import { RiDraftLine } from 'react-icons/ri'
 import RowDetailsModal from './modal/RowDetailModal.js'
@@ -7,16 +8,8 @@ import { CiWallet } from 'react-icons/ci'
 import DollarSvg from './svg/dollar.js'
 import { BsGraphUp } from 'react-icons/bs'
 import Badge from './Badge.js'
+import { Person } from './typings/tables.js'
 
-interface Person {
-  id: string
-  name: string
-  status: React.JSX.Element
-  price: string
-  country: string
-  capacity: string
-  grade: string
-}
 const details = [
   {
     name: 'Active Transactions',
@@ -37,7 +30,7 @@ const details = [
   { name: 'Total Volume (MT)', numer: '90,803', icon: <BsGraphUp /> },
 ]
 
-const people = [
+const people: Person[] = [
   {
     id: 'IIS468S',
     date: '12-12-24',
@@ -49,6 +42,7 @@ const people = [
     grade: 'A',
     supplier: 'EcoPlast Industries',
     product: 'Clear PET Flakes',
+    capacity: '',
   },
   // More people...
 ]
@@ -57,7 +51,7 @@ interface HomeScreenProps {
   openOrderModal: () => void
 }
 
-export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
+export default function HomeScreen() {
   const [isRowDetailsModalOpen, setIsRowDetailsModalOpen] =
     React.useState(false)
   const [isCreateOrderModalOpen, setIsCreateOrderModalOpen] =
@@ -201,7 +195,7 @@ export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
                       <tr
                         key={person.id}
                         className="cursor-pointer hover:bg-gray-100"
-                        onClick={() => openRowDetailsModal(person)}
+                        onClick={() => person && openRowDetailsModal(person)}
                       >
                         <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
                           {person.date}
@@ -311,7 +305,7 @@ export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
                           {person.country}
                         </td>
                         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.capacity}
+                          {person.quantity}
                         </td>
                         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                           {person.grade}

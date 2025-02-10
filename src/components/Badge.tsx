@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {  FaClock } from "react-icons/fa";
 import PiAirlineSeat from './svg/PiAirlineSeat';
+import { FcCancel } from "react-icons/fc";
 
 type StatusType = "matched" | "not_matched" | "pending";
 
@@ -8,7 +9,7 @@ interface BadgeProps {
   status: StatusType;
 }
 
-const statusConfig: Record<StatusType, { text: string; color: string; bgColor: string; icon: JSX.Element }> = {
+const statusConfig: Record<StatusType, { text: string; color: string; bgColor: string; icon: React.JSX.Element }> = {
   matched: {
     text: "Matched",
     color: "#32ADE6", 
@@ -17,13 +18,13 @@ const statusConfig: Record<StatusType, { text: string; color: string; bgColor: s
   },
   not_matched: {
     text: "Not Matched",
-    color: "#036B26", // Red
+    color: "#036B26",
     bgColor: "#E7F6EC",
-    icon: '',
+    icon: <FcCancel />
   },
   pending: {
     text: "Pending",
-    color: "#D97706", // Yellow
+    color: "#D97706",
     bgColor: "#FFFBEB",
     icon: <FaClock color="#D97706" />,
   },

@@ -1,33 +1,26 @@
-import * as React from 'react';
+import * as React from 'react'
 
 import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react'
-import { 
-  Bars3Icon, 
-  HomeIcon, 
-  NewspaperIcon, 
-  UsersIcon, 
-  XMarkIcon ,
-  TruckIcon
+import {
+  Bars3Icon,
+  HomeIcon,
+  NewspaperIcon,
+  UsersIcon,
+  XMarkIcon,
+  TruckIcon,
 } from '@heroicons/react/24/outline'
 import HomeScreen from './HomeScreen.js'
 import OrdersScreen from './Orders.js'
 import ClientsScreen from './Clients.js'
-import TransactionsScreen from './TransactionsScreen.js';
+import TransactionsScreen from './TransactionsScreen.js'
 
 function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
-
-
-// Individual Components for Screens
-
-
-
-
 
 export default function NavOptions() {
   const [activeScreen, setActiveScreen] = React.useState('Home')
@@ -61,7 +54,7 @@ export default function NavOptions() {
           <div className="flex justify-between">
             <div className="flex">
               <div className="hidden sm:-my-px sm:flex sm:space-x-8">
-                {navigation.map((item) => (
+                {navigation.map(item => (
                   <button
                     key={item.key}
                     onClick={() => setActiveScreen(item.key)}
@@ -75,7 +68,9 @@ export default function NavOptions() {
                     <item.icon
                       className={classNames(
                         'h-5 w-5 mr-2',
-                        activeScreen === item.key ? 'text-black' : 'text-gray-400'
+                        activeScreen === item.key
+                          ? 'text-black'
+                          : 'text-gray-400'
                       )}
                       aria-hidden="true"
                     />
@@ -104,7 +99,7 @@ export default function NavOptions() {
 
         <DisclosurePanel className="sm:hidden">
           <div className="space-y-1 pt-2 pb-3 px-4">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <DisclosureButton
                 key={item.key}
                 onClick={() => setActiveScreen(item.key)}
@@ -123,12 +118,9 @@ export default function NavOptions() {
       </Disclosure>
 
       <div className="px-5 lg:px-[88px] pt-[36px]">
-        <header>
-        </header>
+        <header></header>
         <main>
-          <div className="mx-auto ">
-            {getActiveScreen()}
-          </div>
+          <div className="mx-auto ">{getActiveScreen()}</div>
         </main>
       </div>
     </div>
