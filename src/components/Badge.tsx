@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  FaTimesCircle, FaClock } from "react-icons/fa";
+import {  FaClock } from "react-icons/fa";
 import PiAirlineSeat from './svg/PiAirlineSeat';
 
 type StatusType = "matched" | "not_matched" | "pending";
@@ -33,7 +33,7 @@ export default function Badge({ status }: BadgeProps) {
   const { text, color, bgColor, icon } = statusConfig[status];
 
   return (
-    <div className="flex gap-2 items-center py-1 px-3 rounded-xl w-[50%]" style={{ backgroundColor: bgColor, color }}>
+    <div className="flex gap-2 items-center py-1 px-3 rounded-xl w-fit" style={{ backgroundColor: bgColor, color }}>
       {icon}
       <p>{text}</p>
     </div>

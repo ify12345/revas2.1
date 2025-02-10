@@ -7,7 +7,8 @@ export default {
      primary: '#050505',
      primaryLight: '#8F8F8F',
      stroke:'#E2E8F0',
-     success:'#4DB675'
+     success:'#4DB675',
+     gray:'#64748B'
     },
   },
   plugins: [],

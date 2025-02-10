@@ -1,14 +1,22 @@
 import * as React from 'react'
-
+import { RiDraftLine } from 'react-icons/ri'
+import RowDetailsModal from './modal/RowDetailModal.js'
+import CreateOrderModal from './modal/CreateOrderModal.js'
+import { FaCheckCircle, FaMoneyBill } from 'react-icons/fa'
+import { CiWallet } from 'react-icons/ci'
+import DollarSvg from './svg/dollar.js'
+import { BsGraphUp } from 'react-icons/bs'
 import Badge from './Badge.js'
 
-import { RiDraftLine } from 'react-icons/ri'
-import { FaMoneyBill } from 'react-icons/fa'
-import { CiWallet } from 'react-icons/ci'
-import { FaCheckCircle } from 'react-icons/fa'
-import { BsGraphUp } from 'react-icons/bs'
-import DollarSvg from './svg/dollar.js'
-
+interface Person {
+  id: string
+  name: string
+  status: React.JSX.Element
+  price: string
+  country: string
+  capacity: string
+  grade: string
+}
 const details = [
   {
     name: 'Active Transactions',
@@ -24,7 +32,7 @@ const details = [
   {
     name: 'Total Volume (USD)',
     numer: '5',
-    icon: <DollarSvg/>,
+    icon: <DollarSvg />,
   },
   { name: 'Total Volume (MT)', numer: '90,803', icon: <BsGraphUp /> },
 ]
@@ -34,116 +42,51 @@ const people = [
     id: 'IIS468S',
     date: '12-12-24',
     name: 'Bottling Solutions Inc',
-    status: <Badge status='matched' />,
+    status: <Badge status="matched" />,
     price: '$500,000',
     country: 'Thailand',
-    capacity: '1000',
+    quantity: '100',
     grade: 'A',
+    supplier: 'EcoPlast Industries',
+    product: 'Clear PET Flakes',
   },
   // More people...
 ]
-interface Person {
-  id: string
-  name: string
-  status: React.JSX.Element
-  price: string
-  country: string
-  capacity: string
-  grade: string
-}
-interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  data: Person | null
-}
+
 interface HomeScreenProps {
-  openOrderModal: () => void;
-}
-
-function Modal({ isOpen, onClose, data }: ModalProps) {
-  if (!isOpen) return null
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-end bg-[#000] bg-opacity-50 p-6">
-      <div className="bg-[#FFF] w-full max-w-md h-full shadow-lg rounded-lg flex justify-between flex-col">
-        <div className="">
-          <div className="p-4 border-b border-stroke flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Row Details</h2>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-black"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="m-4 border border-stroke p-2 rounded-lg">
-            {data ? (
-              <div className="text-[#000] space-y-4">
-                <p className="w-full flex justify-between">
-                  <p className="text-[#98A2B3]"> Acccount Manager:</p>{' '}
-                  {data.name}
-                </p>
-                <p className="w-full flex justify-between">
-                  <p className="text-[#98A2B3]">Price/tonne (USD)</p>{' '}
-                  {data.price}
-                </p>
-                <p className="w-full flex justify-between">
-                  <p className="text-[#98A2B3]">Country:</p> {data.country}
-                </p>
-                <p className="w-full flex justify-between">
-                  <p className="text-[#98A2B3]">Capacity (MT/month)</p>{' '}
-                  {data.capacity}
-                </p>
-                <div className="flex flex-col text-[#98A2B3]">
-                  <label htmlFor="">Select Buyer</label>
-                  <select
-                    className="border border-stroke p-2 rounded-lg"
-                    name=""
-                    id=""
-                  >
-                    <option value="">Select buyer</option>
-                  </select>
-                </div>
-              </div>
-            ) : (
-              <p>No data available</p>
-            )}
-          </div>
-        </div>
-
-        <div className="flex justify-end px-5 gap-3 pb-6">
-          <button className="bg-[#fff] text-[#000] px-2 py-2 border border-stroke rounded-md">
-            Reject
-          </button>
-          <button className="bg-[#000] text-[#FFF] px-2 py-2 rounded-md">
-            Approve
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+  openOrderModal: () => void
 }
 
 export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [isRowDetailsModalOpen, setIsRowDetailsModalOpen] =
+    React.useState(false)
+  const [isCreateOrderModalOpen, setIsCreateOrderModalOpen] =
+    React.useState(false)
   const [selectedRowData, setSelectedRowData] = React.useState<Person | null>(
     null
   )
 
-  const openModalWithRowData = (rowData: Person) => {
+  const openRowDetailsModal = (rowData: Person) => {
     setSelectedRowData(rowData)
-    setIsModalOpen(true)
+    setIsRowDetailsModalOpen(true)
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false)
+  const closeRowDetailsModal = () => {
+    setIsRowDetailsModalOpen(false)
     setSelectedRowData(null)
+  }
+
+  const openCreateOrderModal = () => {
+    setIsCreateOrderModalOpen(true)
+  }
+
+  const closeCreateOrderModal = () => {
+    setIsCreateOrderModalOpen(false)
   }
 
   return (
     <div className="flex flex-col">
-      <div className="sm:flex sm:items-center p-2">
+      <div className="sm:flex sm:items-center px-2 py-[21px]">
         <div className="sm:flex-auto">
           <p className="font-medium text-2xl">Home</p>
         </div>
@@ -156,13 +99,23 @@ export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
             </div>
           </div>
           <button
-            onClick={openOrderModal}
+            onClick={openCreateOrderModal}
             className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px]"
           >
             <p className="text-[#fff]">Create Order</p>
           </button>
         </div>
       </div>
+      <RowDetailsModal
+        isOpen={isRowDetailsModalOpen}
+        onClose={closeRowDetailsModal}
+        data={selectedRowData}
+      />
+      <CreateOrderModal
+        isOpen={isCreateOrderModalOpen}
+        onClose={closeCreateOrderModal}
+      />
+
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-[13.5px]">
         {details.map((item, index) => {
           return (
@@ -227,19 +180,19 @@ export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                          Quantity (MT)
+                        Quantity (MT)
                       </th>
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                       Price/ton (USD)
+                        Price/ton (USD)
                       </th>
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                       Status
+                        Status
                       </th>
                     </tr>
                   </thead>
@@ -248,28 +201,31 @@ export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
                       <tr
                         key={person.id}
                         className="cursor-pointer hover:bg-gray-100"
-                        onClick={() => openModalWithRowData(person)}
+                        onClick={() => openRowDetailsModal(person)}
                       >
                         <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
+                          {person.date}
+                        </td>
+                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                           {person.id}
                         </td>
                         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                           {person.name}
                         </td>
                         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.status}
+                          {person.supplier}
+                        </td>
+                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                          {person.product}
+                        </td>
+                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                          {person.quantity}
                         </td>
                         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                           {person.price}
                         </td>
                         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.country}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.capacity}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.grade}
+                          {person.status}
                         </td>
                       </tr>
                     ))}
@@ -280,7 +236,7 @@ export default function HomeScreen({ openOrderModal }: HomeScreenProps) {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} data={selectedRowData} />
+
       <div className=" p-4 border border-stroke rounded-lg mt-4">
         <div className="sm:flex sm:items-center border-b border-stroke pb-3">
           <div className="sm:flex-auto">Request</div>
