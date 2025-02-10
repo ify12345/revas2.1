@@ -46,6 +46,7 @@ const TransactionsScreen = () => {
         return <All />
     }
   }
+  
   return (
     <div>
          <div className="sm:flex sm:items-center">

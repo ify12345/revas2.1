@@ -8,7 +8,9 @@ export default {
      primaryLight: '#8F8F8F',
      stroke:'#E2E8F0',
      success:'#4DB675',
-     gray:'#64748B'
+     gray:'#64748B',
+     danger: '#C00F0C',
+     violet: '#7255BD'
     },
   },
   plugins: [],

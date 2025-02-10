@@ -39,7 +39,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     console.log('clicked')
   }
 
-  // Links for dynamic rendering
   const links = [
     { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home /> },
     {

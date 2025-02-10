@@ -9,14 +9,16 @@ import DollarSvg from './svg/dollar.js'
 import { BsGraphUp } from 'react-icons/bs'
 import Badge from './Badge.js'
 import { Person } from './typings/tables.js'
+import CurrencySvg from './svg/Currency.js'
+import WalletSvg from './svg/Wallet.js'
 
 const details = [
   {
     name: 'Active Transactions',
     numer: '2',
-    icon: <FaMoneyBill color="#0030FF" />,
+    icon: <CurrencySvg/>,
   },
-  { name: 'Pending Payments', numer: '10', icon: <CiWallet color="#F26F03" /> },
+  { name: 'Pending Payments', numer: '10', icon: <WalletSvg/> },
   {
     name: 'Completed This Month',
     numer: '2',
