@@ -172,8 +172,8 @@ export default function OrdersScreen() {
           </DisclosurePanel>
         </Disclosure>
 
-        <div className="py-4 flex flex-col lg:flex-row items-center justify-between w-full">
-          <div className="flex items-center gap-3 w-full lg:w-1/2">
+        <div className="py-4 flex flex-col gap-2 lg:flex-row items-center justify-between w-full">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3 w-full lg:w-1/2">
             <select className=" p-2 border border-stroke rounded-md">
               <option value="">Company Name</option>
               <option value="location1">Location 1</option>
@@ -187,13 +187,13 @@ export default function OrdersScreen() {
               <option value="location1">Location 1</option>
             </select>
           </div>
-          <div className="flex w-full lg:w-1/2 justify-end gap-9">
-            <div className="relative flex items-center">
+          <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-1/2 justify-end lg:gap-9">
+            <div className="relative flex items-center w-full">
               <FaSearch className="absolute left-3 text-gray" />
               <input
                 type="search"
                 placeholder="Search..."
-                className="w-[300px] pl-10 pr-4 py-2 border border-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
             <input

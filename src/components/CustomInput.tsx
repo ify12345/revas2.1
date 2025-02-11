@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa'; // Import icons from react-icons
 
@@ -6,8 +7,9 @@ interface CustomInputProps {
   label: string; // Label for the input field
   type: string; // Input type (e.g., "text", "password", "email")
   placeholder: string; // Placeholder text
-  value?: string; // Optional: Controlled input value
+  value?: any; // Optional: Controlled input value
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional: Change handler
+  onFocus?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional: Change handler
   className?: string; // Optional: Additional CSS classes
   required?: boolean; // Optional: Whether the input is required
   disabled?: boolean; // Optional: Whether the input is disabled
@@ -20,6 +22,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   placeholder,
   value,
   onChange,
+  onFocus,
   className = '',
   required = false,
   disabled = false,
@@ -32,7 +35,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   return (
     <div className="w-full">
       {/* Label */}
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-medium text-gray_light mb-1">
         {label}
         {required && <span className="text-red-500"> </span>}
       </label>
@@ -46,7 +49,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className={`w-full border border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+          onFocus={onFocus}
+          className={`w-full border text-gray_light border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
             type === 'email' ? 'pl-2' : '' // Add padding for email icon
           } ${className}`}
         />
@@ -54,7 +58,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         {/* Email Icon */}
         {type === 'email' && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-            <FaRegEnvelope className="text-gray-400" />
+            <FaRegEnvelope className="text-stroke" />
           </div>
         )}
 
@@ -65,9 +69,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
-              <FaEyeSlash className="text-gray-400" />
+              <FaEyeSlash className="text-stroke" />
             ) : (
-              <FaEye className="text-gray-400" />
+              <FaEye className="text-stroke" />
             )}
           </div>
         )}

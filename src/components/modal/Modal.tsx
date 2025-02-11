@@ -5,7 +5,7 @@ import { IoMdClose } from 'react-icons/io'
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  title: string
+  title: ReactNode
   children: ReactNode
 }
 
@@ -17,7 +17,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     className="fixed inset-0 z-50 flex items-center justify-end bg-[#000] bg-opacity-50 p-6"
     onClick={onClose}
   >
-      <div className="bg-[#FFF] w-full max-w-md h-full shadow-lg rounded-xl flex justify-between flex-col"
+      <div className="bg-[#FFF] w-full max-w-md h-full overflow-y-auto lg:h-full shadow-lg rounded-xl flex justify-between flex-col"
         onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-center border-stroke border-b px-5 py-[22px]">
           <h2 className="text-lg font-bold">{title}</h2>

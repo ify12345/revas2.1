@@ -18,7 +18,7 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="bg-[#FFF] w-full max-w-md h-full shadow-lg rounded-xl flex justify-between flex-col"
+        className="bg-[#FFF] w-full max-w-md h-full overflow-y-auto lg:h-full shadow-lg rounded-xl flex justify-between flex-col"
         onClick={e => e.stopPropagation()} // Prevent closing when clicking inside
       >
         <div className="">

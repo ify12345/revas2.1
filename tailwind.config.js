@@ -10,7 +10,8 @@ export default {
      success:'#4DB675',
      gray:'#64748B',
      danger: '#C00F0C',
-     violet: '#7255BD'
+     violet: '#7255BD',
+     gray_light: '#98A2B3'
     },
   },
   plugins: [],

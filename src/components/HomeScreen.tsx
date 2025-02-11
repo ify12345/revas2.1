@@ -11,6 +11,7 @@ import Badge from './Badge.js'
 import { Person } from './typings/tables.js'
 import CurrencySvg from './svg/Currency.js'
 import WalletSvg from './svg/Wallet.js'
+import DraftsModal from './modal/DraftsModal.js'
 
 const details = [
   {
@@ -58,6 +59,8 @@ export default function HomeScreen() {
     React.useState(false)
   const [isCreateOrderModalOpen, setIsCreateOrderModalOpen] =
     React.useState(false)
+  const [isDraftsModalOpen, setIsDraftsModalOpen] =
+    React.useState(false)
   const [selectedRowData, setSelectedRowData] = React.useState<Person | null>(
     null
   )
@@ -76,8 +79,16 @@ export default function HomeScreen() {
     setIsCreateOrderModalOpen(true)
   }
 
+  const openDraftsModal = () => {
+    setIsDraftsModalOpen(true)
+  }
+
   const closeCreateOrderModal = () => {
     setIsCreateOrderModalOpen(false)
+  }
+
+  const closeDraftsModal = () => {
+    setIsDraftsModalOpen(false)
   }
 
   return (
@@ -87,7 +98,7 @@ export default function HomeScreen() {
           <p className="font-medium text-2xl">Home</p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex items-center gap-2 ">
-          <div className="border border-stroke flex p-2 justify-between items-center gap-2 rounded-md">
+          <div onClick={openDraftsModal} className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md">
             <RiDraftLine />
             Drafts
             <div className="size-[20px] bg-[#2364DB] flex items-center justify-center text-[#fff] rounded-full">
@@ -111,7 +122,10 @@ export default function HomeScreen() {
         isOpen={isCreateOrderModalOpen}
         onClose={closeCreateOrderModal}
       />
-
+      <DraftsModal
+        isOpen={isDraftsModalOpen}
+        onClose={closeDraftsModal}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-[13.5px]">
         {details.map((item, index) => {
           return (
