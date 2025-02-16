@@ -44,6 +44,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
   }
   React.useEffect(() => {
     calculateProfitMargin()
+    
   }, [buyerPrice, supplierPrice, freightCost, otherCosts])
 
   if (!isOpen) return null
