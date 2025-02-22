@@ -33,7 +33,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
   const [supplierPrice, setSupplierPrice] = useState(0)
   const [freightCost, setFreightCost] = useState(0)
   const [otherCosts, setOtherCosts] = useState(0)
-  const [profitMargin, setProfitMargin] = useState<number | null>(null)
+  const [profitMargin, setProfitMargin] = useState<number | null>(null);
 
   const calculateProfitMargin = () => {
     const totalCost = supplierPrice + freightCost + otherCosts
