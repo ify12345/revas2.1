@@ -11,7 +11,8 @@ export default {
      gray:'#64748B',
      danger: '#C00F0C',
      violet: '#7255BD',
-     gray_light: '#98A2B3'
+     gray_light: '#98A2B3',
+     white: '#fff'
     },
   },
   plugins: [],

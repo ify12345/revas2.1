@@ -116,7 +116,7 @@ export default function Signin() {
 
         <div className="flex justify-center items-center mx-auto text-sm text-[#757575] font-light my-4 gap-1">
           Don't have an account?{' '}
-          <a href="/" className="font-medium text-primary text-base">
+          <a href="/sign-up" className="font-medium text-primary text-base">
             {' '}
             Sign Up
           </a>
