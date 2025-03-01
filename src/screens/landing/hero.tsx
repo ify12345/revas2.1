@@ -18,8 +18,7 @@ export default function Hero(){
         GET STARTED
       </a>
     </div>
-  
-   
+
   </div>
   
   )
