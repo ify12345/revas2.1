@@ -1,10 +1,13 @@
 import * as React from 'react'
+import recycles from "@/assets/images/recycles.png";
+
 
 export default function Hero(){
   return (
-    <div className="relative bg-primary border-b rounded-b-[100%] shadow-2xl">
+    <>
+    <div className="relative bg-primary shadow-2xl">
     {/* Main Content */}
-    <div className="max-w-[735px] w-full justify-center items-center flex flex-col mx-auto gap-3 text-white pt-[78px]">
+    <div className="relative z-30 max-w-[735px] w-full justify-center items-center flex flex-col mx-auto gap-3 text-white pt-[78px]">
       <p className="text-6xl text-center">
         Global B2B Procurement Platform for Recyclables
       </p>
@@ -18,8 +21,9 @@ export default function Hero(){
         GET STARTED
       </a>
     </div>
-
   </div>
+    <img  src={recycles} className="relative max-w-full md:mt-32 lg:-mt-[520px] z-10 shadow-2xl" alt="hero_image" />
+    </>
   
   )
 }

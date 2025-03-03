@@ -43,3 +43,18 @@ body{
     font-style: italic;
   }
   
+  .bg-custom-image {
+    background-image: url('/src/assets/images/pink-bg.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, #376E9A -12.98%, #6C4CEA 43.93%, #DA4AAE 89.54%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  

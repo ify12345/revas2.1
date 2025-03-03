@@ -1,17 +1,15 @@
-import * as React from "react";
-import { FiMenu, FiX } from "react-icons/fi"; // Importing icons from react-icons
-import logo from "@/assets/images/logo-white.png";
+import * as React from 'react'
+import { FiMenu, FiX } from 'react-icons/fi' // Importing icons from react-icons
+import logo from '@/assets/images/logo-white.png'
 
 export default function NavBar() {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <nav className="bg-primary text-white px-5 lg:px-[90px] py-[20px]">
+    <nav className="bg-primary text-white px-5 lg:px-[90px] py-[20px] relative z-40">
       <div className="flex items-center justify-between">
-
         <img src={logo} className="max-w-[172px]" alt="Logo" />
 
-       
         <div className="hidden lg:flex gap-[100px] text-sm">
           <a href="">About Us</a>
           <a href="">How it Works</a>
@@ -41,12 +39,17 @@ export default function NavBar() {
         </button>
       </div>
 
-   
       {isOpen && (
         <div className="lg:hidden flex flex-col items-center gap-5 mt-5 text-sm">
-          <a href="" className="block">About Us</a>
-          <a href="" className="block">How it Works</a>
-          <a href="" className="block">Browse Categories</a>
+          <a href="" className="block">
+            About Us
+          </a>
+          <a href="" className="block">
+            How it Works
+          </a>
+          <a href="" className="block">
+            Browse Categories
+          </a>
           <a
             href="/sign-up"
             className="py-2 px-6 rounded-lg text-white bg-primary border border-white transition-colors duration-300 hover:text-primary hover:bg-white"
@@ -62,5 +65,5 @@ export default function NavBar() {
         </div>
       )}
     </nav>
-  );
+  )
 }
