@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FiMenu, FiX } from 'react-icons/fi' // Importing icons from react-icons
 import logo from '@/assets/images/logo-white.png'
+import { Link } from 'react-router-dom'
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -17,18 +18,18 @@ export default function NavBar() {
         </div>
 
         <div className="hidden lg:flex gap-3 dm-mono-medium capitalize">
-          <a
-            href="/sign-up"
+          <Link
+            to="/sign-up"
             className="py-[12px] px-[30px] rounded-lg capitalize text-sm text-white bg-primary transition-colors duration-300 hover:text-white hover:border-white hover:border"
           >
             SIGN UP
-          </a>
-          <a
-            href="/sign-in"
+          </Link>
+          <Link
+            to="/sign-in"
             className="py-[12px] px-[30px] border border-white rounded-lg capitalize text-sm font-medium text-white bg-primary transition-colors duration-300 hover:text-primary hover:bg-white"
           >
             SIGN IN
-          </a>
+          </Link>
         </div>
 
         <button
@@ -41,27 +42,27 @@ export default function NavBar() {
 
       {isOpen && (
         <div className="lg:hidden flex flex-col items-center gap-5 mt-5 text-sm">
-          <a href="" className="block">
+          <Link to="" className="block">
             About Us
-          </a>
-          <a href="" className="block">
+          </Link>
+          <Link to="" className="block">
             How it Works
-          </a>
-          <a href="" className="block">
+          </Link>
+          <Link to="" className="block">
             Browse Categories
-          </a>
-          <a
-            href="/sign-up"
+          </Link>
+          <Link
+            to="/sign-up"
             className="py-2 px-6 rounded-lg text-white bg-primary border border-white transition-colors duration-300 hover:text-primary hover:bg-white"
           >
             SIGN UP
-          </a>
-          <a
-            href="/sign-in"
+          </Link>
+          <Link
+            to="/sign-in"
             className="py-2 px-6 border border-white rounded-lg text-white bg-primary transition-colors duration-300 hover:text-primary hover:bg-white"
           >
             SIGN IN
-          </a>
+          </Link>
         </div>
       )}
     </nav>
