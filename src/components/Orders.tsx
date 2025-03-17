@@ -2,7 +2,7 @@
 // OrdersScreen.tsx
 import React, { useState } from 'react'
 import Status from './Status.js'
-import { Person } from './typings/page.js'
+import { Person } from '../typings/page.js'
 import { FaCheckCircle } from 'react-icons/fa'
 import CurrencySvg from './svg/Currency.js'
 import WalletSvg from './svg/Wallet.js'

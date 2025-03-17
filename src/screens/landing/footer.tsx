@@ -2,28 +2,29 @@ import * as React from 'react'
 import dashbaord from '@/assets/images/dashboard.png'
 import elipse from '@/assets/images/elipse.png'
 import logo from '@/assets/images/logo-white.png'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
     <>
       <div className="relative flex flex-col lg:flex-row text-white bg-primary items-center px-5 py-6 lg:py-0 lg:px-0">
-        <div className="relative lg:pl-[64px] space-y-[54px] lg:w-1/2">
+        <div className="relative lg:pl-[64px] space-y-2 lg:space-y-[54px] lg:w-1/2">
           <p className="max-w-[600px] text-2xl lg:text-5xl">
             Manage Your Orders from a Centralized Dashboard
           </p>
           <div className="flex gap-4">
-            <a
-              href="/sign-up"
+            <Link
+              to="/sign-up"
               className="py-[12px] px-[30px] border border-purple rounded-lg capitalize text-sm font-medium text-white bg-purple transition-colors duration-300 hover:text-primary hover:bg-white"
             >
               GET STARTED
-            </a>
-            <a
-              href="/sign-up"
+            </Link>
+            <Link
+              to="/sign-up"
               className="py-[12px] px-[30px] border border-white rounded-lg capitalize text-sm font-medium text-white bg-primary transition-colors duration-300 hover:text-white hover:bg-purple"
             >
               SIGN IN
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -40,9 +41,9 @@ export default function Footer() {
           />
         </div>
       </div>
-      <div className="flex items-center bg-primary py-[23px] px-5 lg:px-[64px] gap-[192px]">
-        <img src={logo} className="max-w-[172px]" alt="Logo" />
-        <p className="text-sm text-[#8F9FA3]">
+      <div className="flex items-center bg-primary py-[23px] px-5 lg:px-[64px] gap-2 lg:gap-[192px]">
+        <img src={logo} className="max-w-[172px] w-full" alt="Logo" />
+        <p className="text-sm text-[#8F9FA3] text-center lg:text-start">
           © 2025 — Copyright All Rights reserved
         </p>
       </div>

@@ -1,5 +1,5 @@
 // OrderDetails.tsx
-import { Person } from '@/components/typings/page';
+import { Person } from '@/typings/page';
 import React from 'react';
 import { IoMdClose } from 'react-icons/io';
 import Modal from '../Modal';
