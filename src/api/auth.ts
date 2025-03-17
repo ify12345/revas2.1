@@ -1,22 +1,9 @@
-/* eslint-disable import/order */
-/* eslint-disable import/no-cycle */
-/* eslint-disable import/prefer-default-export */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkConfig, LoginPayload, RegisterPayload } from "@/src/types/api";
-import { LoginResponse, RegisterResponse } from "@/src/types/apiResponse";
 import AxiosBase from "./axios";
-import apiCall from "./apiCall";
-import apiRequest from "./request copy";
-import * as Device from 'expo-device';
-import * as SecureStore from 'expo-secure-store';
-
-
-interface ErrorPayload {
-  response?: {
-    data?: { error?: string };
-    status: number;
-  };
-}
+import { AsyncThunkConfig, LoginPayload, RegisterPayload, RejectValue } from "@/types/api";
+import { ApiError, ErrorPayload, LoginResponse, RegisterResponse } from "@/types/apiResponse";
 
 
 export const register = createAsyncThunk<
@@ -45,12 +32,12 @@ export const register = createAsyncThunk<
 
       // Handle API errors
       const responseData = error.response.data;
-      const errorMsg = responseData?.error || responseData?.message || 'An error occurred';
+      const errorMsg = responseData?.error || responseData|| 'An error occurred';
 
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      });
+      }) ;
     }
   }
 );
@@ -62,14 +49,12 @@ export const login = createAsyncThunk<LoginResponse, LoginPayload, AsyncThunkCon
     try {
     
       const Axios = await AxiosBase();
-      const deviceName = Device.modelName || 'Unknown Device';
-      const fullPayload = { ...payload.values, device_name: deviceName };
-      console.log('pay', fullPayload);
-      const { data } = await Axios.post('/login', fullPayload);
+     
+  
+      const { data } = await Axios.post('/login', payload);
 
       console.log('data', data);
       if (data.token) {
-        await SecureStore.setItemAsync('iso', data.token); // Save token securely
         console.log('iso', data.token); // Save token securely
       }
       return data; 
@@ -157,34 +142,4 @@ export const UpdateProfile = createAsyncThunk<LoginResponse, LoginPayload, Async
     }
   }
 );
-export const getServices = createAsyncThunk<LoginResponse, LoginPayload, AsyncThunkConfig>(
-  "get/service",
-  async (_, thunkAPI) => {
-    try {
-    
-      const Axios = await AxiosBase();
-      const { data } = await Axios.get('/services');
 
-      console.log('data', data);
-
-      return data; 
-    } catch (err) {
-      const error = err as ErrorPayload;
-      console.log('new error', error.response?.data);
-
-      // Handle network errors
-      if (!error.response) {
-        return thunkAPI.rejectWithValue({ msg: 'Network Error', status: 500 });
-      }
-
-      // Handle API errors
-      const responseData = error.response.data;
-      const errorMsg = responseData?.error || responseData?.message || 'An error occurred';
-
-      return thunkAPI.rejectWithValue({
-        msg: errorMsg,
-        status: error.response.status,
-      });
-    }
-  }
-);

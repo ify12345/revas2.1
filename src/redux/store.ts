@@ -1,7 +1,8 @@
-/* eslint-disable import/no-cycle */
+
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import localForage from 'localforage';
+
 import {
   persistReducer,
   persistStore,
@@ -17,7 +18,7 @@ import authReducer from './reducers/auth'
 
 const asyncPersistConfig = {
   key: 'main',
-  storage: AsyncStorage
+  storage: localForage
 }
 
 const persistedLangReducer = persistReducer(asyncPersistConfig, languageReducer)

@@ -1,14 +1,13 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-param-reassign */
-import { getProfile, getServices, login, register } from '@/src/api/auth';
-import { User } from '@/src/typings';
+
+import { login, register } from '@/api/auth';
+import { User } from '@/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 
 
 interface State {
   user: User;
-  // profile: object;
+  profile: object;
   isAuthenticated: boolean;
   isVerified: boolean;
   isPhoneVerified: boolean;
@@ -17,7 +16,6 @@ interface State {
 const initialState: State = {
   user: {},
   profile:{},
-  services:{},
   isAuthenticated: false,
   isVerified: false,
   isPhoneVerified: false,
@@ -52,25 +50,6 @@ export const authSlice = createSlice({
         state.isVerified = true;
         state.isAuthenticated = true;
       })
-      .addCase(getProfile.fulfilled, (state, { payload }) => {
-        state.profile = payload;
-    
-      })
-      .addCase(getServices.fulfilled, (state, { payload }) => {
-        state.services = payload;
-  
-      })
-    // builder
-    //   .addCase(EmailVerification.pending, state => {
-    //     state.isAuthenticated = false;
-    //     state.isVerified = false;
-    //     state.isPhoneVerified = false;
-    //   })
-    //   .addCase(EmailVerification.fulfilled, (state, {payload}) => {
-    //     state.isAuthenticated = true;
-    //     state.isVerified = payload.email_verified;
-    //     state.isPhoneVerified = payload.phone_verified;
-    //   });
   },
 });
 

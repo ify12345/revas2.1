@@ -1,7 +1,7 @@
 // Modal.tsx
 import * as React from 'react'
 import { IoMdClose } from 'react-icons/io'
-import { Person } from '../../typings/tables'
+import { Person } from '../../types/tables'
 import Badge from '../Badge'
 
 interface ModalProps {

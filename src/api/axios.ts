@@ -1,17 +1,17 @@
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
+
 
 async function AxiosBase() {
   try {
-    const token = await SecureStore.getItemAsync('iso');
-    console.log('Token', token)
+    // const token = await SecureStore.getItemAsync('iso');
+    // console.log('Token', token)
     
     const axiosInstance = axios.create({
-      baseURL: ' https://i-one-server.onrender.com/i-one',
+      baseURL: 'https://revas.onrender.com/api',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}), 
+        // ...(token ? { 'Authorization': `Bearer ${token}` } : {}), 
       },
       timeout: 20000,
     });

@@ -3,7 +3,7 @@
 import ActionDropdown from '@/components/modal/ActionDropdown'
 import OrderDetails from '@/components/modal/orders-screen/OrderDetails'
 import Status from '@/components/Status'
-import { Person } from '@/typings/page'
+import { Person } from '@/types/page'
 import * as React from 'react'
 import { FaCheckCircle } from 'react-icons/fa'
 
