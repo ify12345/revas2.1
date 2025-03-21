@@ -1,9 +1,7 @@
 
-import { login, register } from '@/api/auth';
+import { login, register, registerUser, UserLogin } from '@/api/auth';
 import { User } from '@/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-
-
 
 interface State {
   user: User;
@@ -37,7 +35,13 @@ export const authSlice = createSlice({
     builder.addCase(register.fulfilled, (state, {payload}) => {
       state.user = payload;
       console.log('payload:', payload);
-
+      
+      // state.isAuthenticated = true;
+    });
+    builder.addCase(registerUser.fulfilled, (state, {payload}) => {
+      state.user = payload;
+      console.log('payload:', payload);
+      
       // state.isAuthenticated = true;
     });
     builder
@@ -47,7 +51,17 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, { payload }) => {
         state.user = payload;
-        state.isVerified = true;
+        // state.isVerified = true;
+        state.isAuthenticated = true;
+      })
+    builder
+      .addCase(UserLogin.pending, state => {
+        state.isAuthenticated = false;
+        state.isVerified = false;
+      })
+      .addCase(UserLogin.fulfilled, (state, { payload }) => {
+        state.user = payload;
+        // state.isVerified = true;
         state.isAuthenticated = true;
       })
   },

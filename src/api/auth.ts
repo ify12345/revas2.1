@@ -2,8 +2,8 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import AxiosBase from "./axios";
-import { AsyncThunkConfig, LoginPayload, RegisterPayload, RejectValue } from "@/types/api";
-import { ApiError, ErrorPayload, LoginResponse, RegisterResponse } from "@/types/apiResponse";
+import { AsyncThunkConfig, forgotPasswordPayload, LoginPayload, RegisterPayload, RejectValue } from "@/types/api";
+import { ApiError, ErrorPayload, forgotPasswordResponse, LoginResponse, RegisterResponse } from "@/types/apiResponse";
 
 
 export const register = createAsyncThunk<
@@ -11,16 +11,16 @@ export const register = createAsyncThunk<
   RegisterPayload,
   AsyncThunkConfig
 >(
-  'auth/register',
+  'account-managers/register',
   async (payload, thunkAPI) => {
     try {
-      console.log('pay', payload.values);
+      console.log('pay', payload);
       const Axios = await AxiosBase();
-      const { data } = await Axios.post('/register', payload.values);
+      const { data } = await Axios.post('/account-managers/register', payload);
 
       console.log('data', data);
 
-      return data; // Successful registration response
+      return data; 
     } catch (err) {
       const error = err as ErrorPayload;
       console.log('new error', error.response?.data);
@@ -42,21 +42,19 @@ export const register = createAsyncThunk<
   }
 );
 
-
-export const login = createAsyncThunk<LoginResponse, LoginPayload, AsyncThunkConfig>(
-  "auth/sign-in",
+export const registerUser = createAsyncThunk<
+  RegisterResponse,
+  RegisterPayload,
+  AsyncThunkConfig
+>(
+  '/user/register',
   async (payload, thunkAPI) => {
     try {
-    
+      console.log('pay', payload);
       const Axios = await AxiosBase();
-     
-  
-      const { data } = await Axios.post('/login', payload);
-
+      const { data } = await Axios.post('/api/register', payload);
       console.log('data', data);
-      if (data.token) {
-        console.log('iso', data.token); // Save token securely
-      }
+
       return data; 
     } catch (err) {
       const error = err as ErrorPayload;
@@ -69,12 +67,119 @@ export const login = createAsyncThunk<LoginResponse, LoginPayload, AsyncThunkCon
 
       // Handle API errors
       const responseData = error.response.data;
-      const errorMsg = responseData?.error || responseData?.message || 'An error occurred';
+      const errorMsg = responseData?.error || responseData|| 'An error occurred';
 
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      });
+      }) ;
+    }
+  }
+);
+
+export const login = createAsyncThunk<
+  LoginResponse,
+  LoginPayload,
+  AsyncThunkConfig
+>(
+  'account-managers/login',
+  async (payload, thunkAPI) => {
+    try {
+      console.log('pay', payload);
+      const Axios = await AxiosBase();
+      const { data } = await Axios.post('/account-managers/login', payload);
+
+      console.log('data', data);
+
+      return data; 
+    } catch (err) {
+      const error = err as ErrorPayload;
+      console.log('new error', error.response?.data);
+
+      // Handle network errors
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ msg: 'Network Error', status: 500 });
+      }
+
+      // Handle API errors
+      const responseData = error.response.data;
+      const errorMsg = responseData?.error || responseData|| 'An error occurred';
+
+      return thunkAPI.rejectWithValue({
+        msg: errorMsg,
+        status: error.response.status,
+      }) ;
+    }
+  }
+);
+
+export const UserLogin = createAsyncThunk<
+  LoginResponse,
+  LoginPayload,
+  AsyncThunkConfig
+>(
+  '/users/login',
+  async (payload, thunkAPI) => {
+    try {
+      console.log('pay', payload);
+      const Axios = await AxiosBase();
+      const { data } = await Axios.post('/login', payload);
+
+      console.log('data', data);
+
+      return data; 
+    } catch (err) {
+      const error = err as ErrorPayload;
+      console.log('new error', error.response?.data);
+
+      // Handle network errors
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ msg: 'Network Error', status: 500 });
+      }
+
+      // Handle API errors
+      const responseData = error.response.data;
+      const errorMsg = responseData?.error || responseData|| 'An error occurred';
+
+      return thunkAPI.rejectWithValue({
+        msg: errorMsg,
+        status: error.response.status,
+      }) ;
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk<
+  forgotPasswordResponse,
+  forgotPasswordPayload,
+  AsyncThunkConfig
+>(
+  '/users/login',
+  async (payload, thunkAPI) => {
+    try {
+      console.log('pay', payload);
+      const Axios = await AxiosBase();
+      const { data } = await Axios.post('/forgot-password', payload);
+      console.log('data', data);
+
+      return data; 
+    } catch (err) {
+      const error = err as ErrorPayload;
+      console.log('new error', error.response?.data);
+
+      // Handle network errors
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ msg: 'Network Error', status: 500 });
+      }
+
+      // Handle API errors
+      const responseData = error.response.data;
+      const errorMsg = responseData?.error || responseData|| 'An error occurred';
+
+      return thunkAPI.rejectWithValue({
+        msg: errorMsg,
+        status: error.response.status,
+      }) ;
     }
   }
 );

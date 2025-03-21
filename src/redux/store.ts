@@ -28,6 +28,7 @@ const reducers = combineReducers({
   auth: persistedAuthReducer
 })
 
+
 const store = configureStore({
   reducer: reducers,
   middleware: getDefaultMiddleware => getDefaultMiddleware({

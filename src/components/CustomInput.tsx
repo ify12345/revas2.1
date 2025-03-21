@@ -6,6 +6,7 @@ import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa'; // Import ico
 interface CustomInputProps {
   label: string; // Label for the input field
   type: string; // Input type (e.g., "text", "password", "email")
+  name:string;
   placeholder: string; // Placeholder text
   value?: any; // Optional: Controlled input value
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional: Change handler
@@ -19,6 +20,7 @@ interface CustomInputProps {
 const CustomInput: React.FC<CustomInputProps> = ({
   label,
   type,
+  name,
   placeholder,
   value,
   onChange,
@@ -50,7 +52,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
           onChange={onChange}
           disabled={disabled}
           onFocus={onFocus}
-          className={`w-full border text-gray_light border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+          name={name}
+          className={`w-full border text-primary border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
             type === 'email' ? 'pl-2' : '' // Add padding for email icon
           } ${className}`}
         />

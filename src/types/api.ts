@@ -34,16 +34,20 @@ export enum Status {
 }
 
 export interface RegisterPayload {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  password_confirmation:string;
-  values: string;
+  confirmPassword:string;
+  role: string;
+  clientType?: string;
 }
 
 export interface LoginPayload {
   email: string;
   password: string
+}
+export interface forgotPasswordPayload {
+  email: string;
 }
 

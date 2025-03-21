@@ -105,6 +105,17 @@ export interface User {
   roles?: Role[]
 }
 
+export interface FormData {
+  firstName: string;
+  lastName: string;
+  role: string;
+  email: string;
+  phone: string;
+  password: string;
+  repeatPassword: string;
+  clientType?: string;
+}
+
 export type Outlet = {
   id: number;
   outletName: string;

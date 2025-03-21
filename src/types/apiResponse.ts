@@ -37,11 +37,11 @@ export interface RegisterResponse {
   success: boolean;
   token: string;
   message: string;
-  ref_id: string;
+  id: string;
   first_name: string;
   last_name: string;
   email: string;
-  account_type: string;
+  role: string;
   is_active: boolean;
   profile_completed: boolean;
   created_at: string;
@@ -80,7 +80,7 @@ export interface LoginResponse {
   };
 }
 
-export interface RequestResponse {
+export interface forgotPasswordResponse {
   success: boolean;
   message: string;
 }
