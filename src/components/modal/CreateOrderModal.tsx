@@ -33,8 +33,7 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
               label="Company Name"
               value="Revas Exchange"
               type={''}
-              placeholder={''}
-            />
+              placeholder={''} name={''}            />
             <div className="flex flex-col text-[#98A2B3] gap-2">
               <label htmlFor="buyer">Product</label>
               <select
@@ -50,14 +49,12 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
               label="Capacity (MT)"
               value=""
               type={''}
-              placeholder={''}
-            />
+              placeholder={''} name={''}            />
             <CustomInput
               label="Price/tonne (USD)"
               value="500"
               type={''}
-              placeholder={''}
-            />
+              placeholder={''} name={''}            />
             <div className="flex flex-col text-[#98A2B3] gap-2">
               <label htmlFor="buyer">Product</label>
               <select
