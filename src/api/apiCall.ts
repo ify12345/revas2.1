@@ -16,8 +16,17 @@ const apiCall = async <T>(
   data: unknown = null,
   thunkAPI?: unknown
 ): Promise<T> => {
-  try {
-    const response = await axiosInstance[method](url, data);
+
+    try {
+      const axiosMethod = axiosInstance[method] as (
+        url: string,
+        data?: unknown
+      ) => Promise<AxiosResponse<T>>;
+  
+      const response = await axiosMethod(
+        url,
+        ...(method === 'get' ? [] : [data])
+      );
     return response.data;
   } catch (error: any) {
     console.error('Error:', error);
