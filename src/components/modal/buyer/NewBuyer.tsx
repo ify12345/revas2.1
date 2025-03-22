@@ -31,14 +31,12 @@ const NewBuyer: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
           label="Company Name"
           value="Revas Exchange"
           type={''}
-          placeholder={''}
-        />
+          placeholder={''} name={''}        />
         <CustomInput
           label="Company Name"
           value=""
           type={'email'}
-          placeholder={''}
-        />
+          placeholder={''} name={''}        />
         <div className="flex flex-col text-[#98A2B3] gap-2">
           <label htmlFor="buyer">Location</label>
           <select id="buyer" className="border border-stroke p-2 rounded-lg">
@@ -59,14 +57,12 @@ const NewBuyer: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
             label="Capacity (MT)"
             value=""
             type={''}
-            placeholder={''}
-          />
+            placeholder={''} name={''}          />
           <CustomInput
             label="Price/tonne (USD)"
             value=""
             type={''}
-            placeholder={''}
-          />
+            placeholder={''} name={''}          />
         </div>
 
         <div className="flex flex-col text-[#98A2B3] gap-2">
@@ -86,14 +82,12 @@ const NewBuyer: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
             label="Supplier Price"
             value="100"
             type={''}
-            placeholder={''}
-          />
+            placeholder={''} name={''}          />
           <CustomInput
             label="Shipping Cost"
             value="200"
             type={''}
-            placeholder={''}
-          />
+            placeholder={''} name={''}          />
         </div>
       </form>
     </div>
@@ -139,14 +133,12 @@ const NewBuyer: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
           label="Company Name"
           value="Revas Exchange"
           type={''}
-          placeholder={''}
-        />
+          placeholder={''} name={''}        />
         <CustomInput
           label="Email"
           value="recycle@revas.com"
           type={'email'}
-          placeholder={''}
-        />
+          placeholder={''} name={''}        />
         <div className="flex flex-col text-[#98A2B3] gap-2">
           <label htmlFor="buyer">Product</label>
           <select id="buyer" className="border border-stroke py-[10px] px-2 rounded-lg">
@@ -159,8 +151,7 @@ const NewBuyer: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
           label="Capacity (MT)"
           value=""
           type={''}
-          placeholder={''}
-        />
+          placeholder={''} name={''}        />
         <div className="flex flex-col text-[#98A2B3] gap-2 ">
               <label htmlFor="buyer">Product</label>
               <select

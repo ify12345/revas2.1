@@ -4,9 +4,9 @@ import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 // Define the props interface for the CustomInput component
 interface CustomInputProps {
-  label: string; // Label for the input field
-  type: string; // Input type (e.g., "text", "password", "email", "select")
-  name: string;
+  label?: string; // Label for the input field
+  type?: string; // Input type (e.g., "text", "password", "email", "select")
+  name?: string;
   placeholder?: string; // Placeholder text (optional for select)
   value?: any; // Optional: Controlled input value
   onChange?: (e: any) => void; // Allow any event type for flexibility
