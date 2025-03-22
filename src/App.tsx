@@ -10,6 +10,9 @@ import { useAppSelector } from './redux/store.js'
 import UsersSignin from './screens/users/sign-in/index.js'
 import UsersSignup from './screens/users/sign-up/index.js'
 import ForgotPassword from './screens/forgot-password/index.js'
+import ResetPin from './screens/reset-pin/index.js'
+import ChangePassword from './screens/change-password/index.js'
+import ResetSuccess from './screens/reset-success/index.js'
 
 const App = () => {
   const { isAuthenticated, isVerified, user } = useAppSelector(
@@ -30,6 +33,9 @@ const App = () => {
             <Route path="/sign-up" element={<UsersSignup />} />
             <Route path="/sign-in" element={<UsersSignin />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-pin" element={<ResetPin />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/reset-success" element={<ResetSuccess />} />
            
           </>
         )}

@@ -4,25 +4,20 @@ import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom'
 import AuthPiece from '@/components/AuthPiece'
 import CustomInput from '@/components/CustomInput'
-import { useAppDispatch } from '@/redux/store'
-import { forgotPassword } from '@/api/auth'
-import { showToast } from '@/components/Toast'
 
 interface FormData {
-  email: string
+  code: string
 }
 
 interface forgotPasswordPayload {
-  email: string
+  code: string
 }
 
-export default function ForgotPassword() {
+export default function ResetPin() {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false)
-
   const [formData, setFormData] = useState<FormData>({
-    email: '',
+    code: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,27 +32,13 @@ export default function ForgotPassword() {
     e.preventDefault()
 
     const payload: forgotPasswordPayload = {
-      email: formData.email,
+      code: formData.code,
     }
 
     console.log(payload)
     setLoading(true)
-
-    dispatch(forgotPassword(payload))
-      .unwrap()
-      .then(response => {
-        setLoading(false)
-        console.log('Success:', response)
-        showToast({ type: 'success', msg: response.message })
-        navigate('/reset-pin')
-      })
-      .catch(err => {
-        setLoading(false)
-        const errorMessage =
-          err?.msg || err?.response?.data?.detail || 'Invalid email'
-        console.error('Error:', err)
-        showToast({ type: 'error', msg: errorMessage })
-      })
+    navigate('/change-password', { state: { pin: payload } })
+    setLoading(false)
   }
 
   return (
@@ -73,17 +54,14 @@ export default function ForgotPassword() {
         >
           <div className="space-y-2">
             <p className="text-primary text-3xl">Forgot Password</p>
-            <p className="text-sm">
-              Enter the email address you registered with and we will send you a
-              link to create a new password.
-            </p>
+            <p className="text-sm">Enter the code sent to your mail</p>
           </div>
           <CustomInput
-            label="Email Address"
-            type="email"
-            name="email"
-            placeholder="Enter company email"
-            value={formData.email}
+            label="Code"
+            type="text"
+            name="code"
+            placeholder="Enter code"
+            value={formData.code}
             onChange={handleChange}
             required
           />
@@ -93,14 +71,13 @@ export default function ForgotPassword() {
             className="py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex"
             disabled={loading}
           >
-            {loading ? 'Sending link...' : 'Send link'}
+            {loading ? 'Verifying...' : 'Reset password'}
           </button>
         </form>
         <p className="text-sm mt-4 text-center text-gray_light space-x-1">
-        Remember password?
-
+          Remember password?
           <Link to="/sign-in" className="text-primary">
-            Sign in now
+            Back to sign in
           </Link>
         </p>
       </div>

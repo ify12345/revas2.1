@@ -1,66 +1,68 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import onboarding from '@/assets/images/onboarding.png';
-import background from '@/assets/images/background.png';
-import logo from '@/assets/logo.png';
-import { Link } from 'react-router-dom';
-import CustomInput from '@/components/CustomInput';
-import { useAppDispatch } from '@/redux/store';
-import { login } from '@/api/auth'; // Assuming you have this function
-import { showToast } from '@/components/Toast';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import onboarding from '@/assets/images/onboarding.png'
+import background from '@/assets/images/background.png'
+import logo from '@/assets/logo.png'
+import { Link } from 'react-router-dom'
+import CustomInput from '@/components/CustomInput'
+import { useAppDispatch } from '@/redux/store'
+import { login } from '@/api/auth' // Assuming you have this function
+import { showToast } from '@/components/Toast'
 
 interface FormData {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 interface LoginPayload {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export default function Signin() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState<FormData>({
     email: '',
-    password: ''
-  });
+    password: '',
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData(prevState => ({
       ...prevState,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    e.preventDefault()
+
     const payload: LoginPayload = {
       email: formData.email,
-      password: formData.password
-    };
+      password: formData.password,
+    }
 
-    console.log(payload);
-    setLoading(true);
-    
+    console.log(payload)
+    setLoading(true)
+
     dispatch(login(payload))
       .unwrap()
       .then(response => {
-        setLoading(false);
-        console.log('Success:', response);
-        showToast({type: 'success', msg: response.message});
+        setLoading(false)
+        console.log('Success:', response)
+        showToast({ type: 'success', msg: response.message })
       })
       .catch(err => {
-        setLoading(false);
-        const errorMessage = err?.msg || err?.response?.data?.detail || 'Invalid email or password';
-        console.error('Error:', err);
-        showToast({type: 'error', msg: errorMessage});
-      });
-  };
+        setLoading(false)
+        const errorMessage =
+          err?.msg || err?.response?.data?.detail || 'Invalid email or password'
+        console.error('Error:', err)
+        showToast({ type: 'error', msg: errorMessage })
+      })
+  }
 
   return (
     <div className="w-full flex flex-col lg:flex-row overflow-hidden lg:p-7 max-h-screen">
@@ -126,7 +128,11 @@ export default function Signin() {
 
       <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px] overflow-y-auto p-7">
         <img src={logo} className="max-w-[172px] mb-[60px]" alt="" />
-        <form action="" className="text-[#98A2B3] flex flex-col gap-[24px]" onSubmit={handleSubmit}>
+        <form
+          action=""
+          className="text-[#98A2B3] flex flex-col gap-[24px]"
+          onSubmit={handleSubmit}
+        >
           <p className="text-primary text-3xl">Sign in</p>
 
           <CustomInput
@@ -138,7 +144,7 @@ export default function Signin() {
             onChange={handleChange}
             required
           />
-          
+
           <CustomInput
             label="Password"
             type="password"
@@ -149,18 +155,28 @@ export default function Signin() {
             required
           />
 
+          <p className="text-sm text-end">
+            Forgot Password?{' '}
+            <Link to="/forgot-password" className="text-primary">
+              Recover
+            </Link>
+          </p>
+
           <button
             type="submit"
             className="py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
         <p className="text-sm mt-4 text-center">
-          Don't have an account? <Link to="/account-manager/sign-up" className="text-primary">Sign up</Link>
+          Don't have an account?{' '}
+          <Link to="/account-manager/sign-up" className="text-primary">
+            Sign up
+          </Link>
         </p>
       </div>
     </div>
-  );
+  )
 }

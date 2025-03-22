@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react'
 import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom'
@@ -9,7 +8,7 @@ import { showToast } from '@/components/Toast'
 import { RegisterPayload } from '@/types/api'
 import { FormData } from '@/types'
 import { useNavigate } from 'react-router-dom'
-import AuthPiece from '@/components/authPiece'
+import AuthPiece from '@/components/AuthPiece'
 
 export default function UsersSignup() {
   const dispatch = useAppDispatch()
@@ -50,7 +49,7 @@ export default function UsersSignup() {
       firstName: formData.firstName,
       lastName: formData.lastName,
       role: formData.role,
-      clientType: formData.clientType
+      clientType: formData.clientType,
     }
 
     console.log(payload)
@@ -75,7 +74,7 @@ export default function UsersSignup() {
   }
 
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-hidden lg:p-7 max-h-screen">
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden lg:p-7 max-h-screen items-center">
       <AuthPiece />
 
       <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px] p-7">
@@ -114,13 +113,17 @@ export default function UsersSignup() {
           </div>
 
           <CustomInput
-            label="Client Type"
-            type="text"
+            label="Client type"
+            type="select"
             name="clientType"
-            placeholder="Buyer?"
+            placeholder="Select client type"
             value={formData.clientType}
             onChange={handleChange}
             required
+            options={[
+              { label: 'Buyer', value: 'Buyer' },
+              { label: 'Supplier', value: 'Supplier' },
+            ]}
           />
 
           <CustomInput

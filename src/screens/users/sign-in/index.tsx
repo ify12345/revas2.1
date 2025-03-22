@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom'
-import AuthPiece from '@/components/authPiece'
+import AuthPiece from '@/components/AuthPiece'
 import CustomInput from '@/components/CustomInput'
 import { useAppDispatch } from '@/redux/store'
 import { UserLogin } from '@/api/auth'

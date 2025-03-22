@@ -2,7 +2,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import AxiosBase from "./axios";
-import { AsyncThunkConfig, forgotPasswordPayload, LoginPayload, RegisterPayload, RejectValue } from "@/types/api";
+import { AsyncThunkConfig, ErrorResponse, forgotPasswordPayload, LoginPayload, RegisterPayload, RejectValue } from "@/types/api";
 import { ApiError, ErrorPayload, forgotPasswordResponse, LoginResponse, RegisterResponse } from "@/types/apiResponse";
 
 
@@ -37,7 +37,7 @@ export const register = createAsyncThunk<
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      }) ;
+      } as ErrorResponse) ;
     }
   }
 );
@@ -72,7 +72,7 @@ export const registerUser = createAsyncThunk<
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      }) ;
+      } as ErrorResponse) ;
     }
   }
 );
@@ -108,7 +108,7 @@ export const login = createAsyncThunk<
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      }) ;
+      } as ErrorResponse) ;
     }
   }
 );
@@ -144,7 +144,7 @@ export const UserLogin = createAsyncThunk<
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      }) ;
+      } as ErrorResponse) ;
     }
   }
 );
@@ -154,7 +154,7 @@ export const forgotPassword = createAsyncThunk<
   forgotPasswordPayload,
   AsyncThunkConfig
 >(
-  '/users/login',
+  '/users/forgot-password',
   async (payload, thunkAPI) => {
     try {
       console.log('pay', payload);
@@ -179,7 +179,47 @@ export const forgotPassword = createAsyncThunk<
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      }) ;
+      } as ErrorResponse) ;
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk<
+  forgotPasswordResponse,
+  forgotPasswordPayload,
+  AsyncThunkConfig
+>(
+  '/users/reset-password',
+  async (payload, thunkAPI) => {
+    try {
+      console.log('pay', payload);
+      const passwordData = {
+        password: payload.password,
+        confirmPassword: payload.confirmPassword
+      };
+      
+      const Axios = await AxiosBase();
+      const { data } = await Axios.post(`/reset-password/${payload.pin}`, passwordData);
+      console.log('data', data);
+
+      return data; 
+    } catch (err) {
+      const error = err as ErrorPayload;
+      console.log('new error', error.response?.data);
+
+      // Handle network errors
+      if (!error.response) {
+        return thunkAPI.rejectWithValue({ msg: 'Network Error', status: 500 });
+      }
+
+      // Handle API errors
+      const responseData = error.response.data;
+      const errorMsg = responseData?.error || responseData|| 'An error occurred';
+
+      return thunkAPI.rejectWithValue({
+        msg: errorMsg,
+        status: error.response.status,
+      } as ErrorResponse) ;
     }
   }
 );
@@ -211,7 +251,7 @@ export const getProfile = createAsyncThunk<LoginResponse, LoginPayload, AsyncThu
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      });
+      } as ErrorResponse);
     }
   }
 );
@@ -243,7 +283,7 @@ export const UpdateProfile = createAsyncThunk<LoginResponse, LoginPayload, Async
       return thunkAPI.rejectWithValue({
         msg: errorMsg,
         status: error.response.status,
-      });
+      } as ErrorResponse);
     }
   }
 );

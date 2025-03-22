@@ -1,28 +1,33 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import logo from '@/assets/logo.png'
-import { Link } from 'react-router-dom'
-import AuthPiece from '@/components/AuthPiece'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import CustomInput from '@/components/CustomInput'
 import { useAppDispatch } from '@/redux/store'
-import { forgotPassword } from '@/api/auth'
+import { resetPassword } from '@/api/auth'
 import { showToast } from '@/components/Toast'
+import AuthPiece from '@/components/AuthPiece'
 
 interface FormData {
-  email: string
+  confirmPassword: string
+  password: string
 }
 
-interface forgotPasswordPayload {
-  email: string
+interface resetPayload {
+  confirmPassword: string
+  password: string
+  pin: string
 }
 
-export default function ForgotPassword() {
-  const navigate = useNavigate()
+export default function ChangePassword() {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-
+  const location = useLocation()
+  const pin = location.state?.pin.code
   const [formData, setFormData] = useState<FormData>({
-    email: '',
+    confirmPassword: '',
+    password: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,25 +41,27 @@ export default function ForgotPassword() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    const payload: forgotPasswordPayload = {
-      email: formData.email,
+    const payload: resetPayload = {
+      confirmPassword: formData.confirmPassword,
+      password: formData.password,
+      pin,
     }
 
     console.log(payload)
     setLoading(true)
 
-    dispatch(forgotPassword(payload))
+    dispatch(resetPassword(payload))
       .unwrap()
       .then(response => {
         setLoading(false)
         console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
-        navigate('/reset-pin')
+        navigate('/reset-success')
       })
       .catch(err => {
         setLoading(false)
         const errorMessage =
-          err?.msg || err?.response?.data?.detail || 'Invalid email'
+          err?.msg || err?.response?.data?.detail || 'Invalid password'
         console.error('Error:', err)
         showToast({ type: 'error', msg: errorMessage })
       })
@@ -71,19 +78,28 @@ export default function ForgotPassword() {
           className="text-[#98A2B3] flex flex-col gap-[24px]"
           onSubmit={handleSubmit}
         >
-          <div className="space-y-2">
-            <p className="text-primary text-3xl">Forgot Password</p>
-            <p className="text-sm">
-              Enter the email address you registered with and we will send you a
-              link to create a new password.
-            </p>
-          </div>
+          <p className="text-primary text-3xl">Create new password</p>
+          <p className="text-gray_light">
+            Create a strong and secure password for signing in to your Revas
+            account.
+          </p>
+
           <CustomInput
-            label="Email Address"
-            type="email"
-            name="email"
-            placeholder="Enter company email"
-            value={formData.email}
+            label="New Password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <CustomInput
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
             onChange={handleChange}
             required
           />
@@ -93,16 +109,15 @@ export default function ForgotPassword() {
             className="py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex"
             disabled={loading}
           >
-            {loading ? 'Sending link...' : 'Send link'}
+            {loading ? 'Changing password...' : 'Change password'}
           </button>
         </form>
-        <p className="text-sm mt-4 text-center text-gray_light space-x-1">
-        Remember password?
-
-          <Link to="/sign-in" className="text-primary">
-            Sign in now
+        {/* <p className="text-sm mt-4 text-center">
+          Don't have an account?{' '}
+          <Link to="/account-manager/sign-up" className="text-primary">
+            Sign up
           </Link>
-        </p>
+        </p> */}
       </div>
     </div>
   )

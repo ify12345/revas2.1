@@ -48,6 +48,12 @@ export interface LoginPayload {
   password: string
 }
 export interface forgotPasswordPayload {
-  email: string;
+  password?: string;
+  confirmPassword?: string;
+  pin?: string;
+  email?: string;
 }
-
+export interface ErrorResponse {
+  msg: string;
+  status: number;
+}

@@ -1,7 +1,7 @@
 import onboarding from '@/assets/images/onboarding.png';
 import background from '@/assets/images/background.png';
 
-const AuthPiece = () => {
+export default function AuthPiece(){
   return (
     <div className="hidden lg:block w-1/2 rounded-2xl max-h-full relative">
     <img src={onboarding} className="rounded-2xl w-full h-full" alt="" />
@@ -61,4 +61,3 @@ const AuthPiece = () => {
   )
 }
 
-export default AuthPiece

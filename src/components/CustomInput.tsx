@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa'; // Import icons from react-icons
+import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
 // Define the props interface for the CustomInput component
 interface CustomInputProps {
   label: string; // Label for the input field
-  type: string; // Input type (e.g., "text", "password", "email")
-  name:string;
-  placeholder: string; // Placeholder text
+  type: string; // Input type (e.g., "text", "password", "email", "select")
+  name: string;
+  placeholder?: string; // Placeholder text (optional for select)
   value?: any; // Optional: Controlled input value
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional: Change handler
-  onFocus?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Optional: Change handler
+  onChange?: (e: any) => void; // Allow any event type for flexibility
+  onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => void;
   className?: string; // Optional: Additional CSS classes
   required?: boolean; // Optional: Whether the input is required
   disabled?: boolean; // Optional: Whether the input is disabled
+  options?: { label: string; value: string | number }[]; // Optional: Dropdown options
 }
 
 // CustomInput component
@@ -28,6 +29,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   className = '',
   required = false,
   disabled = false,
+  options,
 }) => {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
@@ -39,29 +41,50 @@ const CustomInput: React.FC<CustomInputProps> = ({
       {/* Label */}
       <label className="block text-sm font-medium text-gray_light mb-1">
         {label}
-        {required && <span className="text-red-500"> </span>}
+        {required && <span className="text-red-500"> *</span>}
       </label>
 
       {/* Input Container */}
       <div className="relative">
-        {/* Input Field */}
-        <input
-          type={inputType}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          disabled={disabled}
-          onFocus={onFocus}
-          name={name}
-          className={`w-full border text-primary border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
-            type === 'email' ? 'pl-2' : '' // Add padding for email icon
-          } ${className}`}
-        />
+        {type === 'select' && options ? (
+          // Render select dropdown if options are provided
+          <select
+            name={name}
+            value={value}
+            onChange={onChange}
+            onFocus={onFocus}
+            disabled={disabled}
+            className={`w-full border text-primary border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${className}`}
+          >
+            <option value="" disabled>
+              {placeholder || 'Select an option'}
+            </option>
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          // Render input field for other types
+          <input
+            type={inputType}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            disabled={disabled}
+            onFocus={onFocus}
+            name={name}
+            className={`w-full border text-primary border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+              type === 'email' ? 'pl-2' : ''
+            } ${className}`}
+          />
+        )}
 
         {/* Email Icon */}
         {type === 'email' && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-            <FaRegEnvelope className="text-stroke" />
+            <FaRegEnvelope className="text-gray_light" />
           </div>
         )}
 
@@ -72,9 +95,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
-              <FaEyeSlash className="text-stroke" />
+              <FaEyeSlash className="text-gray_light" />
             ) : (
-              <FaEye className="text-stroke" />
+              <FaEye className="text-gray_light" />
             )}
           </div>
         )}

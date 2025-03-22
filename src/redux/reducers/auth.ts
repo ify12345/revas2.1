@@ -4,7 +4,7 @@ import { User } from '@/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface State {
-  user: User;
+  user: User | null;
   profile: object;
   isAuthenticated: boolean;
   isVerified: boolean;
@@ -12,7 +12,7 @@ interface State {
 }
 
 const initialState: State = {
-  user: {},
+  user: null, 
   profile:{},
   isAuthenticated: false,
   isVerified: false,

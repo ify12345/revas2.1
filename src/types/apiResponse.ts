@@ -35,7 +35,6 @@ export enum Role {
 
 export interface RegisterResponse {
   success: boolean;
-  token: string;
   message: string;
   id: string;
   first_name: string;
@@ -46,6 +45,7 @@ export interface RegisterResponse {
   profile_completed: boolean;
   created_at: string;
   updated_at: string;
+  token?: string
 }
 
 export interface ApiError {
@@ -96,32 +96,3 @@ export interface GetOverviewResponse {
   };
 }
 
-export interface PaginatedResponse {
-  success: boolean;
-  message: string;
-  currentPage: number;
-  lastPage: number;
-}
-
-export interface UploadBrandImageResponse extends RequestResponse {
-  data: {
-    id: number;
-    name: string;
-    url: string;
-    createdAt: string;
-  };
-}
-
-export interface GetTimeslotsResponse extends PaginatedResponse {
-  data: TimeSlotType[];
-}
-
-export type TimeSlotType = {
-  id: number;
-  stylist: string;
-  schedule_date: Date;
-  start_time: string;
-  closing_time: string;
-  isAvailable: boolean;
-  forHomeService: boolean;
-};

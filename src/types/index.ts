@@ -74,7 +74,7 @@ export interface Language {
 export type Service = 'home_service' | 'walk_in'
 
 export interface User {
-  id?: number
+  id?: string
   outletId?: number
   businessName?: string | null
   firstName?: string
@@ -103,6 +103,7 @@ export interface User {
   outlet?: Outlet
   jobTitle?: null | string
   roles?: Role[]
+  token?: string
 }
 
 export interface FormData {
