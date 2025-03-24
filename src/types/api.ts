@@ -34,12 +34,12 @@ export enum Status {
 }
 
 export interface RegisterPayload {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword:string;
-  role: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?:string;
+  role?: string;
   clientType?: string;
 }
 
