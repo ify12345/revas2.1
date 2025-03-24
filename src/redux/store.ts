@@ -1,7 +1,8 @@
 
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
-import localForage from 'localforage';
+import storage from 'redux-persist/lib/storage';
+
 
 import {
   persistReducer,
@@ -18,7 +19,7 @@ import authReducer from './reducers/auth'
 
 const asyncPersistConfig = {
   key: 'main',
-  storage: localForage
+  storage
 }
 
 const persistedLangReducer = persistReducer(asyncPersistConfig, languageReducer)

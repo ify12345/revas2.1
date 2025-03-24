@@ -4,19 +4,21 @@ import { User } from '@/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface State {
-  user: User | null;
+  user: User;
   profile: object;
   isAuthenticated: boolean;
   isVerified: boolean;
   isPhoneVerified: boolean;
+  hasProduct: boolean;
 }
 
 const initialState: State = {
-  user: null, 
+  user: {}, 
   profile:{},
   isAuthenticated: false,
   isVerified: false,
   isPhoneVerified: false,
+  hasProduct: false
 };
 
 export const authSlice = createSlice({
@@ -50,8 +52,9 @@ export const authSlice = createSlice({
         state.isVerified = false;
       })
       .addCase(login.fulfilled, (state, { payload }) => {
-        state.user = payload;
-        // state.isVerified = true;
+        console.log('payload:', payload);
+        state.user = payload.user;
+        state.isVerified = true;
         state.isAuthenticated = true;
       })
     builder
@@ -60,8 +63,9 @@ export const authSlice = createSlice({
         state.isVerified = false;
       })
       .addCase(UserLogin.fulfilled, (state, { payload }) => {
-        state.user = payload;
-        // state.isVerified = true;
+        console.log('payload:', payload.user);
+        state.hasProduct = payload.user.hasRegisteredProduct;
+        state.user = payload.user;
         state.isAuthenticated = true;
       })
   },

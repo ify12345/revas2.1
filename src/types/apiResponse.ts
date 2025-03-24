@@ -48,6 +48,10 @@ export interface RegisterResponse {
   token?: string
 }
 
+export interface RegisterProductResponse {
+  success: boolean;
+  message: string;
+}
 export interface ApiError {
   msg: string;
   status: number;
@@ -75,8 +79,12 @@ export interface LoginResponse {
   phone_verified: boolean;
   profile: object;
   user: {
-    user_type_id: string;
-    user_type: string;
+    id: string,
+    firstName: string;
+    lastName: string;
+    email: string;
+    token?: string;
+    hasRegisteredProduct: boolean;
   };
 }
 

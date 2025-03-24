@@ -1,121 +1,200 @@
-import onboarding from '@/assets/images/onboarding.png'
-import background from '@/assets/images/background.png'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useCallback, useState } from 'react'
 import logo from '@/assets/logo.png'
-import { Link } from 'react-router-dom'
+import img from '@/assets/images/profile.png'
+import { useNavigate } from 'react-router-dom'
 import CustomInput from '@/components/CustomInput'
+import AuthPiece from '@/components/AuthPiece'
+import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { showToast } from '@/components/Toast'
+import { RegisterProductPayload } from '@/types/api'
+import { registerProduct } from '@/api/products'
+import { useDropzone } from 'react-dropzone'
 
 export default function SetUp() {
+  const navigate = useNavigate()
+  const user = useAppSelector(state => state.auth.user)
+  console.log(user)
+  const userName = user?.firstName
+  const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(false)
+
+  const [preview, setPreview] = useState<string | null>(null)
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]
+    const reader = new FileReader()
+
+    reader.onload = function () {
+      setPreview(reader.result as string)
+    }
+
+    reader.readAsDataURL(file)
+  }, [])
+
+  const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
+    useDropzone({ onDrop, accept: { 'image/png': ['.png'], 'image/jpeg': ['.jpeg', '.jpg'] } })
+
+  const [formData, setFormData] = useState<RegisterProductPayload>({
+    companyName: '',
+    product: '',
+    capacity: undefined,
+    price: undefined,
+    location: '',
+    image: '',
+  })
+
+  // Handle text inputs
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+  
+    if (acceptedFiles.length === 0) {
+      showToast({ type: 'error', msg: 'Please upload an image' })
+      return
+    }
+  
+    try {
+      setLoading(true)
+  
+
+      const formDataUpload = new FormData()
+
+      formDataUpload.append('companyName', formData.companyName || '')
+      formDataUpload.append('product', formData.product || '')
+      formDataUpload.append('capacity', formData.capacity?.toString() || '')
+      formDataUpload.append('price', formData.price?.toString() || '')
+      formDataUpload.append('location', formData.location || '')
+  
+   
+      formDataUpload.append('image', acceptedFiles[0], acceptedFiles[0].name)
+  
+   
+      const formDataObject = Object.fromEntries(formDataUpload as any);
+      console.log('FormData Contents:', formDataObject);
+  
+    
+      const response = await dispatch(registerProduct(formDataObject)).unwrap()
+      
+      showToast({ type: 'success', msg: response.message })
+      navigate('/')
+    } catch (err: any) {
+      const errorMessage = err?.msg || err?.response?.data?.detail || 'An error occurred'
+      console.error('Error:', err)
+      showToast({ type: 'error', msg: errorMessage })
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-7 max-h-screen">
-      <div className="hidden lg:block w-1/2 rounded-2xl max-h-full relative">
-        <img src={onboarding} className="rounded-2xl w-full h-full" alt="" />
-        <img
-          src={background}
-          className="absolute rounded-2xl w-full h-full inset-0 "
-          alt=""
-        />
-        <div className="flex flex-col inset-0 justify-end text-white absolute z-30 px-[40px] gap-[17px] py-10">
-          <p className="text-[#fff] font-bold text-3xl">
-            “Implementing Revas B2B recycling technology has revolutionized our
-            operations. It provides real-time tracking, boosting efficiency and
-            supporting our sustainability goals”
-          </p>
-          <div className="text-[#fff]">
-            <p className="text-lg">Emily Johnson,</p>
-            <p className="text">Director of Operations, WasteNot Solutions</p>
-          </div>
-          <div className="flex items-center gap-2">
-            
-            <svg
-              width="33"
-              height="32"
-              viewBox="0 0 33 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.15781 16C1.15781 7.38436 8.14217 0.4 16.7578 0.4C25.3735 0.4 32.3578 7.38436 32.3578 16C32.3578 24.6156 25.3735 31.6 16.7578 31.6C8.14217 31.6 1.15781 24.6156 1.15781 16Z"
-                stroke="#9B9B9B"
-                stroke-width="0.8"
-              />
-              <path
-                d="M21.4219 9.49608L19.9979 8.08008L12.0859 16.0001L20.0059 23.9201L21.4219 22.5041L14.9179 16.0001L21.4219 9.49608Z"
-                fill="#9B9B9B"
-              />
-            </svg>
-            <svg
-              width="33"
-              height="32"
-              viewBox="0 0 33 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0.55625 16C0.55625 7.38436 7.54061 0.4 16.1562 0.4C24.7719 0.4 31.7563 7.38436 31.7563 16C31.7563 24.6156 24.7719 31.6 16.1562 31.6C7.54061 31.6 0.55625 24.6156 0.55625 16Z"
-                stroke="#9B9B9B"
-                stroke-width="0.8"
-              />
-              <path
-                d="M11.4453 22.584L12.8613 24L20.8613 16L12.8613 8L11.4453 9.416L18.0293 16L11.4453 22.584Z"
-                fill="#9B9B9B"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-7 max-h-screen items-center">
+      <AuthPiece />
       <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px]">
-        <img src={logo} className="max-w-[172px] mb-[60px]" alt="" />
-        <form action="" className="text-[#98A2B3] flex flex-col gap-[24px]">
-          <p className="text-primary text-3xl">Welcome, Daniel</p>
+        <img src={logo} className="max-w-[172px] mb-[60px]" alt="Logo" />
+        <form
+          onSubmit={handleSubmit}
+          className="text-[#98A2B3] flex flex-col gap-[24px] items-center lg:items-start"
+        >
+          <p className="text-primary text-3xl">Welcome {userName}👋</p>
           <p className="text-primary text-lg">Setup your account</p>
 
-          {/* Company Name */}
+          {/* Image Upload Section */}
+          <div className="flex flex-col gap-1 items-center lg:items-start">
+            <p className="text-primaryLight text-base">Company Logo</p>
+            <div {...getRootProps()} className="flex flex-col lg:flex-row items-center lg:items-start">
+              <div className="max-w-[80px] max-h-[80px]">
+                <img
+                  src={preview || img}
+                  className="w-full object-cover rounded-md"
+                  alt="Company Logo"
+                />
+              </div>
+              <div className="p-3 items-center lg:items-start flex flex-col">
+                <button
+                  type="button"
+                  className="rounded-md text-white hover:text-primary hover:bg-primaryLight p-1.5 bg-primary"
+                >
+                  Upload Image
+                </button>
+                <p className="text-primaryLight text-sm">
+                  .png, .jpeg files up to 2MB. Recommended size is 50x50px.
+                </p>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/png, image/jpeg"
+                  {...getInputProps()}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Rest of the form remains the same */}
           <CustomInput
             label="Company Name"
             type="text"
-            placeholder="Revas"
+            placeholder="Revas?"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
             required
           />
 
-          {/* Product */}
           <CustomInput
             label="Product"
             type="text"
-            placeholder="pet flakes"
+            placeholder="PET flakes"
+            name="product"
+            value={formData.product}
+            onChange={handleChange}
             required
           />
 
-          {/* Capacity (MT/month) */}
           <CustomInput
             label="Capacity (MT/month)"
-            type="text"
+            type="number"
             placeholder="1000"
+            name="capacity"
+            value={formData.capacity ?? ''}
+            onChange={handleChange}
             required
           />
 
-          {/* Price/tonne (USD) */}
           <CustomInput
             label="Price/tonne (USD)"
-            type="text"
+            type="number"
             placeholder="123"
+            name="price"
+            value={formData.price ?? ''}
+            onChange={handleChange}
             required
           />
 
-          {/* Location */}
           <CustomInput
             label="Location"
             type="text"
             placeholder="United Kingdom"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
             required
           />
 
-          {/* Submit Button */}
-          <Link
-            className="py-2.5 rounded-md bg-primary text-[#fff] justify-center items-center flex"
-            to="/dashboard"
+          <button
+            type="submit"
+            className="py-2.5 w-full rounded-md bg-primary text-[#fff] justify-center items-center flex cursor-pointer"
+            disabled={loading}
           >
-            Go to Dashboard
-          </Link>
+            {loading ? 'Registering...' : 'Register'}
+          </button>
         </form>
       </div>
     </div>

@@ -93,11 +93,13 @@ export interface User {
   hasVerifiedEmail?: boolean
   profilePhotoUrl?: string
   state?: null | string
-  country?: {
-    countryName: string
-    countryId: number
-    countryCode: string
-    countryDialCode: string
+  user?: {
+    firstName?: string
+    lastName?: string
+    fullName?: string
+    email?: string
+    token?: string
+    hasRegisteredProduct: boolean
   }
   doesHomeService?: boolean
   outlet?: Outlet
@@ -107,15 +109,22 @@ export interface User {
 }
 
 export interface FormData {
-  firstName: string;
-  lastName: string;
-  role: string;
-  email: string;
-  phone: string;
-  password: string;
-  repeatPassword: string;
+  firstName?: string;
+  lastName?: string;
+  role?: string;
+  email?: string;
+  phone?: string;
+  password?: string;
+  repeatPassword?: string;
   clientType?: string;
+  companyName?: string;
+  product?: string;
+  capacity?: string;
+  price?:string;
+  location?:string;
+  image?: string;
 }
+
 
 export type Outlet = {
   id: number;

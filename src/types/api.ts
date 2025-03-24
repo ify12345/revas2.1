@@ -57,3 +57,12 @@ export interface ErrorResponse {
   msg: string;
   status: number;
 }
+
+export interface RegisterProductPayload {
+  companyName?: string;
+  product?: string;
+  capacity?: number;
+  price?: number;
+  location?: string;
+  image?: string | File;
+}

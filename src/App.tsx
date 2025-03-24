@@ -15,18 +15,19 @@ import ChangePassword from './screens/change-password/index.js'
 import ResetSuccess from './screens/reset-success/index.js'
 
 const App = () => {
-  const { isAuthenticated, isVerified, user } = useAppSelector(
+  const { isAuthenticated, isVerified, user, hasProduct } = useAppSelector(
     store => store.auth
   )
 
-  console.log('logged in', isAuthenticated);
-  
+  console.log('user:', user)
+  console.log('logged in', isAuthenticated, isVerified,hasProduct)
+
   return (
     <Router>
       <Routes>
         {!isAuthenticated && (
           <>
-          {/* Admin routes */}
+            {/* Admin routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/account-manager/sign-up" element={<Signup />} />
             <Route path="/account-manager/sign-in" element={<Signin />} />
@@ -36,16 +37,15 @@ const App = () => {
             <Route path="/reset-pin" element={<ResetPin />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/reset-success" element={<ResetSuccess />} />
-           
           </>
         )}
-        {isAuthenticated && !isVerified && (
-          <> 
-            <Route path="/set-up" element={<SetUp />} />
+        {isAuthenticated && (!hasProduct && !isVerified ) && (
+          <>
+            <Route path="/" element={<SetUp />} />
           </>
         )}
-        {isAuthenticated && (
-          <> 
+        {isAuthenticated && (hasProduct || isVerified) && (
+          <>
             <Route path="/" element={<Dashboard />} />
           </>
         )}

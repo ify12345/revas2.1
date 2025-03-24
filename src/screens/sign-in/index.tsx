@@ -7,7 +7,7 @@ import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom'
 import CustomInput from '@/components/CustomInput'
 import { useAppDispatch } from '@/redux/store'
-import { login } from '@/api/auth' // Assuming you have this function
+import { login } from '@/api/auth'
 import { showToast } from '@/components/Toast'
 
 interface FormData {
@@ -54,6 +54,7 @@ export default function Signin() {
         setLoading(false)
         console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
+        navigate("/")
       })
       .catch(err => {
         setLoading(false)

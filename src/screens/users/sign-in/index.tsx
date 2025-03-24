@@ -54,6 +54,7 @@ export default function UsersSignin() {
         setLoading(false)
         console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
+        navigate("/")
       })
       .catch(err => {
         setLoading(false)
