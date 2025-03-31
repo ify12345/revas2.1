@@ -52,6 +52,11 @@ export interface RegisterProductResponse {
   success: boolean;
   message: string;
 }
+
+export interface CreateOrderResponse {
+  success: boolean;
+  message: string;
+}
 export interface ApiError {
   msg: string;
   status: number;
