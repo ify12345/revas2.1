@@ -108,6 +108,11 @@ export interface User {
   token?: string
 }
 
+export interface Order {
+  success: boolean;
+  message: string;
+}
+
 export interface FormData {
   firstName?: string;
   lastName?: string;

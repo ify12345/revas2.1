@@ -57,6 +57,10 @@ export interface CreateOrderResponse {
   success: boolean;
   message: string;
 }
+export interface GetOrderResponse {
+  success: boolean;
+  message: string;
+}
 export interface ApiError {
   msg: string;
   status: number;

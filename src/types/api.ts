@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { AppDispatch } from '@/redux/store'
 
 export type AsyncThunkConfig = {
@@ -75,7 +76,12 @@ export interface CreateOrderPayload {
   supplier: string
   supplierPrice: number
   shippingCost: number
+  shippingType: string // Added the missing field
   negotiatePrice: boolean
   priceRange: number
   status: string
+}
+
+export interface GetOrderPayload {
+   
 }
