@@ -1,5 +1,5 @@
 import * as React from 'react'
-import recycles from '@/assets/images/recycles.png'
+import recyclesVideo from '@/assets/images/recycles.mp4'
 import { Link } from 'react-router-dom'
 
 export default function Hero() {
@@ -23,11 +23,12 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-      <img
-        src={recycles}
-        className="relative max-w-full lg:-mt-[520px] z-10 shadow-2xl"
-        alt="hero_image"
-      />
+
+      <div className="relative -mt-[220px]  lg:-mt-[900px] z-10 ">
+        <video className="w-full shadow-2xl " autoPlay muted loop>
+          <source src={recyclesVideo} type="video/mp4" />
+        </video>
+      </div>
     </>
   )
 }

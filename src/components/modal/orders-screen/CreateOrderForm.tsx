@@ -7,7 +7,7 @@ import buyerImg from '@/assets/images/buyer.png'
 import buyerEllipse from '@/assets/images/ellipse.png'
 import { FiPlus } from 'react-icons/fi'
 import CelebrateSvg from '@/components/svg/Celebrate'
-import { useAppDispatch } from '@/redux/store'
+import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { showToast } from '@/components/Toast'
 import { createOrder } from '@/api/order'
 import { CreateOrderPayload } from '@/types/api'
@@ -37,7 +37,7 @@ interface OrderFormData {
   otherCosts: number | string
   negotiatePrice: boolean
   priceRange: number | string
-  status: string
+  savedStatus: string
 }
 
 const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
@@ -49,6 +49,9 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
   const [showDropdown, setShowDropdown] = useState(false)
   const [isSecondView, setIsSecondView] = useState(false)
   const [modalTitle, setModalTitle] = useState<React.ReactNode>('')
+  const user = useAppSelector(state => state.auth)
+  // console.log(user);
+  
   const [searchHistory] = useState<SearchHistoryItem[]>([
     { id: 1, name: 'Previous Company 1' },
     { id: 2, name: 'Previous Company 2' },
@@ -70,7 +73,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
     otherCosts: 0,
     negotiatePrice: true,
     priceRange: 800,
-    status: 'confirmed',
+    savedStatus: 'confirmed',
   })
 
   const [profitMargin, setProfitMargin] = useState<number | null>(null)
@@ -128,7 +131,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
     // Prepare the payload
     const payload: CreateOrderPayload = {
       companyName: formData.companyName,
-      email: formData.email || 'abc@company.com',
+      email: formData.email,
       location: formData.location,
       product: formData.product,
       capacity: Number(formData.capacity),
@@ -139,7 +142,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
       shippingType: formData.shippingType,
       negotiatePrice: formData.negotiatePrice,
       priceRange: Number(formData.priceRange),
-      status: formData.status,
+      savedStatus: formData.savedStatus,
     }
 
     console.log('Order payload:', payload)
@@ -200,7 +203,6 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
           onChange={handleChange}
         />
 
-        {/* Dropdown for Search History */}
         {showDropdown && (
           <div className="relative mt-1 bg-white border border-stroke rounded-md shadow-lg">
             {searchHistory.map(item => (
@@ -348,26 +350,35 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
         <div className="border border-stroke px-4 py-4 rounded-lg flex gap-3">
           <CelebrateSvg />
           <div className="flex flex-col">
-            <p className="text-primary">
-              You're in the Green!{' '}
-              {profitMargin !== null && (
-                <span
-                  className={`text-sm font-semibold mt-2 ${
-                    profitMargin < 0
-                      ? 'text-danger'
-                      : profitMargin >= 5
-                        ? 'text-success'
-                        : 'text-success'
-                  }`}
-                >
-                  {profitMargin.toFixed(2)}%
-                </span>
-              )}
-            </p>
-            <p className="text-gray_light text-sm">
-              You can proceed with this transaction
-            </p>
-          </div>
+  <p className="text-primary">
+    {profitMargin !== null && !isNaN(profitMargin) ? (
+      <>
+        You're in the{' '}
+        <span
+          className={`text-sm font-semibold mt-2 ${
+            profitMargin < 0
+              ? 'text-danger'
+              : profitMargin >= 5
+                ? 'text-success'
+                : 'text-warning'
+          }`}
+        >
+          {profitMargin < 0 ? 'Red' : 'Green'} {profitMargin.toFixed(2)}%
+        </span>
+      </>
+    ) : (
+      <span className="text-sm text-gray-500">
+        {profitMargin === null || profitMargin === undefined
+          ? 'You have not inputted anything'
+          : 'Invalid input'}
+      </span>
+    )}
+  </p>
+  <p className="text-gray_light text-sm">
+    You  {profitMargin === null || profitMargin === undefined? "can" : "can't" } proceed with this transaction
+  </p>
+</div>
+
         </div>
 
         <div className="border border-stroke bg-[#efefef] px-4 py-4 rounded-lg flex flex-col gap-1">
@@ -390,7 +401,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
             </p>
             <p>
               Account Manager:{' '}
-              <span className="text-primary">Odili wisdom</span>
+              <span className="text-primary">{user.user.firstName}</span>
             </p>
           </div>
         </div>
@@ -414,7 +425,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
       <div className="border-b-[0.4px] border-stroke py-1 flex flex-col text-gray px-[14px] gap-4 pb-3">
         <div className="flex flex-col gap-2">
           <p className="text-gray font-bold">
-            {formData.companyName || 'EcoPET Solutions'}
+            {formData.companyName}
           </p>
           <p className="font-light text-sm">
             62, Buckingham Street, Azel Road, Switzerland
@@ -423,7 +434,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
         <div className="flex flex-col lg:flex-row lg:justify-between">
           <div className="border-r border-stroke pr-3 flex flex-col gap-1">
             <p className="text-sm font-light">Client Type</p>
-            <p className="text-base font-medium">Buyer</p>
+            <p className="text-base font-medium">{user.user.role}</p>
           </div>
           <div className="border-r border-stroke px-3 flex flex-col gap-1">
             <p className="text-sm font-light">Total Transaction</p>

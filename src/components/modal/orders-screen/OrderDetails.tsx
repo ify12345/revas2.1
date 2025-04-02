@@ -1,73 +1,144 @@
-// OrderDetails.tsx
-import { Person } from '@/types/page';
-import React from 'react';
-import { IoMdClose } from 'react-icons/io';
-import Modal from '../Modal';
 
+import React, { useState } from 'react'
+import Modal from '../Modal'
+
+import { editOrder } from '@/api/order'
+import { useAppDispatch } from '@/redux/store'
+
+import CustomInput from '@/components/CustomInput'
+import { Order } from '@/types/apiResponse'
+import { showToast } from '@/components/Toast'
 
 interface OrderDetailsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  person: Person;
+  isOpen: boolean
+  onClose: () => void
+  person: Order
+}
+
+interface Payload {
+  id: string
+  formatData: Order[]
 }
 
 const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} title={person.companyName}>
-      <div className="my-6 mx-3 p-5 border border-stroke rounded-[12px] text-[#757575] flex flex-col gap-[18px]">
-        <p className="text-sm flex w-full justify-between">
-          Capacity
-          <span>{person.companyName}</span>
-        </p>
-        <p className="text-sm flex w-full justify-between">
-          <span>Product</span> {person.product}
-        </p>
-        <p className="text-sm flex w-full justify-between">
-          <span>Price/Tonne (USD):</span> {person.price}
-        </p>
-        <p className="text-sm flex w-full justify-between">
-          <span>Location:</span> {person.location}
-        </p>
-        <p className="text-sm flex w-full justify-between">
-          <span>Status:</span> {person.status}
-        </p>
+  const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(false)
 
-        <div className="bg-[#F7F7F7] p-[12px]">
-          <div className="flex w-full justify-between">
-            <div className="text-sm font-bold text-primary">
-              Franko Recycling
-            </div>
-            <IoMdClose color="gray" />
-          </div>
-          <p className="font-bold text-success">${person.price}</p>
-          <div className="flex w-full justify-between">
-            <div className="text-sm font-light text-[#8F8F8F]">
-              capacity{' '}
-              <span className="font-bold text-primary">
-                {person.price}
-              </span>
-            </div>
-            <div className="text-sm font-light text-[#8F8F8F]">
-              Account manager:{' '}
-              <span className="font-bold text-primary">Lolade</span>
-            </div>
-          </div>
+  const [formData, setFormData] = useState({
+    companyName: person.companyName,
+    product: person.product,
+    pricePerTonne: person.pricePerTonne,
+    location: person.location,
+    status: person.status,
+    capacity: person.capacity,
+  })
+
+  // Handle input changes
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  // Handle form submission
+  const handleSubmit = () => {
+    setLoading(true)
+    const payload: Payload = {
+      id: person.id,
+      ...formData,
+      formatData: [],
+    }
+    dispatch(editOrder(payload))
+      .unwrap()
+      .then(response => {
+        setLoading(false)
+        onClose()
+        console.log('Success:', response)
+        showToast({ type: 'success', msg: response.message })
+      })
+      .catch(err => {
+        setLoading(false)
+        onClose()
+        const errorMessage = err?.msg.message || err?.response?.data?.detail
+        console.error('Error:', err)
+        showToast({ type: 'error', msg: errorMessage })
+      })
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title="Edit Order">
+      <div className="my-6 mx-3 p-5 border border-stroke rounded-[12px] text-[#757575] flex flex-col gap-[18px]">
+        <div className="text-sm flex flex-col w-full justify-between">
+          <CustomInput
+            label="Company Name"
+            type="text"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+          />
         </div>
-        <select className="w-full p-2 border border-stroke rounded-md">
-          <option value="">Select Buyer</option>
-          <option value="location1">Location 1</option>
-          <option value="location2">Location 2</option>
-          <option value="location3">Location 3</option>
-        </select>
+        <div className="text-sm flex flex-col w-full justify-between">
+          <CustomInput
+            label="Product"
+            type="text"
+            name="product"
+            value={formData.product}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="text-sm flex flex-col w-full justify-between">
+          <CustomInput
+            label="Price/Tonne (USD)"
+            type="number"
+            name="pricePerTonne"
+            value={formData.pricePerTonne}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="text-sm flex flex-col w-full justify-between">
+          <CustomInput
+            label="Location"
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="text-sm flex flex-col w-full justify-between">
+          <CustomInput
+            label="Capacity"
+            type="number"
+            name="capacity"
+            value={formData.capacity}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="text-sm flex flex-col w-full justify-between">
+          <CustomInput
+            label="Status"
+            type="select"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            options={[
+              { label: 'Not Matched', value: 'not_matched' },
+              { label: 'Confirmed', value: 'confirmed' },
+              { label: 'Completed', value: 'completed' },
+            ]}
+          />
+        </div>
+
+        {/* Submit Button */}
         <button
-          type="submit"
+          onClick={handleSubmit}
           className="bg-[#050505] text-[#ffff] py-[10px] px-[12px] rounded-[8px] w-full"
         >
-          Send Request
+          {loading ? 'Saving Changes...' : 'Save Changes'}
         </button>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default OrderDetails;
+export default OrderDetails

@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const user = useAppSelector(state => state.auth.user)
   const userName = user?.firstName
-  console.log(userName)
+  // console.log(user)
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
   }
@@ -160,7 +160,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               isSidebarOpen ? 'relative left-14' : ''
             }`}
           >
-            {isSidebarOpen ? <IoClose /> : <FiMenu />}
+            {isSidebarOpen ? <IoClose className="text-primary cursor-pointer" /> : <FiMenu className="text-primary cursor-pointer" />}
           </button>
 
           {!isSidebarOpen && (
@@ -197,7 +197,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </svg>
                 <div className="flex flex-col">
                   <p className="text-sm text-primary">{userName}</p>
-                  <p className="text-[#98A2B3] text-[10px]">Sonder Company</p>
+                  <p className="text-[#98A2B3] text-[10px]">{user?.email}</p>
                 </div>
                 <FaCaretDown color="#98A2B3" />
 

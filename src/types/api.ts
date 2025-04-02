@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { AppDispatch } from '@/redux/store'
+import { Role } from './apiResponse'
 
 export type AsyncThunkConfig = {
   /** return type for `thunkApi.getState` */
@@ -38,7 +39,7 @@ export interface RegisterPayload {
   email?: string
   password?: string
   confirmPassword?: string
-  role?: string
+  role?: Role[]
   clientType?: string
 }
 
@@ -79,9 +80,27 @@ export interface CreateOrderPayload {
   shippingType: string // Added the missing field
   negotiatePrice: boolean
   priceRange: number
-  status: string
+  savedStatus: string;
 }
 
+export interface EditOrderPayload {
+   id?: string;
+   companyName?: string
+  email?: string
+  location?: string
+  product?: string
+  capacity?: number
+  pricePerTonne?: number
+  supplier?: string
+  supplierPrice?: number
+  shippingCost?: number
+  shippingType?: string // Added the missing field
+  negotiatePrice?: boolean
+  priceRange?: number
+  savedStatus?: string;
+
+}
 export interface GetOrderPayload {
-   
+  
+
 }

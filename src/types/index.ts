@@ -104,7 +104,7 @@ export interface User {
   doesHomeService?: boolean
   outlet?: Outlet
   jobTitle?: null | string
-  roles?: Role[]
+  role?: Role[]
   token?: string
 }
 

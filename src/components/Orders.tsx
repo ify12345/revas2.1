@@ -1,6 +1,7 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // OrdersScreen.tsx
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Status from './Status.js'
 import { Person } from '../types/page.js'
 import { FaCheckCircle } from 'react-icons/fa'
@@ -17,29 +18,9 @@ import {
 import All from '@/screens/orders/All.js'
 import Pending from '@/screens/orders/Pending.js'
 import Completed from '@/screens/orders/Completed.js'
-
-const details = [
-  { name: 'Total orders', numer: '2', icon: <CurrencySvg /> },
-  { name: 'Pending orders', numer: '10', icon: <WalletSvg /> },
-  {
-    name: 'Completed orders',
-    numer: '2',
-    icon: <FaCheckCircle color="#059669" />,
-  },
-]
-
-const people: Person[] = [
-  {
-    companyName: 'EcoPET Solutions',
-    product: 'Clear PET Flakes',
-    capacity: '850-900',
-    price: '800',
-    status: <Status />,
-    location: 'Thailand',
-    grade: 'A',
-  },
-  // More people...
-]
+import { useAppDispatch, useAppSelector } from '@/redux/store.js'
+import { getOrder } from '@/api/order.js'
+import { Order } from '@/types/apiResponse.js'
 
 const navigation = [
   { name: 'All orders', key: 'all' },
@@ -53,19 +34,49 @@ function classNames(...classes: string[]): string {
 
 export default function OrdersScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const [activeScreen, setActiveScreen] = React.useState('all')
+
+  // Add Redux hooks
+  const dispatch = useAppDispatch()
+  const orders = useAppSelector(state => state.order)
+
+  const list = Array.isArray(orders.order)
+    ? orders.order
+    : [orders.order].filter(Boolean)
+
+  // Fetch orders when component mounts
+  useEffect(() => {
+    dispatch(getOrder({}))
+  }, [dispatch])
 
   const getActiveScreen = () => {
     switch (activeScreen) {
       case 'all':
-        return <All />
+        return (
+          <All people={list.filter((item): item is Order => item !== null)} />
+        )
+
       case 'pending':
-        return <Pending />
+        const pendingOrders = list.filter(
+          (item): item is Order =>
+            item !== null && item.status === 'not_matched'
+        )
+        console.log('Pending orders:', pendingOrders)
+        return <Pending people={pendingOrders} />
+
       case 'completed':
-        return <Completed />
+        return (
+          <Completed
+            people={list.filter(
+              (item): item is Order =>
+                item !== null && item.status === 'completed'
+            )}
+          />
+        )
       default:
-        return <All />
+        return (
+          <All people={list.filter((item): item is Order => item !== null)} />
+        )
     }
   }
 
@@ -78,6 +89,20 @@ export default function OrdersScreen() {
     setIsModalOpen(false)
     document.body.style.overflow = 'auto'
   }
+
+  const orderDetails = [
+    { name: 'Total orders', numer: list?.length || '0', icon: <CurrencySvg /> },
+    {
+      name: 'Pending orders',
+      numer: list?.filter(o => o && o.status === 'not_matched')?.length || '0',
+      icon: <WalletSvg />,
+    },
+    {
+      name: 'Completed orders',
+      numer: list?.filter(o => o && o.status === 'confirmed')?.length || '0',
+      icon: <FaCheckCircle color="#059669" />,
+    },
+  ]
 
   return (
     <div className="flex flex-col relative z-10">
@@ -97,7 +122,7 @@ export default function OrdersScreen() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-[13.5px] mt-4">
-          {details.map((item, index) => (
+          {orderDetails.map((item, index) => (
             <div
               key={index}
               className="bg-white rounded-[12px] p-[26px] border border-[#E2E8F0] flex flex-col gap-[24px]"

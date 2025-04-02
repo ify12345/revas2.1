@@ -97,7 +97,7 @@ export default function HomeScreen() {
         <div className="sm:flex-auto">
           <p className="font-medium text-2xl">Home</p>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex items-center gap-2 ">
+        {/* <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex items-center gap-2 ">
           <div onClick={openDraftsModal} className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md">
             <RiDraftLine />
             Drafts
@@ -111,7 +111,7 @@ export default function HomeScreen() {
           >
             <p className="text-[#fff]">Create Order</p>
           </button>
-        </div>
+        </div> */}
       </div>
       <RowDetailsModal
         isOpen={isRowDetailsModalOpen}

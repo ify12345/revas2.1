@@ -2,7 +2,7 @@ import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type ToastProps = {
-  msg: string;
+  msg?: string;
   type: "success" | "error";
 };
 

@@ -54,13 +54,27 @@ export type authStateType = {
   error: any;
 };
 export interface Person {
+  id: string;
   companyName: string;
-  product: string;
-  capacity: string;
-  price: string;
-  status: JSX.Element;
+  email: string;
   location: string;
-  grade: string;
+  product: string;
+  capacity: number;
+  pricePerTonne: number;
+  supplier: string;
+  supplierPrice: number;
+  shippingCost: number;
+  negotiatePrice: boolean;
+  priceRange: number;
+  savedStatus: string;
+  status: string;
+  docUrl: string | null;
+  buyerId: string | null;
+  supplierId: string | null;
+  accountManagerId: string | null;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface USERDATA {
