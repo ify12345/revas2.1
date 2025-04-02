@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, JSX, ReactNode } from "react";
 
 export type actionProps = {
@@ -75,6 +77,8 @@ export interface Person {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  price?:string;
+  grade?: string
 }
 
 export interface USERDATA {

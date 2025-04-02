@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { AppDispatch } from '@/redux/store'
-import { Role } from './apiResponse'
+
 
 export type AsyncThunkConfig = {
   /** return type for `thunkApi.getState` */
@@ -39,7 +39,7 @@ export interface RegisterPayload {
   email?: string
   password?: string
   confirmPassword?: string
-  role?: Role[]
+  role?: string;
   clientType?: string
 }
 

@@ -23,7 +23,7 @@ export interface Profile {
     countryDialCode: string;
   };
   doesHomeService: boolean;
-  roles: Role[];
+  roles: string;
 }
 
 export enum Role {
