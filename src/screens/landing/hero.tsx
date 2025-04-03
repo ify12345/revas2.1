@@ -25,7 +25,7 @@ export default function Hero() {
       </div>
 
       <div className="relative -mt-[220px]  lg:-mt-[900px] z-10 ">
-        <video className="w-full shadow-2xl " autoPlay muted loop>
+        <video className="w-full shadow-2xl " autoPlay muted>
           <source src={recyclesVideo} type="video/mp4" />
         </video>
       </div>
