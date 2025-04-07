@@ -9,12 +9,18 @@ export default function NavBar() {
   return (
     <nav className="bg-primary text-white px-5 lg:px-[90px] py-[20px] relative z-40">
       <div className="flex items-center justify-between">
-        <img src={logo} className="max-w-[172px]" alt="Logo" />
+        <Link to="/">
+          <img src={logo} className="max-w-[172px]" alt="Logo" />
+        </Link>
 
         <div className="hidden lg:flex gap-[100px] text-sm">
-          <a href="">About Us</a>
-          <a href="">How it Works</a>
-          <a href="">Browse Categories</a>
+          <Link to="/about-us">About Us</Link>
+          <Link to="/how" className="block">
+            How it Works
+          </Link>
+          <Link to="/categories" className="block">
+            Browse Categories
+          </Link>
         </div>
 
         <div className="hidden lg:flex gap-3 dm-mono-medium capitalize">
@@ -45,10 +51,10 @@ export default function NavBar() {
           <Link to="" className="block">
             About Us
           </Link>
-          <Link to="" className="block">
+          <Link to="/how" className="block">
             How it Works
           </Link>
-          <Link to="" className="block">
+          <Link to="/categories" className="block">
             Browse Categories
           </Link>
           <Link

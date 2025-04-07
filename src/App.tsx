@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Signup from './screens/Signup/index.js'
@@ -12,14 +13,17 @@ import ForgotPassword from './screens/forgot-password/index.js'
 import ResetPin from './screens/reset-pin/index.js'
 import ChangePassword from './screens/change-password/index.js'
 import ResetSuccess from './screens/reset-success/index.js'
+import About from './screens/about/index.js'
+import How from './screens/how/index.js'
+import Browse from './screens/browse/index.js'
 
 const App = () => {
   const { isAuthenticated, isVerified, user, hasProduct } = useAppSelector(
     store => store.auth
   )
 
-  console.log('user:', user)
-  console.log('logged in', isAuthenticated, isVerified,hasProduct)
+  // console.log('user:', user)
+  // console.log('logged in', isAuthenticated, isVerified,hasProduct)
 
   return (
     <Router>
@@ -28,6 +32,9 @@ const App = () => {
           <>
             {/* Admin routes */}
             <Route path="/" element={<LandingPage />} />
+            <Route path="/about-us" element={<About />} />
+            <Route path="/categories" element={<Browse />} />
+            <Route path="/how" element={<How />} />
             <Route path="/account-manager/sign-up" element={<Signup />} />
             <Route path="/account-manager/sign-in" element={<Signin />} />
             <Route path="/sign-up" element={<UsersSignup />} />

@@ -13,7 +13,11 @@ export default {
      violet: '#7255BD',
      gray_light: '#98A2B3',
      white: '#fff',
-     purple:'#513C86'
+     purple:'#513C86',
+     foundation: '#f1f1f1',
+     foundationBlack: '#b3b3b3',
+     blackLight:'#5C5C5C',
+     stroke: '#E7e7e7'
     },
   },
   plugins: [],
