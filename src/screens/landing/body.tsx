@@ -47,17 +47,17 @@ export default function Body() {
         </div>
       </div>
 
-      <div className="bg-custom-image flex flex-col 2xl:flex-row mx-4 xl:mx-[62px]  rounded-[32px] my-[123px]">
-        <div className="flex flex-col p-2 lg:p-[58px]">
-          <div className="2xl:max-w-[369px] w-full text-6xl font-bold">
+      <div className="bg-custom-image flex flex-col xl:flex-row mx-4 xl:mx-[62px]  rounded-[32px] my-[123px]">
+        <div className="flex flex-col p-2 lg:p-[58px] w-full">
+          <div className="2xl:max-w-[369px] w-full text-3xl 2xl:text-6xl font-bold">
             Get Started in Minutes
           </div>
 
           {steps.map((step, index) => (
-            <div key={index} className="max-w-[480px]">
+            <div key={index} className="w-full 2xl:max-w-[480px]">
               <p
                 onClick={() => setActiveIndex(index)}
-                className={`cursor-pointer pl-2 lg:pl-[38px] text-2xl font-[500] mt-[30px] mb-[24px] transition-all duration-300 ${
+                className={`cursor-pointer pl-2 lg:pl-[38px] 2xl:text-2xl font-[500] mt-[30px] mb-[24px] transition-all duration-300 ${
                   activeIndex === index ? 'border-l-2 border-[#5B4397]' : ''
                 }`}
               >
