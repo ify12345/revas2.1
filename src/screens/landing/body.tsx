@@ -48,9 +48,9 @@ export default function Body() {
         </div>
       </div>
 
-      <div className="bg-custom-image flex flex-col lg:flex-row mx-4 lg:mx-[62px]  rounded-[32px] my-[123px]">
+      <div className="bg-custom-image flex flex-col xl:flex-row mx-4 xl:mx-[62px]  rounded-[32px] my-[123px]">
         <div className="flex flex-col p-2 lg:p-[58px]">
-          <div className="max-w-[369px] w-full text-6xl font-bold">
+          <div className="xl:max-w-[369px] w-full text-6xl font-bold">
             Get Started in Minutes
           </div>
 
