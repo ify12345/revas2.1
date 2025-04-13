@@ -22,6 +22,7 @@ const App = () => {
     store => store.auth
   )
 
+  
   // console.log('user:', user)
   // console.log('logged in', isAuthenticated, isVerified,hasProduct)
 
