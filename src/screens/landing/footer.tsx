@@ -20,7 +20,7 @@ export default function Footer() {
               GET STARTED
             </Link>
             <Link
-              to="/sign-up"
+              to="/sign-in"
               className="py-[12px] px-[30px] border border-white rounded-lg capitalize text-sm font-medium text-white bg-primary transition-colors duration-300 hover:text-white hover:bg-purple"
             >
               SIGN IN

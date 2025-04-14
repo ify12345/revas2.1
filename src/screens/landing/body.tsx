@@ -7,6 +7,7 @@ import img5 from '@/assets/images/5.png'
 import img6 from '@/assets/images/6.png'
 import img7 from '@/assets/images/7.png'
 import img8 from '@/assets/images/8.png'
+import img9 from '@/assets/images/9.png'
 import review from '@/assets/images/review.png'
 import { Link } from 'react-router-dom'
 
@@ -33,18 +34,75 @@ export default function Body() {
         <p className="text-xl font-light text-center lg:text-start px-5 lg:px-[60px] ">
           Trusted by key partners in the recycling industry
         </p>
-        <div className="flex flex-col lg:flex-row items-center w-full justify-between px-2">
-          <img src={img1} className="max-w-[110px]" alt="Logo" />
-          <img src={img2} className="max-w-[58px]" alt="Logo" />
-          <img src={img3} className="max-w-[58px]" alt="Logo" />
-          <img src={img4} className="max-w-[58px]" alt="Logo" />
-          <img src={img5} className="max-w-[58px]" alt="Logo" />
-          <img src={img6} className="max-w-[58px]" alt="Logo" />
-          <img src={img7} className="max-w-[58px]" alt="Logo" />
-          <img src={img8} className="max-w-[58px]" alt="Logo" />
-          <img src={img2} className="max-w-[58px]" alt="Logo" />
-          <img src={img1} className="max-w-[110px]" alt="Logo" />
+        <div
+         x-data="{}"
+         x-init="$nextTick(() => {
+             let ul = $refs.logos;
+             ul.insertAdjacentHTML('afterend', ul.outerHTML);
+             ul.nextSibling.setAttribute('aria-hidden', 'true');
+         })" className="max-w-full inline-flex flex-nowrap overflow-hidden">
+          <ul x-ref="logos" className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll gap-5">
+            <img src={img1} className="w-[58px]" alt="Logo" />
+
+            <img src={img2} className="w-[58px]" alt="Logo" />
+
+            <img src={img3} className="w-[58px]" alt="Logo" />
+
+            <img src={img4} className="w-[58px]" alt="Logo" />
+
+            <img src={img5} className="w-[58px]" alt="Logo" />
+
+            <img src={img6} className="w-[58px]" alt="Logo" />
+
+            <img src={img7} className="w-[58px]" alt="Logo" />
+
+            <img src={img8} className="w-[58px]" alt="Logo" />
+            
+            <img src={img9} className="w-[58px]" alt="Logo" />
+
+            <img src={img1} className="w-[58px]" alt="Logo" />
+            <img src={img1} className="w-[58px]" alt="Logo" />
+
+            <img src={img2} className="w-[58px]" alt="Logo" />
+
+            <img src={img3} className="w-[58px]" alt="Logo" />
+
+            <img src={img4} className="w-[58px]" alt="Logo" />
+
+            <img src={img5} className="w-[58px]" alt="Logo" />
+
+            <img src={img6} className="w-[58px]" alt="Logo" />
+
+            <img src={img7} className="w-[58px]" alt="Logo" />
+
+            <img src={img8} className="w-[58px]" alt="Logo" />
+            <img src={img9} className="w-[58px]" alt="Logo" />
+
+            <img src={img1} className="w-[58px]" alt="Logo" />
+            <img src={img1} className="w-[58px]" alt="Logo" />
+
+            <img src={img2} className="w-[58px]" alt="Logo" />
+
+            <img src={img3} className="w-[58px]" alt="Logo" />
+
+            <img src={img4} className="w-[58px]" alt="Logo" />
+
+            <img src={img5} className="w-[58px]" alt="Logo" />
+
+            <img src={img6} className="w-[58px]" alt="Logo" />
+
+            <img src={img7} className="w-[58px]" alt="Logo" />
+
+            <img src={img8} className="w-[58px]" alt="Logo" />
+            <img src={img9} className="w-[58px]" alt="Logo" />
+
+            <img src={img1} className="w-[58px]" alt="Logo" />
+
+          </ul>
         </div>
+        {/* <div className="flex flex-col lg:flex-row items-center w-full justify-between px-2">
+          <img src={img1} className="max-w-[110px]" alt="Logo" />
+        </div> */}
       </div>
 
       <div className="bg-custom-image flex flex-col xl:flex-row mx-4 xl:mx-[62px]  rounded-[32px] my-[123px]">
@@ -79,7 +137,7 @@ export default function Body() {
           </Link>
         </div>
 
-        <img src={review} className="max-w-[879px]" alt="Logo" />
+        <img src={review} className="max-w-[879px] lg:w-1/2" alt="Logo" />
       </div>
     </div>
   )

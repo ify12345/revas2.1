@@ -3,10 +3,79 @@
 @tailwind utilities;
 
 
+html {
+  scroll-behavior: smooth;
+}
 
 body{
     font-family: "Onsite Standard TRIAL Medium";
 }
+
+:root {
+  --cards: 3;
+  --cardHeight: 87vh;
+  --cardTopPadding: 10.53em;
+  --conatinerCardTopPadding: 4.53em;
+  --firstCardTopPadding: 5.53em;
+  --cardMargin: 1vw;
+  --slantAngle: 360deg; 
+  --transitionSpeed: 0.1s; 
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+#cards {
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(var(--cards));
+  gap: var(--cardMargin);
+  padding-bottom: calc(var(--cards) * var(--conatinerCardTopPadding));
+  /* margin-bottom: var(--cardMargin); */
+}
+
+#card1 {
+  --index: 1;
+  padding-top: calc(var(--index) * var(--firstCardTopPadding));
+}
+
+#card2 {
+  --index: 2;
+}
+
+#card3 {
+  --index: 3;
+}
+
+.card {
+  position: sticky;
+  top: 0;
+  padding-top: calc(var(--index) * var(--cardTopPadding));
+  transition: transform var(--transitionSpeed) ease-out;
+}
+
+
+.card:not(:first-child) {
+  transform-origin: center top;
+  transform: rotateX(var(--slantAngle)); 
+}
+
+
+.card.stacked {
+  transform: rotateX(0deg); 
+}
+
+.card-body {
+  box-sizing: border-box;
+  /* box-shadow: 0 0 30px 0 rgba(0,0,0,0.3); */
+  transition: transform var(--transitionSpeed) ease-out;
+  backface-visibility: hidden;
+}
+
 .dm-mono-light {
     font-family: "DM Mono", serif;
     font-weight: 300;
