@@ -21,6 +21,8 @@ import Completed from '@/screens/orders/Completed.js'
 import { useAppDispatch, useAppSelector } from '@/redux/store.js'
 import { getOrder } from '@/api/order.js'
 import { Order } from '@/types/apiResponse.js'
+import { RiDraftLine } from 'react-icons/ri'
+import DraftsModal from './modal/DraftsModal.js'
 
 const navigation = [
   { name: 'All orders', key: 'all' },
@@ -35,7 +37,7 @@ function classNames(...classes: string[]): string {
 export default function OrdersScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeScreen, setActiveScreen] = React.useState('all')
-
+  const [isDraftsModalOpen, setIsDraftsModalOpen] = React.useState(false)
   // Add Redux hooks
   const dispatch = useAppDispatch()
   const orders = useAppSelector(state => state.order)
@@ -48,6 +50,13 @@ export default function OrdersScreen() {
   useEffect(() => {
     dispatch(getOrder({}))
   }, [dispatch])
+
+  const openDraftsModal = () => {
+    setIsDraftsModalOpen(true)
+  }
+  const closeDraftsModal = () => {
+    setIsDraftsModalOpen(false)
+  }
 
   const getActiveScreen = () => {
     switch (activeScreen) {
@@ -111,7 +120,17 @@ export default function OrdersScreen() {
           <div className="sm:flex-auto">
             <p className="font-medium text-2xl">Orders</p>
           </div>
-          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+          <div className="mt-4 sm:mt-0 sm:ml-16 flex gap-3 sm:flex-row">
+            <div
+              onClick={openDraftsModal}
+              className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md"
+            >
+              <RiDraftLine color="gray" />
+              Drafts
+              <div className="size-[20px] bg-[#2364DB] flex items-center justify-center text-[#fff] rounded-full">
+                4
+              </div>
+            </div>
             <button
               onClick={openModal}
               className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px]"
@@ -233,6 +252,7 @@ export default function OrdersScreen() {
       </div>
 
       <CreateOrderForm isOpen={isModalOpen} onClose={closeModal} />
+      <DraftsModal isOpen={isDraftsModalOpen} onClose={closeDraftsModal} />
     </div>
   )
 }

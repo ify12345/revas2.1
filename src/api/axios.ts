@@ -1,30 +1,37 @@
-import axios from 'axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios, { AxiosInstance } from 'axios';
 
-const token = localStorage.getItem('revas');
-console.log('Token', token)
+// Singleton instance
+let axiosInstance: AxiosInstance | null = null;
 
-async function AxiosBase() {
+// Create or return the existing axios instance
+function AxiosBase() {
+  if (axiosInstance) {
+    return Promise.resolve(axiosInstance);
+  }
+
   try {
     const token = localStorage.getItem('revas');
-    console.log('Token', token)
+    console.log('Token initialization:', token);
     
-    const axiosInstance = axios.create({
+    
+    axiosInstance = axios.create({
       baseURL: 'https://revas.onrender.com/api',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}), 
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       },
       timeout: 20000,
     });
-
-    return axiosInstance;
+    
+    return Promise.resolve(axiosInstance);
   } catch (error) {
     console.error('Error retrieving token in AxiosBase:', error);
-    throw error;
+    return Promise.reject(error);
   }
 }
 
+
+
 export default AxiosBase;
-
-

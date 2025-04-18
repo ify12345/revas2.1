@@ -59,7 +59,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             <option value="" disabled>
               {placeholder || 'Select an option'}
             </option>
-            {options.map((option) => (
+            {options.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -103,7 +103,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default CustomInput;
