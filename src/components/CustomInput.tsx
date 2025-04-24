@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
-import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import React, { useState, ReactNode } from 'react';
+import { FaRegEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 // Define the props interface for the CustomInput component
 interface CustomInputProps {
@@ -15,6 +15,7 @@ interface CustomInputProps {
   required?: boolean; // Optional: Whether the input is required
   disabled?: boolean; // Optional: Whether the input is disabled
   options?: { label: string; value: string | number }[]; // Optional: Dropdown options
+  icon?: ReactNode; // New prop to accept any React node as an icon
 }
 
 // CustomInput component
@@ -30,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   required = false,
   disabled = false,
   options,
+  icon,
 }) => {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
@@ -67,22 +69,30 @@ const CustomInput: React.FC<CustomInputProps> = ({
           </select>
         ) : (
           // Render input field for other types
-          <input
-            type={inputType}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            disabled={disabled}
-            onFocus={onFocus}
-            name={name}
-            className={`w-full border text-primary border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
-              type === 'email' ? 'pl-2' : ''
-            } ${className}`}
-          />
+          <>
+            <input
+              type={inputType}
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+              disabled={disabled}
+              onFocus={onFocus}
+              name={name}
+              className={`w-full border text-primary border-[#E2E8F0] py-[10px] px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                icon ? 'pl-2' : ''
+              } ${className}`}
+            />
+            {/* Custom Icon */}
+            {icon && (
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                {icon}
+              </div>
+            )}
+          </>
         )}
 
         {/* Email Icon */}
-        {type === 'email' && (
+        {type === 'email' && !icon && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
             <FaRegEnvelope className="text-gray_light" />
           </div>
@@ -103,7 +113,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         )}
       </div>
     </div>
-  )
+  );
 };
 
 export default CustomInput;

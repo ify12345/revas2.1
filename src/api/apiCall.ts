@@ -25,6 +25,7 @@ async function apiCall(
   try {
     const {data} = await asyncFn;
     console.log('data', data);
+    
     if (route === 'auth') {
       const {token} = data;
       const key = 'revas';

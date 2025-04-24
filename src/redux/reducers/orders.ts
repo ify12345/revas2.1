@@ -9,7 +9,7 @@ interface Order {
   product: string;
   capacity: number;
   pricePerTonne: number;
-  supplier: string;
+  supplierName: string;
   supplierPrice: number;
   shippingCost: number;
   negotiatePrice: boolean;
@@ -35,8 +35,8 @@ export const order = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getOrder.fulfilled, (state, {payload}) => {
-      state.order = payload;
-      console.log("order:", payload);
+      state.order = payload?.data || [];
+      // console.log("order:", payload.data);
     });
   },
 });

@@ -9,11 +9,22 @@ export const createOrder = createAsyncThunk<
   CreateOrderResponse,
   CreateOrderPayload,
   AsyncThunkConfig
->('/api/create-order', async (formData, thunkAPI) => {
+>('/create-order', async (formData, thunkAPI) => {
   const Axios = await AxiosBase();
   console.log('pay', formData);
   return apiCall(
-    Axios.post('/api/create-order', formData), thunkAPI);
+    Axios.post('/create-order', formData), thunkAPI);
+});
+
+export const saveOrder = createAsyncThunk<
+  CreateOrderResponse,
+  CreateOrderPayload,
+  AsyncThunkConfig
+>('/save-order', async (formData, thunkAPI) => {
+  const Axios = await AxiosBase();
+  console.log('pay', formData);
+  return apiCall(
+    Axios.post('/save-order', formData), thunkAPI);
 });
 
 export const getOrder = createAsyncThunk<
@@ -23,7 +34,19 @@ export const getOrder = createAsyncThunk<
 >('/api/get-order', async (_, thunkAPI) => {
   const Axios = await AxiosBase();
   return apiCall(
-    Axios.get('/api/orders'), thunkAPI);
+    Axios.get('/api/orders/dashboard'), thunkAPI);
+    
+});
+
+export const getDrafts = createAsyncThunk<
+  GetOrderResponse,
+  GetOrderPayload,
+  AsyncThunkConfig
+>('/api/get-drafts', async (_, thunkAPI) => {
+  const Axios = await AxiosBase();
+  return apiCall(
+    Axios.get('/saved-orders'), thunkAPI);
+    
 });
 
 export const deleteOrder = createAsyncThunk<
@@ -33,14 +56,14 @@ export const deleteOrder = createAsyncThunk<
 >('/api/delete-order', async (payload, thunkAPI) => {
   const Axios = await AxiosBase();
   return apiCall(
-    Axios.delete(`/api/orders/${payload}`,payload), thunkAPI);
+    Axios.delete(`/delete-orders/${payload}`,payload), thunkAPI);
 });
 
 export const editOrder = createAsyncThunk<
   deleteOrderResponse,
   EditOrderPayload,
   AsyncThunkConfig
->('/api/delete-order', async (payload, thunkAPI) => {
+>('/api/edit-order', async (payload, thunkAPI) => {
   const Axios = await AxiosBase();
   return apiCall(
     Axios.put(`/api/orders/${payload.id}`,payload), thunkAPI);

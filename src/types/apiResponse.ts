@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 
 export interface Profile {
   id: number;
@@ -55,7 +56,7 @@ export interface RegisterResponse {
     product: string;
     capacity: number;
     pricePerTonne: number;
-    supplier: string;
+    supplierName: string;
     supplierPrice: number;
     shippingCost: number;
     negotiatePrice: boolean;
@@ -71,11 +72,17 @@ export interface RegisterResponse {
     updatedAt: string; 
     message?: string
     success?: boolean;
+    data?:[]
   }
 export interface RegisterProductResponse {
   success: boolean;
   message: string;
 }
+export interface GetProductsResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface deleteOrderResponse {
   success: boolean;
   message: string;
@@ -88,7 +95,11 @@ export interface deleteOrderResponse {
   msg?:string
 }
 
-export type GetOrderResponse = Order | Order[];
+export interface GetOrderResponse {
+  success: boolean;
+  count: number;
+  data: Order[];
+}
 
 export interface ApiError {
   msg: string;

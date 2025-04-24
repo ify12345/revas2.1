@@ -3,7 +3,8 @@ import {  FaClock } from "react-icons/fa";
 import PiAirlineSeat from './svg/PiAirlineSeat';
 import { FcCancel } from "react-icons/fc";
 
-type StatusType = "matched" | "not_matched" | "pending";
+type StatusType = 'matched' | 'not_matched' | 'pending' | 'document_phase';
+
 
 interface BadgeProps {
   status: StatusType;
@@ -28,10 +29,23 @@ const statusConfig: Record<StatusType, { text: string; color: string; bgColor: s
     bgColor: "#FFFBEB",
     icon: <FaClock color="#D97706" />,
   },
+  document_phase: {
+    text: "Document phase",
+    color: "#D97706",
+    bgColor: "#FFFBEB",
+    icon: <FaClock color="#D97706" />,
+  },
 };
 
 export default function Badge({ status }: BadgeProps) {
-  const { text, color, bgColor, icon } = statusConfig[status];
+  const config = statusConfig[status];
+
+  if (!config) {
+    console.log(`Invalid status passed to Badge: ${status}`);
+    return null;
+  }
+
+  const { text, color, bgColor, icon } = config;
 
   return (
     <div className="flex gap-2 items-center py-1 px-3 rounded-xl w-fit" style={{ backgroundColor: bgColor, color }}>
@@ -40,3 +54,4 @@ export default function Badge({ status }: BadgeProps) {
     </div>
   );
 }
+

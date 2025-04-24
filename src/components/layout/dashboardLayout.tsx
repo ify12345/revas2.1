@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '@/redux/reducers/auth'
 import Message from '../Message'
 import Notifications from '../Notifications'
+import { getOrder } from '@/api/order'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -37,6 +38,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  
+  React.useEffect(() => {
+    const token = localStorage.getItem('revas')
+    if (token) {
+      // console.log(token)
+      dispatch(getOrder({}))
+    }
+  }, [dispatch])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -59,7 +68,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     dispatch(logout())
     localStorage.removeItem('revas')
     persistor.purge()
-    navigate('/sign-in')
+    navigate('/account-manager/sign-in')
   }
 
   const user = useAppSelector(state => state.auth.user)
@@ -160,7 +169,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               isSidebarOpen ? 'relative left-14' : ''
             }`}
           >
-            {isSidebarOpen ? <IoClose className="text-primary cursor-pointer" /> : <FiMenu className="text-primary cursor-pointer" />}
+            {isSidebarOpen ? (
+              <IoClose className="text-primary cursor-pointer" />
+            ) : (
+              <FiMenu className="text-primary cursor-pointer" />
+            )}
           </button>
 
           {!isSidebarOpen && (

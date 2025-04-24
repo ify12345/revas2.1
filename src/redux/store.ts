@@ -17,6 +17,7 @@ import {
 import languageReducer from './reducers/language'
 import authReducer from './reducers/auth'
 import orderReducer from './reducers/orders'
+import productReducer from './reducers/products'
 
 const asyncPersistConfig = {
   key: 'main',
@@ -29,7 +30,8 @@ const persistedAuthReducer = persistReducer(asyncPersistConfig, authReducer)
 const reducers = combineReducers({
   language: persistedLangReducer,
   auth: persistedAuthReducer,
-  order: orderReducer
+  order: orderReducer,
+  product: productReducer
 })
 
 

@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { deleteOrder } from '@/api/order'
+import Badge from '@/components/Badge'
 import ActionDropdown from '@/components/modal/ActionDropdown'
 import OrderDetails from '@/components/modal/orders-screen/OrderDetails'
 import Status from '@/components/Status'
 import { showToast } from '@/components/Toast'
 import { useAppDispatch } from '@/redux/store'
 import { Order } from '@/types/apiResponse'
+import { StatusType } from '@/types/product'
 import * as React from 'react'
 import { FaCheckCircle } from 'react-icons/fa'
 
@@ -106,12 +108,12 @@ export default function Pending({ people }: Props) {
                 <tbody className="divide-y divide-[#F8FAFC] bg-white relative z-10">
                   {people.map(person => (
                     <tr
-                      key={person.companyName}
+                      key={person.supplierName}
                       onClick={() => openDetailsModal(person)}
                       className="cursor-pointer hover:bg-gray-100"
                     >
                       <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
-                        {person.companyName}
+                        {person.supplierName}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                         {person.product}
@@ -126,7 +128,7 @@ export default function Pending({ people }: Props) {
                         {person.location}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                        {person.status}
+                        <Badge status={person.status as StatusType} />
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 relative z-10">
                         <ActionDropdown

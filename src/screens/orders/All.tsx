@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { deleteOrder } from '@/api/order'
+import Badge from '@/components/Badge'
 import ActionDropdown from '@/components/modal/ActionDropdown'
 import OrderDetails from '@/components/modal/orders-screen/OrderDetails'
 import Status from '@/components/Status'
@@ -13,6 +14,7 @@ import { FaCheckCircle } from 'react-icons/fa'
 interface Props {
   people: Order[]
 }
+type StatusType = 'matched' | 'not_matched' | 'pending';
 
 export default function All({ people }: Props) {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = React.useState(false)
@@ -24,6 +26,7 @@ export default function All({ people }: Props) {
     setIsDetailsModalOpen(true)
     document.body.style.overflow = 'hidden'
   }
+  // console.log(people)
 
   const closeDetailsModal = () => {
     setIsDetailsModalOpen(false)
@@ -43,7 +46,7 @@ export default function All({ people }: Props) {
       .catch(err => {
         setLoading(false)
         const errorMessage =
-          err?.msg || err?.response?.data?.detail
+          err?.msg.message || err?.response?.data?.detail
         console.error('Error:', err)
         showToast({ type: 'error', msg: errorMessage })
       })
@@ -108,12 +111,12 @@ export default function All({ people }: Props) {
                 <tbody className="divide-y divide-[#F8FAFC] bg-white relative z-10">
                   {people.map(person => (
                     <tr
-                      key={person.companyName}
+                      key={person.supplierName}
                       onClick={() => openDetailsModal(person)}
                       className="cursor-pointer hover:bg-gray-100"
                     >
                       <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
-                        {person.companyName}
+                        {person.supplierName}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                         {person.product}
@@ -128,7 +131,7 @@ export default function All({ people }: Props) {
                         {person.location}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                        {person.status}
+                        <Badge status={person.status as StatusType} />
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 relative z-10">
                         <ActionDropdown

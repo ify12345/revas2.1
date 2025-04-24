@@ -7,7 +7,7 @@ import { Person } from '../types/page.js'
 import { FaCheckCircle } from 'react-icons/fa'
 import CurrencySvg from './svg/Currency.js'
 import WalletSvg from './svg/Wallet.js'
-import CreateOrderForm from './modal/orders-screen/CreateOrderForm.js'
+
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FaSearch } from 'react-icons/fa'
 import {
@@ -23,6 +23,7 @@ import { getOrder } from '@/api/order.js'
 import { Order } from '@/types/apiResponse.js'
 import { RiDraftLine } from 'react-icons/ri'
 import DraftsModal from './modal/DraftsModal.js'
+import CreateOrderForm from './modal/orders-screen/index.js'
 
 const navigation = [
   { name: 'All orders', key: 'all' },
@@ -70,7 +71,7 @@ export default function OrdersScreen() {
           (item): item is Order =>
             item !== null && item.status === 'not_matched'
         )
-        console.log('Pending orders:', pendingOrders)
+        // console.log('Pending orders:', pendingOrders)
         return <Pending people={pendingOrders} />
 
       case 'completed':

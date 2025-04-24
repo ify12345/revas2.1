@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import store, { persistor } from './redux/store'
 import { ToastContainer } from 'react-toastify';
+import TokenExpirationHandler from './api/TokenExpirationHandler'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
         <App />
+        <TokenExpirationHandler/>
         </PersistGate>
       </Provider>
     </ThemeProvider>

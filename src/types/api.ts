@@ -66,21 +66,34 @@ export interface RegisterProductPayload {
   location?: string
   image?: string | File
 }
+export interface GetProductsPayload {
+  companyName?: string
+  product?: string
+  capacity?: number
+  price?: number
+  location?: string
+  image?: string | File
+}
 
 export interface CreateOrderPayload {
-  companyName: string
-  email: string
+  companyName?: string
+  email?: string | undefined;
   location: string
   product: string
   capacity: number
   pricePerTonne: number
-  supplier: string
+  supplierName: string
   supplierPrice: number
   shippingCost: number
-  shippingType: string // Added the missing field
+  shippingType: string; 
   negotiatePrice: boolean
   priceRange: number
   savedStatus: string;
+  buyerName: string;
+  buyerId?: string;
+  paymentTerms?: number;
+  supplierId?: string;
+ 
 }
 
 export interface EditOrderPayload {

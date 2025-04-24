@@ -25,7 +25,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
   const [loading, setLoading] = useState(false)
 
   const [formData, setFormData] = useState({
-    companyName: person.companyName,
+    supplierName: person.supplierName,
     product: person.product,
     pricePerTonne: person.pricePerTonne,
     location: person.location,
@@ -73,7 +73,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
             label="Company Name"
             type="text"
             name="companyName"
-            value={formData.companyName}
+            value={formData.supplierName}
             onChange={handleChange}
           />
         </div>
@@ -121,11 +121,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            options={[
-              { label: 'Not Matched', value: 'not_matched' },
-              { label: 'Confirmed', value: 'confirmed' },
-              { label: 'Completed', value: 'completed' },
-            ]}
+         
           />
         </div>
 

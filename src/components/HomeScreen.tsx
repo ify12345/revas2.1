@@ -2,7 +2,6 @@
 import * as React from 'react'
 import { RiDraftLine } from 'react-icons/ri'
 import RowDetailsModal from './modal/RowDetailModal.js'
-import CreateOrderModal from './modal/CreateOrderModal.js'
 import { FaCheckCircle, FaMoneyBill } from 'react-icons/fa'
 import { CiWallet } from 'react-icons/ci'
 import DollarSvg from './svg/dollar.js'
@@ -18,6 +17,9 @@ import { deleteOrder, getOrder } from '@/api/order.js'
 import ActionDropdown from './modal/ActionDropdown.js'
 import { Order } from '@/types/apiResponse.js'
 import { showToast } from './Toast.js'
+import CreateOrderForm from './modal/orders-screen/index.js'
+
+type StatusType = 'matched' | 'not_matched' | 'pending';
 
 const details = [
   {
@@ -73,9 +75,9 @@ export default function HomeScreen() {
   const [selectedPerson, setSelectedPerson] = React.useState<Order | null>(null)
   const [loading, setLoading] = React.useState(false)
   const dispatch = useAppDispatch()
-  React.useEffect(() => {
-    dispatch(getOrder({}))
-  }, [dispatch])
+  // React.useEffect(() => {
+  //   dispatch(getOrder({}))
+  // }, [dispatch])
 
   const orders = useAppSelector(state => state.order)
 
@@ -170,7 +172,7 @@ export default function HomeScreen() {
         onClose={closeRowDetailsModal}
         data={selectedRowData}
       />
-      <CreateOrderModal
+      <CreateOrderForm
         isOpen={isCreateOrderModalOpen}
         onClose={closeCreateOrderModal}
       />
@@ -261,12 +263,12 @@ export default function HomeScreen() {
                         .filter((person): person is Order => person !== null)
                         .map(person => (
                           <tr
-                            key={person.companyName}
+                            key={person.supplierName}
                             onClick={() => openDetailsModal(person)}
                             className="cursor-pointer hover:bg-gray-100"
                           >
                             <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
-                              {person.companyName}
+                              {person.supplierName}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                               {person.product}
@@ -281,7 +283,9 @@ export default function HomeScreen() {
                               {person.location}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.status}
+                            <Badge status={person.status as StatusType} />
+
+                    
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 relative z-10">
                               <ActionDropdown
