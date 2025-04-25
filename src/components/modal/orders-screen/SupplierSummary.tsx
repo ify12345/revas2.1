@@ -11,7 +11,7 @@ const SupplierSummary: React.FC<SupplierSummaryProps> = ({ formData, user }) => 
   <div className="border border-stroke bg-[#efefef] px-4 py-4 rounded-lg flex flex-col gap-1">
     <div className="flex justify-between items-center text-gray_light text-sm w-full">
       <p className="text-primary font-bold">
-        {formData.supplier || user.user.firstName}
+        {formData.supplierName || user.user.firstName}
       </p>
       <button>x</button>
     </div>

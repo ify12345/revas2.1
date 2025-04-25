@@ -82,7 +82,7 @@ const RowDetailsModal: React.FC<RowDetailsModalProps> = ({
                 </div>
                 <div className="flex justify-between w-full">
                   <p className="text-gray">Status</p>
-                  <Badge status="matched" />
+                  <Badge orderId="" status="matched" />
                 </div>
               </div>
             </div>

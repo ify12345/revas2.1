@@ -3,13 +3,14 @@
 import ActionDropdown from '@/components/modal/ActionDropdown'
 import OrderDetails from '@/components/modal/orders-screen/OrderDetails'
 import Status from '@/components/Status'
+import { Order } from '@/types/apiResponse'
 import { Person } from '@/types/page'
 import * as React from 'react'
 import { FaCheckCircle } from 'react-icons/fa';
 
 const people: Person[] = [
   {
-    companyName: 'EcoPET Solutions',
+    supplierName: 'EcoPET Solutions',
     product: 'Clear PET Flakes',
     capacity: 850 - 900,
     price: '500',
@@ -37,14 +38,20 @@ const people: Person[] = [
 ]
 export default function Buyers() {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = React.useState(false)
-  const [selectedPerson, setSelectedPerson] = React.useState<Person | null>(
+  const [selectedPerson, setSelectedPerson] = React.useState<Order | null>(
     null
   )
 
   const openDetailsModal = (person: Person): void => {
-    setSelectedPerson(person)
-    setIsDetailsModalOpen(true)
-    document.body.style.overflow = 'hidden'
+    // Convert person to Order or ensure companyName is not undefined
+    const order: Order = {
+      ...person,
+      companyName: person.companyName || '' // Provide default value
+    };
+    
+    setSelectedPerson(order);
+    setIsDetailsModalOpen(true);
+    document.body.style.overflow = 'hidden';
   }
 
   const closeDetailsModal = () => {
@@ -108,12 +115,12 @@ export default function Buyers() {
               <tbody className="divide-y divide-gray-200 bg-white relative z-10">
                 {people.map(person => (
                   <tr
-                    key={person.companyName}
+                    key={person.supplierName}
                     onClick={() => openDetailsModal(person)}
                     className="cursor-pointer hover:bg-gray-100"
                   >
                     <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
-                      {person.companyName}
+                      {person.supplierName}
                     </td>
                     <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                       {person.product}
@@ -134,11 +141,11 @@ export default function Buyers() {
                       <ActionDropdown
                         onGoTo={() => {
                           // Add your go to logic here
-                          console.log('Go to:', person.companyName)
+                          console.log('Go to:', person.supplierName)
                         }}
                         onDelete={() => {
                           // Add your delete logic here
-                          console.log('Delete:', person.companyName)
+                          console.log('Delete:', person.supplierName)
                         }}
                       />
                     </td>

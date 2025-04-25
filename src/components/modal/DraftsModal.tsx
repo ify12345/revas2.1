@@ -14,7 +14,7 @@ const people: Person[] = [
     id: 'IIS468S',
     date: '12-12-24',
     name: 'Bottling Solutions Inc',
-    status: <Badge status="matched" />,
+    status: <Badge orderId='' status="matched" />,
     price: '$500,000',
     country: 'Thailand',
     quantity: '100',

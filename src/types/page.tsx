@@ -57,7 +57,8 @@ export type authStateType = {
 };
 export interface Person {
   id: string;
-  companyName: string;
+  supplierName: string;
+  companyName?: string;
   email: string;
   location: string;
   product: string;
