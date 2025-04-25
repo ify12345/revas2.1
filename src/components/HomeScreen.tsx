@@ -18,6 +18,7 @@ import ActionDropdown from './modal/ActionDropdown.js'
 import { Order } from '@/types/apiResponse.js'
 import { showToast } from './Toast.js'
 import CreateOrderForm from './modal/orders-screen/index.js'
+import OrderDetails from './modal/orders-screen/OrderDetails.js'
 
 type StatusType = 'matched' | 'not_matched' | 'pending';
 
@@ -41,22 +42,22 @@ const details = [
   { name: 'Total Volume (MT)', numer: '90,803', icon: <BsGraphUp /> },
 ]
 
-const people: Person[] = [
-  {
-    id: 'IIS468S',
-    date: '12-12-24',
-    name: 'Bottling Solutions Inc',
-    status: <Badge status="matched" />,
-    price: '$500,000',
-    country: 'Thailand',
-    quantity: '100',
-    grade: 'A',
-    supplier: 'EcoPlast Industries',
-    product: 'Clear PET Flakes',
-    capacity: '',
-  },
-  // More people...
-]
+// const people: Person[] = [
+//   {
+//     id: 'IIS468S',
+//     date: '12-12-24',
+//     name: 'Bottling Solutions Inc',
+//     status: <Badge status="matched" />,
+//     price: '$500,000',
+//     country: 'Thailand',
+//     quantity: '100',
+//     grade: 'A',
+//     supplier: 'EcoPlast Industries',
+//     product: 'Clear PET Flakes',
+//     capacity: '',
+//   },
+//   // More people...
+// ]
 
 interface HomeScreenProps {
   openOrderModal: () => void
@@ -133,7 +134,7 @@ export default function HomeScreen() {
       })
       .catch(err => {
         setLoading(false)
-        const errorMessage = err?.msg || err?.response?.data?.detail
+        const errorMessage = err?.msg.message || err?.response?.data?.detail
         console.error('Error:', err)
         showToast({ type: 'error', msg: errorMessage })
       })
@@ -283,7 +284,7 @@ export default function HomeScreen() {
                               {person.location}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                            <Badge status={person.status as StatusType} />
+                            <Badge status={person.status as StatusType} orderId={person.id} />
 
                     
                             </td>
@@ -309,8 +310,14 @@ export default function HomeScreen() {
           </div>
         </div>
       </div>
-
-      <div className=" p-4 border border-stroke rounded-lg mt-4">
+      {selectedPerson && (
+        <OrderDetails
+          isOpen={isDetailsModalOpen}
+          onClose={closeDetailsModal}
+          person={selectedPerson}
+        />
+      )}
+      {/* <div className=" p-4 border border-stroke rounded-lg mt-4">
         <div className="sm:flex sm:items-center border-b border-stroke pb-3">
           <div className="sm:flex-auto">Request</div>
         </div>
@@ -397,7 +404,7 @@ export default function HomeScreen() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

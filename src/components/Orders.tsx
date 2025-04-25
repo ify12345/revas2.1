@@ -39,6 +39,14 @@ export default function OrdersScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeScreen, setActiveScreen] = React.useState('all')
   const [isDraftsModalOpen, setIsDraftsModalOpen] = React.useState(false)
+  
+  // Filter states
+  const [companyFilter, setCompanyFilter] = useState<string>('')
+  const [productFilter, setProductFilter] = useState<string>('')
+  const [statusFilter, setStatusFilter] = useState<string>('')
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [dateFilter, setDateFilter] = useState<string>('')
+  
   // Add Redux hooks
   const dispatch = useAppDispatch()
   const orders = useAppSelector(state => state.order)
@@ -59,34 +67,77 @@ export default function OrdersScreen() {
     setIsDraftsModalOpen(false)
   }
 
+  // Apply filters to the list
+  const getFilteredList = () => {
+    let filteredList = list.filter((item): item is Order => item !== null)
+    
+    // Filter by company name
+    if (companyFilter) {
+      filteredList = filteredList.filter(item => 
+        item.supplierName?.toLowerCase().includes(companyFilter.toLowerCase())
+      )
+    }
+    
+    // Filter by product
+    if (productFilter) {
+      filteredList = filteredList.filter(item => 
+        item.product?.toLowerCase().includes(productFilter.toLowerCase())
+      )
+    }
+    
+    // Filter by status
+    if (statusFilter) {
+      filteredList = filteredList.filter(item => 
+        item.status === statusFilter
+      )
+    }
+    
+    // Filter by search query (search across multiple fields)
+    if (searchQuery) {
+      filteredList = filteredList.filter(item => 
+        item.supplierName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.product?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.location?.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }
+    
+    // Filter by date (assuming there's a createdAt field as ISO string)
+    if (dateFilter) {
+      const selectedDate = new Date(dateFilter).setHours(0, 0, 0, 0)
+      
+      filteredList = filteredList.filter(item => {
+        if (!item.createdAt) return false
+        const orderDate = new Date(item.createdAt).setHours(0, 0, 0, 0)
+        return orderDate === selectedDate
+      })
+    }
+    
+    return filteredList
+  }
+
   const getActiveScreen = () => {
+    const filteredList = getFilteredList()
+    
     switch (activeScreen) {
       case 'all':
-        return (
-          <All people={list.filter((item): item is Order => item !== null)} />
-        )
+        return <All people={filteredList} />
 
       case 'pending':
-        const pendingOrders = list.filter(
-          (item): item is Order =>
-            item !== null && item.status === 'not_matched'
+        const pendingOrders = filteredList.filter(
+          (item): item is Order => item.status === 'not_matched'
         )
-        // console.log('Pending orders:', pendingOrders)
         return <Pending people={pendingOrders} />
 
       case 'completed':
         return (
           <Completed
-            people={list.filter(
-              (item): item is Order =>
-                item !== null && item.status === 'completed'
+            people={filteredList.filter(
+              (item): item is Order => item.status === 'completed'
             )}
           />
         )
       default:
-        return (
-          <All people={list.filter((item): item is Order => item !== null)} />
-        )
+        return <All people={filteredList} />
     }
   }
 
@@ -99,6 +150,29 @@ export default function OrdersScreen() {
     setIsModalOpen(false)
     document.body.style.overflow = 'auto'
   }
+
+  // Get unique company names for dropdown
+  const companyOptions = Array.from(new Set(
+    list
+      .filter((item): item is Order => item !== null)
+      .map(item => item.supplierName)
+  )).filter(Boolean)
+
+  // Get unique product names for dropdown
+  const productOptions = Array.from(new Set(
+    list
+      .filter((item): item is Order => item !== null)
+      .map(item => item.product)
+  )).filter(Boolean)
+
+  // Status options
+  const statusOptions = [
+    { value: 'matched', label: 'Matched' },
+    { value: 'not_matched', label: 'Not Matched' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'document_phase', label: 'Documentation' },
+    { value: 'completed', label: 'Completed' }
+  ]
 
   const orderDetails = [
     { name: 'Total orders', numer: list?.length || '0', icon: <CurrencySvg /> },
@@ -219,17 +293,35 @@ export default function OrdersScreen() {
 
         <div className="py-4 flex flex-col gap-2 lg:flex-row items-center justify-between w-full">
           <div className="flex flex-col lg:flex-row lg:items-center gap-3 w-full lg:w-1/2">
-            <select className=" p-2 border border-stroke rounded-md">
+            <select 
+              className="p-2 border border-stroke rounded-md"
+              value={companyFilter}
+              onChange={(e) => setCompanyFilter(e.target.value)}
+            >
               <option value="">Company Name</option>
-              <option value="location1">Location 1</option>
+              {companyOptions.map((company, index) => (
+                <option key={index} value={company}>{company}</option>
+              ))}
             </select>
-            <select className=" p-2 border border-stroke rounded-md">
+            <select 
+              className="p-2 border border-stroke rounded-md"
+              value={productFilter}
+              onChange={(e) => setProductFilter(e.target.value)}
+            >
               <option value="">Product</option>
-              <option value="location1">Location 1</option>
+              {productOptions.map((product, index) => (
+                <option key={index} value={product}>{product}</option>
+              ))}
             </select>
-            <select className="p-2 border border-stroke rounded-md">
+            <select 
+              className="p-2 border border-stroke rounded-md"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
               <option value="">Status</option>
-              <option value="location1">Location 1</option>
+              {statusOptions.map((status) => (
+                <option key={status.value} value={status.value}>{status.label}</option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-1/2 justify-end lg:gap-9">
@@ -238,12 +330,16 @@ export default function OrdersScreen() {
               <input
                 type="search"
                 placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
             <input
               className="border border-stroke p-2 rounded-lg focus:ring-primary focus:ring-2 focus:outline-none"
               type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
             />
           </div>
         </div>

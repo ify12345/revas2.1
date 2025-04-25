@@ -110,10 +110,10 @@ const handleSubmit = (orderId: string) => {
                   {people.map(person => (
                     <tr
                       key={person.supplierName}
-                      onClick={() => openDetailsModal(person)}
+                 
                       className="cursor-pointer hover:bg-gray-100"
                     >
-                      <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
+                      <td onClick={() => openDetailsModal(person)} className="cursor-pointer py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 hover:scale-95 transition-all duration-300">
                         {person.supplierName}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
@@ -129,7 +129,7 @@ const handleSubmit = (orderId: string) => {
                         {person.location}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                           <Badge status={person.status as StatusType} />
+                            <Badge status={person.status as StatusType} orderId={person.id} />
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 relative z-10">
                       <ActionDropdown

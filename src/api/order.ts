@@ -66,5 +66,16 @@ export const editOrder = createAsyncThunk<
 >('/api/edit-order', async (payload, thunkAPI) => {
   const Axios = await AxiosBase();
   return apiCall(
-    Axios.put(`/api/orders/${payload.id}`,payload), thunkAPI);
+    Axios.put(`/update-orders/${payload.id}`), thunkAPI);
+});
+
+export const editStatus = createAsyncThunk<
+  deleteOrderResponse,
+  EditOrderPayload,
+  AsyncThunkConfig
+>('/api/edit-status', async (payload, thunkAPI) => {
+  const Axios = await AxiosBase();
+  // console.log(payload.status)
+  return apiCall(
+    Axios.patch(`/api/orders/${payload.id}/status`, { status: payload.status }), thunkAPI);
 });

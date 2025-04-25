@@ -97,7 +97,7 @@ export interface CreateOrderPayload {
 }
 
 export interface EditOrderPayload {
-   id?: string;
+   id?: string | number;
    companyName?: string
   email?: string
   location?: string
@@ -111,6 +111,7 @@ export interface EditOrderPayload {
   negotiatePrice?: boolean
   priceRange?: number
   savedStatus?: string;
+  status?:string
 
 }
 export interface GetOrderPayload {
