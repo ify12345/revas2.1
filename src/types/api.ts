@@ -118,3 +118,7 @@ export interface GetOrderPayload {
   
 
 }
+
+export interface generateOrderPayload {
+  id: string
+}

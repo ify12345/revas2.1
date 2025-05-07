@@ -121,7 +121,7 @@ export default function Badge({ status, orderId }: BadgeProps) {
       </div>
       
       {isOpen && (
-        <div className="absolute left-0 z-50 mt-1 w-40 rounded-md shadow-lg bg-white">
+        <div className="relative left-0 z-50 mt-1 w-40 rounded-md shadow-lg bg-white">
           <div className="py-1">
             {Object.entries(statusConfig).map(([key, value]) => (
               <div

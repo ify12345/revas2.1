@@ -1,4 +1,4 @@
-import { getOrder } from "@/api/order";
+import { getDrafts, getOrder } from "@/api/order";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface Order {
@@ -23,10 +23,12 @@ interface Order {
 
 interface State {
   order: Order | Order[] | null;
+  savedOrder: Order[] | null;
 }
 
 const initialState: State = {
-  order: null
+  order: null,
+  savedOrder: null
 };
 
 export const order = createSlice({
@@ -37,6 +39,10 @@ export const order = createSlice({
     builder.addCase(getOrder.fulfilled, (state, {payload}) => {
       state.order = payload?.data || [];
       // console.log("order:", payload.data);
+    });
+    builder.addCase(getDrafts.fulfilled, (state, {payload}) => {
+      state.savedOrder = Array.isArray(payload?.data) ? payload.data : [];
+      // console.log("savedorder:", payload);
     });
   },
 });

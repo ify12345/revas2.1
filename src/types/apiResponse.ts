@@ -27,12 +27,7 @@ export interface Profile {
   roles: string;
 }
 
-export enum Role {
-  ADMIN = 1,
-  MANAGER = 2,
-  STAFF = 3,
-  CLIENT = 4,
-}
+export type Role =  'buyer' | 'seller'
 
 export interface RegisterResponse {
   success: boolean;
@@ -41,7 +36,7 @@ export interface RegisterResponse {
   first_name: string;
   last_name: string;
   email: string;
-  role?: Role[]
+  role?: Role
   is_active: boolean;
   profile_completed: boolean;
   created_at: string;
@@ -87,6 +82,13 @@ export interface deleteOrderResponse {
   success: boolean;
   message: string;
 }
+export interface generateOrderResponse { 
+  data?:{
+    docUrl: string
+    message: string;
+  }
+  message?: string
+}
 
  export interface CreateOrderResponse {
   orders?: Order[]; 
@@ -99,6 +101,12 @@ export interface GetOrderResponse {
   success: boolean;
   count: number;
   data: Order[];
+}
+
+export interface GetDraftResponse {
+  success?: boolean;
+  count?: number;
+  data?: Order[];
 }
 
 export interface ApiError {

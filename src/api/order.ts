@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import AxiosBase from './axios';
 import apiCall from './apiCall';
-import { AsyncThunkConfig, CreateOrderPayload, EditOrderPayload, GetOrderPayload } from '@/types/api';
-import { CreateOrderResponse, deleteOrderResponse, GetOrderResponse } from '@/types/apiResponse';
+import { AsyncThunkConfig, CreateOrderPayload, EditOrderPayload, generateOrderPayload, GetOrderPayload } from '@/types/api';
+import { CreateOrderResponse, deleteOrderResponse, generateOrderResponse, GetDraftResponse, GetOrderResponse } from '@/types/apiResponse';
 
 
 export const createOrder = createAsyncThunk<
@@ -39,7 +39,7 @@ export const getOrder = createAsyncThunk<
 });
 
 export const getDrafts = createAsyncThunk<
-  GetOrderResponse,
+  GetDraftResponse,
   GetOrderPayload,
   AsyncThunkConfig
 >('/api/get-drafts', async (_, thunkAPI) => {
@@ -78,4 +78,15 @@ export const editStatus = createAsyncThunk<
   // console.log(payload.status)
   return apiCall(
     Axios.patch(`/api/orders/${payload.id}/status`, { status: payload.status }), thunkAPI);
+});
+
+export const generateOrder = createAsyncThunk<
+  generateOrderResponse,
+  generateOrderPayload,
+  AsyncThunkConfig
+>('/generate-doc', async (payload, thunkAPI) => {
+  const Axios = await AxiosBase();
+  console.log('pay', payload.id);
+  return apiCall(
+    Axios.post(`/documents/orders/${payload.id}`, ), thunkAPI);
 });

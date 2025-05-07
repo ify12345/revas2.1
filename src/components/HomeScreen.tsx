@@ -20,7 +20,7 @@ import { showToast } from './Toast.js'
 import CreateOrderForm from './modal/orders-screen/index.js'
 import OrderDetails from './modal/orders-screen/OrderDetails.js'
 
-type StatusType = 'matched' | 'not_matched' | 'pending';
+type StatusType = 'matched' | 'not_matched' | 'pending'
 
 const details = [
   {
@@ -81,6 +81,7 @@ export default function HomeScreen() {
   // }, [dispatch])
 
   const orders = useAppSelector(state => state.order)
+  const savedOrder = useAppSelector(state => state.order.savedOrder)
 
   const list = Array.isArray(orders.order)
     ? orders.order
@@ -153,12 +154,17 @@ export default function HomeScreen() {
           </div>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex items-center gap-2 ">
-          <div onClick={openDraftsModal} className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md">
+          <div
+            onClick={openDraftsModal}
+            className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md"
+          >
             <RiDraftLine color="gray" />
             Drafts
-            <div className="size-[20px] bg-[#2364DB] flex items-center justify-center text-[#fff] rounded-full">
-              4
-            </div>
+            {savedOrder && savedOrder.length > 0 && (
+              <div className="size-[20px] bg-[#2364DB] flex items-center justify-center text-[#fff] rounded-full">
+                {savedOrder.length}
+              </div>
+            )}
           </div>
           {/* <button
             onClick={openCreateOrderModal}
@@ -265,10 +271,12 @@ export default function HomeScreen() {
                         .map(person => (
                           <tr
                             key={person.supplierName}
-                            onClick={() => openDetailsModal(person)}
                             className="cursor-pointer hover:bg-gray-100"
                           >
-                            <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
+                            <td
+                              className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                              onClick={() => openDetailsModal(person)}
+                            >
                               {person.supplierName}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
@@ -284,9 +292,10 @@ export default function HomeScreen() {
                               {person.location}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                            <Badge status={person.status as StatusType} orderId={person.id} />
-
-                    
+                              <Badge
+                                status={person.status as StatusType}
+                                orderId={person.id}
+                              />
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 relative z-10">
                               <ActionDropdown

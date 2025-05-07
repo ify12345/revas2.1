@@ -99,12 +99,14 @@ export interface User {
     fullName?: string
     email?: string
     token?: string
+    clientType?:string;
     hasRegisteredProduct: boolean
   }
   doesHomeService?: boolean
   outlet?: Outlet
   jobTitle?: null | string
-  role?: Role[]
+  role?: Role
+  clientType?:string;
   token?: string
 }
 

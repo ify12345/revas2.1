@@ -1,32 +1,20 @@
 // Modal.tsx
 import * as React from 'react'
 import { IoMdClose } from 'react-icons/io'
-import { Person } from '../../types/tables'
+
 import Badge from '../Badge'
+import { useAppSelector } from '@/redux/store'
+
+import { StatusType } from '@/types/product'
+import ActionDropdown from './ActionDropdown'
 
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-const people: Person[] = [
-  {
-    id: 'IIS468S',
-    date: '12-12-24',
-    name: 'Bottling Solutions Inc',
-    status: <Badge orderId='' status="matched" />,
-    price: '$500,000',
-    country: 'Thailand',
-    quantity: '100',
-    grade: 'A',
-    supplier: 'EcoPlast Industries',
-    product: 'Clear PET Flakes',
-    capacity: '',
-  },
-  // More people...
-]
-
 const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
+  const savedOrder = useAppSelector(state => state.order.savedOrder)
   if (!isOpen) return null
 
   return (
@@ -35,7 +23,7 @@ const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
       onClick={onClose}
     >
       <div
-        className="bg-[#FFF]  overflow-y-auto  shadow-lg rounded-xl flex flex-col mx-auto max-w-[73%]"
+        className="bg-[#FFF]  overflow-y-auto  shadow-lg rounded-xl flex flex-col mx-auto w-full  max-w-[73%]"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-center border-stroke border-b px-5 py-[22px]">
@@ -46,98 +34,109 @@ const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
         </div>
         <div className="flex flex-col h-fit">
           <div className=" p-4  rounded-lg mt-4">
-            <div className="mt-1 flow-root">
+            <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <div className="overflow-hidden shadow-sm  sm:rounded-lg">
-                    <table className="min-w-full ">
-                      <thead className="bg-[#F8FAFC]">
-                        <tr>
-                          <th
-                            scope="col"
-                            className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                          >
-                            Date
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            ID
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Buyer
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Supplier
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Product
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Quantity (MT)
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Price/ton (USD)
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200 bg-white">
-                        {people.map(person => (
-                          <tr
-                            key={person.id}
-                            className="cursor-pointer hover:bg-gray-100"
-                          >
-                            <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
-                              {person.date}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.id}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.name}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.supplier}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.product}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.quantity}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.price}
-                            </td>
-                            <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.status}
-                            </td>
+                  {savedOrder && savedOrder.length === 0 ? (
+                    'No saved orders'
+                  ) : (
+                    <div className="overflow-hidden shadow-sm sm:rounded-lg p-[24px] border border-stroke rounded-xl">
+                      <table className="min-w-full relative z-10">
+                        <thead className="bg-[#F8FAFC] relative z-10 text-gray">
+                          <tr>
+                            <th
+                              scope="col"
+                              className="py-3.5 pr-3 pl-4 text-left text-sm text-gray-900 sm:pl-6"
+                            >
+                              Company Name
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm text-gray-900"
+                            >
+                              Product
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm text-gray-900"
+                            >
+                              Capacity
+                              <span className="text-[#757575]">(MT)</span>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm text-gray-900"
+                            >
+                              Price/ton
+                              <span className="text-[#757575]">(USD)</span>
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm text-gray-900"
+                            >
+                              Location
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm text-gray-900"
+                            >
+                              Status
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-3.5 text-left text-sm text-gray-900"
+                            >
+                              Action
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody className="divide-y divide-[#F8FAFC] bg-white relative z-10">
+                          {savedOrder &&
+                            savedOrder.map(person => (
+                              <tr
+                                key={person.supplierName}
+                                className="cursor-pointer hover:bg-gray-100"
+                              >
+                                <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
+                                  {person.supplierName}
+                                </td>
+                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                                  {person.product}
+                                </td>
+                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                                  {person.capacity}
+                                </td>
+                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                                  {person.pricePerTonne}
+                                </td>
+                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                                  {person.location}
+                                </td>
+                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                                  <Badge
+                                    status={person.status as StatusType}
+                                    orderId={person.id}
+                                  />
+                                </td>
+                                <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 relative z-10">
+                                  <ActionDropdown
+                                    onGoTo={() => {
+                                      // Add your go to logic here
+                                      console.log('Go to:', person.companyName)
+                                    }}
+                                    onDelete={function (): void {
+                                      throw new Error(
+                                        'Function not implemented.'
+                                      )
+                                    }}
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

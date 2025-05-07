@@ -2,12 +2,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import logo from '@/assets/images/dash-icon.png'
 import { CiHome, CiDeliveryTruck } from 'react-icons/ci'
-import { MdPeopleOutline } from 'react-icons/md'
-import { IoReceiptOutline } from 'react-icons/io5'
+import { MdPeopleOutline, MdOutlineInventory } from 'react-icons/md'
+import { IoReceiptOutline, IoStatsChartOutline } from 'react-icons/io5'
 import { TfiHeadphoneAlt } from 'react-icons/tfi'
-import { FiMenu } from 'react-icons/fi'
+import { FiMenu, FiSettings } from 'react-icons/fi'
 import { IoClose } from 'react-icons/io5'
-import { FaCaretDown, FaSignOutAlt } from 'react-icons/fa'
+import { FaCaretDown, FaSignOutAlt, FaBoxOpen, FaWarehouse } from 'react-icons/fa'
+import { RiSettingsLine } from "react-icons/ri";
 import HomeScreen from '../HomeScreen'
 import OrdersScreen from '../Orders'
 import ClientsScreen from '../Clients'
@@ -17,7 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '@/redux/reducers/auth'
 import Message from '../Message'
 import Notifications from '../Notifications'
-import { getOrder } from '@/api/order'
+import { getDrafts, getOrder } from '@/api/order'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -27,23 +28,32 @@ interface LayoutProps {
 const Home = () => <HomeScreen />
 const Delivery = () => <OrdersScreen />
 const People = () => <ClientsScreen />
-const Receipts = () => <TransactionsScreen />
 const Support = () => <div>Support Page</div>
+const Manage = () => <div>Manage Company</div>
+const Settings = () => <div>Settings Page</div>
+const PurchaseOrder = () => <div>Purchase Order Page</div>
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [activeView, setActiveView] = useState<string>('Home')
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   
+  const user = useAppSelector(state => state.auth.user)
+  const clientType = user?.clientType
+  
+  // Set default active view based on client type
+  const [activeView, setActiveView] = useState<string>(
+    clientType === 'Supplier' || clientType === 'Buyer' ? 'Purchase Order' : 'Home'
+  )
+  
   React.useEffect(() => {
     const token = localStorage.getItem('revas')
     if (token) {
-      // console.log(token)
       dispatch(getOrder({}))
+      dispatch(getDrafts({}))
     }
   }, [dispatch])
 
@@ -71,9 +81,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     navigate('/account-manager/sign-in')
   }
 
-  const user = useAppSelector(state => state.auth.user)
+ 
   const userName = user?.firstName
-  // console.log(user)
+
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
   }
@@ -84,27 +95,38 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     console.log('clicked')
   }
 
-  const links = [
-    { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home /> },
-    {
-      id: 'Orders',
-      label: 'Delivery',
-      icon: <CiDeliveryTruck />,
-      component: <Delivery />,
-    },
-    {
-      id: 'Buyer',
-      label: 'Buyer',
-      icon: <MdPeopleOutline />,
-      component: <People />,
-    },
-    {
-      id: 'Transactions',
-      label: 'Transactions',
-      icon: <IoReceiptOutline />,
-      component: <Receipts />,
-    },
-  ]
+  // Define menu links based on client type
+  const getMenuLinks = () => {
+    // Default links for all users
+    const defaultLinks = [
+      { id: 'Home', label: 'Home', icon: <CiHome />, component: <Home /> },
+    ]
+
+    // Additional links based on client type
+    switch (clientType) {
+      case 'Supplier':
+        return [
+          { id: 'Purchase Order', label: 'Purchase Order', icon: <CiHome />, component: <PurchaseOrder /> },
+          { id: 'Settings', label: 'Manage Company', icon: <RiSettingsLine />, component: <Manage /> },
+  
+        ]
+      case 'Buyer':
+        return [
+          { id: 'Purchase Order', label: 'Purchase Order', icon: <CiHome />, component: <PurchaseOrder /> },
+          { id: 'Settings', label: 'Manage Company', icon: <RiSettingsLine />, component: <Manage /> },
+        ]
+      default:
+        // Original menu
+        return [
+          ...defaultLinks,
+          { id: 'Orders', label: 'Delivery', icon: <CiDeliveryTruck />, component: <Delivery /> },
+          { id: 'Buyer', label: 'Buyer', icon: <MdPeopleOutline />, component: <People /> },
+          { id: 'Settings', label: 'Settings', icon: <FiSettings />, component: <Settings /> },
+        ]
+    }
+  }
+
+  const links = getMenuLinks()
 
   return (
     <div className="h-screen lg:flex overflow-x-hidden">
@@ -116,7 +138,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <ul className="flex flex-col items-center space-y-6">
           <li>
             <a
-              href="#logo"
+              href="/"
               className="flex items-center space-x-3 text-lg max-w-[52px]"
             >
               <img src={logo} className="w-full" alt="Logo" />
@@ -177,7 +199,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </button>
 
           {!isSidebarOpen && (
-            <h1 className="text-base font-medium">{activeView}</h1>
+            <h1 className="text-base font-medium text-primary">{activeView}</h1>
           )}
 
           {!isSidebarOpen && (
@@ -211,6 +233,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="flex flex-col">
                   <p className="text-sm text-primary">{userName}</p>
                   <p className="text-[#98A2B3] text-[10px]">{user?.email}</p>
+                  <p className="text-[#98A2B3] text-[10px]">{clientType}</p>
                 </div>
                 <FaCaretDown color="#98A2B3" />
 
@@ -237,6 +260,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="p-[23px]">
           {activeView === 'support' ? (
             <Support />
+          ) : activeView === 'settings' ? (
+            <Settings />
           ) : (
             React.cloneElement(
               links.find(link => link.id === activeView)?.component || <div />,
