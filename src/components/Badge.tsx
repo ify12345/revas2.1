@@ -5,7 +5,7 @@ import PiAirlineSeat from './svg/PiAirlineSeat';
 import { FcCancel } from "react-icons/fc";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { FiChevronDown } from "react-icons/fi";
-import { useAppDispatch } from '@/redux/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { editStatus } from '@/api/order';
 import { showToast } from '@/components/Toast';
 
@@ -14,6 +14,8 @@ type StatusType = 'matched' | 'not_matched' | 'pending' | 'document_phase';
 interface BadgeProps {
   status: StatusType;
   orderId: string;
+  // disableEditing is now optional and only used to override the default behavior
+  disableEditing?: boolean;
 }
 
 const statusConfig: Record<StatusType, { text: string; color: string; bgColor: string; icon: React.ReactNode }> = {
@@ -43,12 +45,22 @@ const statusConfig: Record<StatusType, { text: string; color: string; bgColor: s
   },
 };
 
-export default function Badge({ status, orderId }: BadgeProps) {
+export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
   const [currentStatus, setCurrentStatus] = useState<StatusType>(status);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+  
+  // Get user from Redux state
+  const user = useAppSelector(state => state.auth.user);
+  const clientType = user?.clientType;
+  
+  // Check if editing should be disabled based on client type
+  // Only Supplier and Buyer client types can edit status
+  const isEditingDisabled = disableEditing !== undefined 
+    ? disableEditing 
+    : (clientType);
   
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -73,7 +85,19 @@ export default function Badge({ status, orderId }: BadgeProps) {
   
   const { text, color, bgColor, icon } = config;
   
+  const handleToggleDropdown = () => {
+    if (isEditingDisabled) {
+      // Don't open dropdown if editing is disabled
+      return;
+    }
+    setIsOpen(!isOpen);
+  };
+  
   const handleStatusChange = (newStatus: StatusType) => {
+    if (isEditingDisabled) {
+      return; // Prevent status change if editing is disabled
+    }
+    
     setLoading(true);
     
     if (newStatus === currentStatus) {
@@ -109,24 +133,26 @@ export default function Badge({ status, orderId }: BadgeProps) {
   return (
     <div className="relative" ref={dropdownRef}>
       <div 
-        className="flex gap-2 items-center justify-between py-1 px-3 rounded-xl w-fit cursor-pointer"
+        className={`flex gap-2 items-center justify-between py-1 px-3 rounded-xl w-fit ${isEditingDisabled ? 'opacity-75' : 'cursor-pointer'}`}
         style={{ backgroundColor: bgColor, color }}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggleDropdown}
       >
         <div className="flex gap-2 items-center">
           {icon}
           <p>{text}</p>
         </div>
-        <FiChevronDown className={`ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        {!isEditingDisabled && (
+          <FiChevronDown className={`ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        )}
       </div>
       
-      {isOpen && (
-        <div className="relative left-0 z-50 mt-1 w-40 rounded-md shadow-lg bg-white">
+      {isOpen && !isEditingDisabled && (
+        <div className="fixed  z-50 mt-1 w-40 rounded-md shadow-lg bg-white">
           <div className="py-1">
             {Object.entries(statusConfig).map(([key, value]) => (
               <div
                 key={key}
-                className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer ${loading ? 'opacity-50 pointer-events-none' : ''}`}
+                className={`flex items-center px-4 py-2 hover:scale-95 transition-all duration-300 text-sm hover:bg-gray-100 cursor-pointer ${loading ? 'opacity-50 pointer-events-none' : ''}`}
                 onClick={() => handleStatusChange(key as StatusType)}
               >
                 <span className="mr-2">{value.icon}</span>

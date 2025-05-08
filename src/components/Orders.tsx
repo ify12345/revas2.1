@@ -25,12 +25,6 @@ import { RiDraftLine } from 'react-icons/ri'
 import DraftsModal from './modal/DraftsModal.js'
 import CreateOrderForm from './modal/orders-screen/index.js'
 
-const navigation = [
-  { name: 'All orders', key: 'all' },
-  { name: 'Pending', key: 'pending' },
-  { name: 'Completed', key: 'completed' },
-]
-
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ')
 }
@@ -39,17 +33,21 @@ export default function OrdersScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeScreen, setActiveScreen] = React.useState('all')
   const [isDraftsModalOpen, setIsDraftsModalOpen] = React.useState(false)
-  
+
+  const user = useAppSelector(state => state.auth.user)
+  const savedOrder = useAppSelector(state => state.order.savedOrder)
   // Filter states
   const [companyFilter, setCompanyFilter] = useState<string>('')
   const [productFilter, setProductFilter] = useState<string>('')
   const [statusFilter, setStatusFilter] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [dateFilter, setDateFilter] = useState<string>('')
-  
+
   // Add Redux hooks
   const dispatch = useAppDispatch()
   const orders = useAppSelector(state => state.order)
+  const { getDocs } = useAppSelector(state => state.order)
+  // console.log(getDocs)
 
   const list = Array.isArray(orders.order)
     ? orders.order
@@ -59,6 +57,28 @@ export default function OrdersScreen() {
   useEffect(() => {
     dispatch(getOrder({}))
   }, [dispatch])
+
+  const clientType = user?.clientType
+
+  // Conditionally set navigation based on client type
+  const navigation =
+    clientType === 'Supplier' || clientType === 'Buyer'
+      ? [
+          { name: 'Pending', key: 'pending' },
+          { name: 'Completed', key: 'completed' },
+        ]
+      : [
+          { name: 'All orders', key: 'all' },
+          { name: 'Pending', key: 'pending' },
+          { name: 'Completed', key: 'completed' },
+        ]
+
+  // Set default active screen based on client type
+  useEffect(() => {
+    if (clientType === 'Supplier' || clientType === 'Buyer') {
+      setActiveScreen('pending')
+    }
+  }, [clientType])
 
   const openDraftsModal = () => {
     setIsDraftsModalOpen(true)
@@ -70,69 +90,70 @@ export default function OrdersScreen() {
   // Apply filters to the list
   const getFilteredList = () => {
     let filteredList = list.filter((item): item is Order => item !== null)
-    
+
     // Filter by company name
     if (companyFilter) {
-      filteredList = filteredList.filter(item => 
+      filteredList = filteredList.filter(item =>
         item.supplierName?.toLowerCase().includes(companyFilter.toLowerCase())
       )
     }
-    
+
     // Filter by product
     if (productFilter) {
-      filteredList = filteredList.filter(item => 
+      filteredList = filteredList.filter(item =>
         item.product?.toLowerCase().includes(productFilter.toLowerCase())
       )
     }
-    
+
     // Filter by status
     if (statusFilter) {
-      filteredList = filteredList.filter(item => 
-        item.status === statusFilter
-      )
+      filteredList = filteredList.filter(item => item.status === statusFilter)
     }
-    
+
     // Filter by search query (search across multiple fields)
     if (searchQuery) {
-      filteredList = filteredList.filter(item => 
-        item.supplierName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.product?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.location?.toLowerCase().includes(searchQuery.toLowerCase())
+      filteredList = filteredList.filter(
+        item =>
+          item.supplierName
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.product?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.location?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-    
+
     // Filter by date (assuming there's a createdAt field as ISO string)
     if (dateFilter) {
       const selectedDate = new Date(dateFilter).setHours(0, 0, 0, 0)
-      
+
       filteredList = filteredList.filter(item => {
         if (!item.createdAt) return false
         const orderDate = new Date(item.createdAt).setHours(0, 0, 0, 0)
         return orderDate === selectedDate
       })
     }
-    
+
     return filteredList
   }
 
   const getActiveScreen = () => {
     const filteredList = getFilteredList()
-    
+
     switch (activeScreen) {
       case 'all':
         return <All people={filteredList} />
 
       case 'pending':
         const pendingOrders = filteredList.filter(
-          (item): item is Order => item.status === 'not_matched'
+          (item): item is Order => item.savedStatus === 'not_matched'
         )
-        return <Pending people={pendingOrders} />
+        return <All people={pendingOrders} />
 
       case 'completed':
         return (
-          <Completed
+          <All
             people={filteredList.filter(
-              (item): item is Order => item.status === 'completed'
+              (item): item is Order => item.savedStatus === 'confirmed'
             )}
           />
         )
@@ -152,18 +173,22 @@ export default function OrdersScreen() {
   }
 
   // Get unique company names for dropdown
-  const companyOptions = Array.from(new Set(
-    list
-      .filter((item): item is Order => item !== null)
-      .map(item => item.supplierName)
-  )).filter(Boolean)
+  const companyOptions = Array.from(
+    new Set(
+      list
+        .filter((item): item is Order => item !== null)
+        .map(item => item.supplierName)
+    )
+  ).filter(Boolean)
 
   // Get unique product names for dropdown
-  const productOptions = Array.from(new Set(
-    list
-      .filter((item): item is Order => item !== null)
-      .map(item => item.product)
-  )).filter(Boolean)
+  const productOptions = Array.from(
+    new Set(
+      list
+        .filter((item): item is Order => item !== null)
+        .map(item => item.product)
+    )
+  ).filter(Boolean)
 
   // Status options
   const statusOptions = [
@@ -171,48 +196,85 @@ export default function OrdersScreen() {
     { value: 'not_matched', label: 'Not Matched' },
     { value: 'pending', label: 'Pending' },
     { value: 'document_phase', label: 'Documentation' },
-    { value: 'completed', label: 'Completed' }
+    { value: 'completed', label: 'Completed' },
   ]
 
-  const orderDetails = [
-    { name: 'Total orders', numer: list?.length || '0', icon: <CurrencySvg /> },
-    {
-      name: 'Pending orders',
-      numer: list?.filter(o => o && o.status === 'not_matched')?.length || '0',
-      icon: <WalletSvg />,
-    },
-    {
-      name: 'Completed orders',
-      numer: list?.filter(o => o && o.status === 'confirmed')?.length || '0',
-      icon: <FaCheckCircle color="#059669" />,
-    },
-  ]
+  // Conditional order details based on client type
+  const orderDetails =
+    clientType === 'Supplier' || clientType === 'Buyer'
+      ? [
+          {
+            name: 'Pending orders',
+            numer:
+              list?.filter(o => o && o.savedStatus === 'not_matched')?.length ||
+              '0',
+            icon: <CurrencySvg />, // Use the icon that was previously for "All"
+          },
+          {
+            name: 'Completed orders',
+            numer:
+              list?.filter(o => o && o.savedStatus === 'confirmed')?.length ||
+              '0',
+            icon: <WalletSvg />, // Use the icon that was previously for "Pending"
+          },
+        ]
+      : [
+          {
+            name: 'Total orders',
+            numer: list?.length || '0',
+            icon: <CurrencySvg />,
+          },
+          {
+            name: 'Pending orders',
+            numer:
+              list?.filter(o => o && o.savedStatus === 'not_matched')?.length ||
+              '0',
+            icon: <WalletSvg />,
+          },
+          {
+            name: 'Completed orders',
+            numer:
+              list?.filter(o => o && o.savedStatus === 'confirmed')?.length ||
+              '0',
+            icon: <FaCheckCircle color="#059669" />,
+          },
+        ]
 
   return (
     <div className="flex flex-col relative z-10">
       <div className="py-4">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <p className="font-medium text-2xl">Orders</p>
+            <p className="font-medium text-2xl">
+              {clientType === 'Supplier' || clientType === 'Buyer'
+                ? 'Purchase Order'
+                : 'Orders'}
+            </p>
           </div>
-          <div className="mt-4 sm:mt-0 sm:ml-16 flex gap-3 sm:flex-row">
-            <div
-              onClick={openDraftsModal}
-              className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md"
-            >
-              <RiDraftLine color="gray" />
-              Drafts
-              <div className="size-[20px] bg-[#2364DB] flex items-center justify-center text-[#fff] rounded-full">
-                4
+          {clientType === 'Supplier' || clientType === 'Buyer' ? (
+            ''
+          ) : (
+            <div className="mt-4 sm:mt-0 sm:ml-16 flex gap-3 sm:flex-row">
+              <div
+                onClick={openDraftsModal}
+                className="border cursor-pointer border-stroke flex p-2 justify-between items-center gap-2 rounded-md"
+              >
+                <RiDraftLine color="gray" />
+                Drafts
+                {savedOrder && savedOrder.length > 0 && (
+                  <div className="size-[20px] bg-[#2364DB] flex items-center justify-center text-[#fff] rounded-full">
+                    {savedOrder.length}
+                  </div>
+                )}
               </div>
+              <button
+                onClick={openModal}
+                className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px]"
+              >
+                <p className="text-[#fff]">Create Order</p>
+              </button>
             </div>
-            <button
-              onClick={openModal}
-              className="bg-[#050505] text-white py-[10px] px-[12px] rounded-[8px]"
-            >
-              <p className="text-[#fff]">Create Order</p>
-            </button>
-          </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-[13.5px] mt-4">
@@ -290,63 +352,74 @@ export default function OrdersScreen() {
             </div>
           </DisclosurePanel>
         </Disclosure>
-
-        <div className="py-4 flex flex-col gap-2 lg:flex-row items-center justify-between w-full">
-          <div className="flex flex-col lg:flex-row lg:items-center gap-3 w-full lg:w-1/2">
-            <select 
-              className="p-2 border border-stroke rounded-md"
-              value={companyFilter}
-              onChange={(e) => setCompanyFilter(e.target.value)}
-            >
-              <option value="">Company Name</option>
-              {companyOptions.map((company, index) => (
-                <option key={index} value={company}>{company}</option>
-              ))}
-            </select>
-            <select 
-              className="p-2 border border-stroke rounded-md"
-              value={productFilter}
-              onChange={(e) => setProductFilter(e.target.value)}
-            >
-              <option value="">Product</option>
-              {productOptions.map((product, index) => (
-                <option key={index} value={product}>{product}</option>
-              ))}
-            </select>
-            <select 
-              className="p-2 border border-stroke rounded-md"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="">Status</option>
-              {statusOptions.map((status) => (
-                <option key={status.value} value={status.value}>{status.label}</option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-1/2 justify-end lg:gap-9">
-            <div className="relative flex items-center w-full">
-              <FaSearch className="absolute left-3 text-gray" />
+        {clientType === 'Supplier' || clientType === 'Buyer' ? (
+          ''
+        ) : (
+          <div className="py-4 flex flex-col gap-2 lg:flex-row items-center justify-between w-full">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-3 w-full lg:w-1/2">
+              <select
+                className="p-2 border border-stroke rounded-md"
+                value={companyFilter}
+                onChange={e => setCompanyFilter(e.target.value)}
+              >
+                <option value="">Company Name</option>
+                {companyOptions.map((company, index) => (
+                  <option key={index} value={company}>
+                    {company}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="p-2 border border-stroke rounded-md"
+                value={productFilter}
+                onChange={e => setProductFilter(e.target.value)}
+              >
+                <option value="">Product</option>
+                {productOptions.map((product, index) => (
+                  <option key={index} value={product}>
+                    {product}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="p-2 border border-stroke rounded-md"
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
+              >
+                <option value="">Status</option>
+                {statusOptions.map(status => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-1/2 justify-end lg:gap-9">
+              <div className="relative flex items-center w-full">
+                <FaSearch className="absolute left-3 text-gray" />
+                <input
+                  type="search"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
               <input
-                type="search"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="border border-stroke p-2 rounded-lg focus:ring-primary focus:ring-2 focus:outline-none"
+                type="date"
+                value={dateFilter}
+                onChange={e => setDateFilter(e.target.value)}
               />
             </div>
-            <input
-              className="border border-stroke p-2 rounded-lg focus:ring-primary focus:ring-2 focus:outline-none"
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-            />
           </div>
-        </div>
+        )}
+
         <main>
           <div className="mx-auto ">{getActiveScreen()}</div>
         </main>
       </div>
+      
 
       <CreateOrderForm isOpen={isModalOpen} onClose={closeModal} />
       <DraftsModal isOpen={isDraftsModalOpen} onClose={closeDraftsModal} />

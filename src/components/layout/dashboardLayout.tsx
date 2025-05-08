@@ -18,7 +18,8 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '@/redux/reducers/auth'
 import Message from '../Message'
 import Notifications from '../Notifications'
-import { getDrafts, getOrder } from '@/api/order'
+import { getDocuments, getDrafts, getOrder } from '@/api/order'
+import ManageCompany from '../ManageCompany'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -29,9 +30,9 @@ const Home = () => <HomeScreen />
 const Delivery = () => <OrdersScreen />
 const People = () => <ClientsScreen />
 const Support = () => <div>Support Page</div>
-const Manage = () => <div>Manage Company</div>
+const Manage = () => <ManageCompany/>
 const Settings = () => <div>Settings Page</div>
-const PurchaseOrder = () => <div>Purchase Order Page</div>
+const PurchaseOrder = () => <OrdersScreen />
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -54,6 +55,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     if (token) {
       dispatch(getOrder({}))
       dispatch(getDrafts({}))
+      dispatch(getDocuments({}))
     }
   }, [dispatch])
 
@@ -133,7 +135,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? 'translate-x-0 bg-[#fff]' : '-translate-x-full'
-        } md:relative md:translate-x-0 w-20 bg-gray-800 text-white p-4 border-r border-[#E7E7E7] transition-transform duration-300 ease-in-out z-50`}
+        } md:relative md:translate-x-0 w-20  text-white p-4 border-r border-[#E7E7E7] transition-transform duration-300 ease-in-out z-10`}
       >
         <ul className="flex flex-col items-center space-y-6">
           <li>

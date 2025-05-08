@@ -118,7 +118,17 @@ export interface GetOrderPayload {
   
 
 }
-
+export interface Document {
+  id: string
+  orderId: string
+  type: string
+  fileUrl: string
+  status: string
+  orderStatus: string
+  generatedAt: string
+  requiresSignature: boolean
+  downloadUrl: string
+}
 export interface generateOrderPayload {
   id: string
 }
