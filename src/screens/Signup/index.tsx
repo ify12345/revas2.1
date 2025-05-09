@@ -78,7 +78,7 @@ export default function Signup() {
 
       <AuthPiece/>
 
-      <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px] p-7">
+      <div className="w-full lg:w-1/2 flex flex-col lg:p-[28px] p-7 overflow-y-auto h-screen">
         <img src={logo} className="max-w-[172px] mb-[60px]" alt="" />
         <form action="" className="text-[#98A2B3] flex flex-col gap-[24px]" onSubmit={handleSubmit}>
           <p className="text-primary text-3xl">Create your account</p>
