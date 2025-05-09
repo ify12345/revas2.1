@@ -21,6 +21,7 @@ export interface Product {
   
   export interface ProductState {
     products: Product[];
+    sellerProducts: Product[];
     loading: boolean;
     error: string | null;
     selectedProduct: Product | null;

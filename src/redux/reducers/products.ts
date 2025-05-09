@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Product, ProductState } from '@/types/product';
-import { searchProduct } from '@/api/products';
+import { searchBuyerProduct, searchSupplierProduct } from '@/api/products';
 
 const initialState: ProductState = {
   products: [],
+  sellerProducts: [],
   loading: false,
   error: null,
   selectedProduct: null
@@ -26,15 +27,28 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(searchProduct.pending, (state) => {
+      .addCase(searchBuyerProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(searchProduct.fulfilled, (state, action) => {
+      .addCase(searchBuyerProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload.products;
       })
-      .addCase(searchProduct.rejected, (state, action) => {
+      .addCase(searchBuyerProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch products';
+      });
+    builder
+      .addCase(searchSupplierProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchSupplierProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sellerProducts = action.payload.products;
+      })
+      .addCase(searchSupplierProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch products';
       });

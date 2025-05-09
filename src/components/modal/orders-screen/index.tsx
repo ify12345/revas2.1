@@ -163,7 +163,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
       savedStatus: formData.savedStatus,
     }
 
-    // console.log('Order payload:', payload)
+    console.log('Order payload:', payload)
 
     setLoading(true)
 
@@ -211,6 +211,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
 
     // console.log('Order payload:', payload)
     setLoading(true)
+    console.log(payload);
     
     dispatch(saveOrder(payload))
       .unwrap()

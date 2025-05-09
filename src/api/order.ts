@@ -8,7 +8,9 @@ import {
   Document,
   EditOrderPayload,
   generateOrderPayload,
+  GetNotificationsPayload,
   GetOrderPayload,
+  NotificationResponse,
 } from '@/types/api'
 import {
   CreateOrderResponse,
@@ -126,6 +128,68 @@ export const uploadDocument = createAsyncThunk<
         'Content-Type': 'multipart/form-data',
       },
     }),
+    thunkAPI
+  )
+})
+
+export const getNotifications = createAsyncThunk<
+  NotificationResponse,
+  GetNotificationsPayload,
+  AsyncThunkConfig
+>('notifications/fetch', async (params, thunkAPI) => {
+  const Axios = await AxiosBase()
+
+  const { userId, isRead, type, page = 1, limit = 10 } = params
+
+  const queryParams = new URLSearchParams({
+    userId,
+    ...(isRead !== undefined ? { isRead: String(isRead) } : {}),
+    ...(type ? { type } : {}),
+    page: page.toString(),
+    limit: limit.toString(),
+  })
+
+  return apiCall(
+    Axios.get(`/notifications?${queryParams.toString()}`),
+    thunkAPI
+  )
+})
+
+export const markNotificationAsRead = createAsyncThunk<
+  any, // Replace with a more specific type if needed
+  { id: string },
+  AsyncThunkConfig
+>('notifications/markOneRead', async ({ id }, thunkAPI) => {
+  const Axios = await AxiosBase()
+
+  return apiCall(
+    Axios.patch(`/notifications/${id}/mark-read`),
+    thunkAPI
+  )
+})
+
+export const markAllNotificationsAsRead = createAsyncThunk<
+  any, // Replace with a more specific type if needed
+  void,
+  AsyncThunkConfig
+>('notifications/markAllRead', async (_, thunkAPI) => {
+  const Axios = await AxiosBase()
+
+  return apiCall(
+    Axios.patch(`/notifications/mark-all-read`),
+    thunkAPI
+  )
+})
+
+export const deleteNotification = createAsyncThunk<
+  any, // Replace with a more specific type if needed
+  { id: string },
+  AsyncThunkConfig
+>('notifications/delete', async ({ id }, thunkAPI) => {
+  const Axios = await AxiosBase()
+
+  return apiCall(
+    Axios.delete(`/notifications/${id}`),
     thunkAPI
   )
 })

@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { Product } from '@/types/product'
 import { FiSearch } from 'react-icons/fi'
 import { clearProducts, selectProduct } from '@/redux/reducers/products'
-import { searchProduct } from '@/api/products'
+import { searchBuyerProduct, searchSupplierProduct } from '@/api/products'
 
 const BuyerForm: React.FC<FormProps> = ({
   formData,
@@ -22,7 +22,7 @@ const BuyerForm: React.FC<FormProps> = ({
   user,
 }) => {
   const dispatch = useAppDispatch()
-  const { products, loading } = useAppSelector(state => state.product)
+  const { products,sellerProducts, loading } = useAppSelector(state => state.product)
   const [searchTerm, setSearchTerm] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const [supplierSearchTerm, setSupplierSearchTerm] = useState('')
@@ -48,7 +48,7 @@ const BuyerForm: React.FC<FormProps> = ({
     setSearchTerm(value)
 
     if (value.trim().length > 0) {
-      dispatch(searchProduct({ companyName: value }))
+      dispatch(searchBuyerProduct({ companyName: value }))
       setShowDropdown(true)
     } else {
       dispatch(clearProducts())
@@ -104,7 +104,7 @@ const BuyerForm: React.FC<FormProps> = ({
     setSupplierSearchTerm(value)
 
     if (value.trim().length > 0) {
-      dispatch(searchProduct({ companyName: value }))
+      dispatch(searchSupplierProduct({ companyName: value }))
       setShowSupplierDropdown(true)
     } else {
       dispatch(clearProducts())
@@ -298,9 +298,9 @@ const BuyerForm: React.FC<FormProps> = ({
             >
               {loading ? (
                 <div className="p-2 text-center text-gray-500">Loading...</div>
-              ) : products.length > 0 ? (
+              ) : sellerProducts.length > 0 ? (
                 <ul>
-                  {products.map(product => (
+                  {sellerProducts.map(product => (
                     <div
                       key={product.id}
                       className="w-full text-left p-2 hover:bg-gray-100 cursor-pointer"

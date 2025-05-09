@@ -31,7 +31,7 @@ export const registerUser = createAsyncThunk<
 >('users/register', async (payload, thunkAPI) => {
   const Axios = await AxiosBase()
   console.log('pay', payload)
-  return apiCall(Axios.post('/api/register', payload), thunkAPI)
+  return apiCall(Axios.post('/register', payload), thunkAPI)
 })
 
 export const login = createAsyncThunk<

@@ -49,6 +49,7 @@ const App = () => {
         {isAuthenticated && (!hasProduct && !isVerified ) && (
           <>
             <Route path="/" element={<SetUp />} />
+            <Route path="/sign-in" element={<UsersSignin />} />
           </>
         )}
         {isAuthenticated && (hasProduct || isVerified) && (

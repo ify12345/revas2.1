@@ -7,8 +7,13 @@ import { IoReceiptOutline, IoStatsChartOutline } from 'react-icons/io5'
 import { TfiHeadphoneAlt } from 'react-icons/tfi'
 import { FiMenu, FiSettings } from 'react-icons/fi'
 import { IoClose } from 'react-icons/io5'
-import { FaCaretDown, FaSignOutAlt, FaBoxOpen, FaWarehouse } from 'react-icons/fa'
-import { RiSettingsLine } from "react-icons/ri";
+import {
+  FaCaretDown,
+  FaSignOutAlt,
+  FaBoxOpen,
+  FaWarehouse,
+} from 'react-icons/fa'
+import { RiSettingsLine } from 'react-icons/ri'
 import HomeScreen from '../HomeScreen'
 import OrdersScreen from '../Orders'
 import ClientsScreen from '../Clients'
@@ -18,8 +23,14 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '@/redux/reducers/auth'
 import Message from '../Message'
 import Notifications from '../Notifications'
-import { getDocuments, getDrafts, getOrder } from '@/api/order'
+import {
+  getDocuments,
+  getDrafts,
+  getNotifications,
+  getOrder,
+} from '@/api/order'
 import ManageCompany from '../ManageCompany'
+import Notification from '../Notification'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -30,34 +41,39 @@ const Home = () => <HomeScreen />
 const Delivery = () => <OrdersScreen />
 const People = () => <ClientsScreen />
 const Support = () => <div>Support Page</div>
-const Manage = () => <ManageCompany/>
+const Manage = () => <ManageCompany />
 const Settings = () => <div>Settings Page</div>
 const PurchaseOrder = () => <OrdersScreen />
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false)
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  
+  const notifications = useAppSelector(state => state.auth.notifications)
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
-  
+
   // Set default active view based on client type
   const [activeView, setActiveView] = useState<string>(
-    clientType === 'Supplier' || clientType === 'Buyer' ? 'Purchase Order' : 'Home'
+    clientType === 'Supplier' || clientType === 'Buyer'
+      ? 'Purchase Order'
+      : 'Home'
   )
-  
+
   React.useEffect(() => {
     const token = localStorage.getItem('revas')
-    if (token) {
+
+    if (token && user?.id) {
       dispatch(getOrder({}))
       dispatch(getDrafts({}))
       dispatch(getDocuments({}))
+      dispatch(getNotifications({ userId: user.id }))
     }
-  }, [dispatch])
+  }, [dispatch, user?.id])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -80,12 +96,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     dispatch(logout())
     localStorage.removeItem('revas')
     persistor.purge()
-    navigate('/account-manager/sign-in')
+    navigate('/sign-in')
   }
 
- 
   const userName = user?.firstName
-
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
@@ -96,7 +110,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsOrderModalOpen(true)
     console.log('clicked')
   }
-
+  const closeModal = () => {
+    setIsNotificationsOpen(false)
+    document.body.style.overflow = 'auto'
+  }
   // Define menu links based on client type
   const getMenuLinks = () => {
     // Default links for all users
@@ -108,22 +125,56 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     switch (clientType) {
       case 'Supplier':
         return [
-          { id: 'Purchase Order', label: 'Purchase Order', icon: <CiHome />, component: <PurchaseOrder /> },
-          { id: 'Settings', label: 'Manage Company', icon: <RiSettingsLine />, component: <Manage /> },
-  
+          {
+            id: 'Purchase Order',
+            label: 'Purchase Order',
+            icon: <CiHome />,
+            component: <PurchaseOrder />,
+          },
+          {
+            id: 'Settings',
+            label: 'Manage Company',
+            icon: <RiSettingsLine />,
+            component: <Manage />,
+          },
         ]
       case 'Buyer':
         return [
-          { id: 'Purchase Order', label: 'Purchase Order', icon: <CiHome />, component: <PurchaseOrder /> },
-          { id: 'Settings', label: 'Manage Company', icon: <RiSettingsLine />, component: <Manage /> },
+          {
+            id: 'Purchase Order',
+            label: 'Purchase Order',
+            icon: <CiHome />,
+            component: <PurchaseOrder />,
+          },
+          {
+            id: 'Settings',
+            label: 'Manage Company',
+            icon: <RiSettingsLine />,
+            component: <Manage />,
+          },
         ]
       default:
         // Original menu
         return [
           ...defaultLinks,
-          { id: 'Orders', label: 'Delivery', icon: <CiDeliveryTruck />, component: <Delivery /> },
-          { id: 'Buyer', label: 'Buyer', icon: <MdPeopleOutline />, component: <People /> },
-          { id: 'Settings', label: 'Settings', icon: <FiSettings />, component: <Settings /> },
+          {
+            id: 'Orders',
+            label: 'Delivery',
+            icon: <CiDeliveryTruck />,
+            component: <Delivery />,
+          },
+          {
+            id: 'Buyer',
+            label: 'Buyer',
+            icon: <MdPeopleOutline />,
+            component: <People />,
+          },
+          {
+            id: 'Settings',
+            label: 'Settings',
+            icon: <FiSettings />,
+            component: <Settings />,
+          },
         ]
     }
   }
@@ -208,7 +259,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="flex items-center">
               <div className="flex gap-4 lg:px-[24px] pr-1 border-r border-[#E7E7E7]">
                 <Message />
-                <Notifications />
+                <button
+                  onClick={() => setIsNotificationsOpen(true)}
+                  className="relative"
+                >
+                  <div className="text-purple absolute -right-1 -top-1">
+                    {notifications.data.length}
+                  </div>
+                  <Notifications />
+                </button>
               </div>
               {/* Profile Section */}
               <div
@@ -276,6 +335,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <div className="hidden">{children}</div>
       </div>
+      <Notification isOpen={isNotificationsOpen} onClose={closeModal} />
     </div>
   )
 }

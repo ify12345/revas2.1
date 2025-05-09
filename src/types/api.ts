@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { AppDispatch } from '@/redux/store'
 
@@ -60,11 +61,12 @@ export interface ErrorResponse {
 
 export interface RegisterProductPayload {
   companyName?: string
-  product?: string
+  product?:  string[]
   capacity?: number
   price?: number
   location?: string
   image?: string | File
+  id?:string
 }
 export interface GetProductsPayload {
   companyName?: string
@@ -131,4 +133,44 @@ export interface Document {
 }
 export interface generateOrderPayload {
   id: string
+}
+export interface Notification {
+  id: string
+  type: string
+  message: string
+  isRead: boolean
+  title: string
+  body: string
+  read: boolean
+  createdAt: string
+  userId?: string
+  metadata?: Record<string, any>
+}
+
+export interface NotificationType {
+  id: string
+  title: string
+  body: string
+  read: boolean
+  createdAt: string
+  userId?: string
+  type?: 'info' | 'warning' | 'error' | 'success'
+  metadata?: Record<string, any>
+}
+
+export interface GetNotificationsPayload {
+  userId: string
+  isRead?: boolean
+  type?: string
+  page?: number
+  limit?: number
+}
+
+export interface NotificationResponse {
+  data: Notification[]
+  total: number
+  page: number
+  limit: number,
+  currentPage: number;
+  totalPages: number;
 }

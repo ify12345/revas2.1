@@ -21,6 +21,8 @@ function createAxiosInstance(): AxiosInstance {
     (config) => {
       // Get the most up-to-date token for each request
       const token = localStorage.getItem('revas');
+      console.log(token);
+      
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

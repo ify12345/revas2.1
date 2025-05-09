@@ -2,7 +2,7 @@ import * as  React from 'react';
 
 export default function Notifications() {
   return (
-    <button>
+  
       <svg
         width="37"
         height="36"
@@ -19,6 +19,6 @@ export default function Notifications() {
           fill="#334155"
         />
       </svg>
-    </button>
+    
   )
 }

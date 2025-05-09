@@ -13,9 +13,29 @@ export const registerProduct = createAsyncThunk<
 >('register/product', async (formData, thunkAPI) => {
   const Axios = await AxiosBase();
   console.log('pay', formData);
+  
 
   return apiCall(
     Axios.post('/register-product', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
+    thunkAPI
+  );
+});
+
+export const updateProduct = createAsyncThunk<
+  RegisterProductResponse,
+  RegisterProductPayload,
+  AsyncThunkConfig
+>('update/product', async (formData, thunkAPI) => {
+  const Axios = await AxiosBase();
+  console.log('pay', formData);
+  
+
+  return apiCall(
+    Axios.post(`/products/${formData.id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -35,7 +55,7 @@ export const getProducts = createAsyncThunk<
     
 });
 
-export const searchProduct = createAsyncThunk<
+export const searchBuyerProduct = createAsyncThunk<
   searchProductsResponse,
   searchProductsPayload,
   AsyncThunkConfig
@@ -43,7 +63,19 @@ export const searchProduct = createAsyncThunk<
   const Axios = await AxiosBase();
   console.log(payload.companyName)
   return apiCall(
-    Axios.get(`/products?companyName=${payload.companyName}`), 
+    Axios.get(`/products/buyers?companyName=${payload.companyName}`), 
+    thunkAPI
+  );
+});
+export const searchSupplierProduct = createAsyncThunk<
+  searchProductsResponse,
+  searchProductsPayload,
+  AsyncThunkConfig
+>('/api/search-supplier-products', async (payload, thunkAPI) => {
+  const Axios = await AxiosBase();
+  console.log(payload.companyName)
+  return apiCall(
+    Axios.get(`/products/suppliers?companyName=${payload.companyName}`), 
     thunkAPI
   );
 });

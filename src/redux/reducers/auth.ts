@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { login, register, registerUser, UserLogin } from '@/api/auth';
+import { getNotifications } from '@/api/order';
 import { User } from '@/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
@@ -10,6 +12,25 @@ interface State {
   isVerified: boolean;
   isPhoneVerified: boolean;
   hasProduct: boolean;
+  notifications: {
+    data: Notification[];
+    total: number;
+    currentPage: number;
+    totalPages: number;
+  };
+}
+
+interface Notification {
+  id: string
+  type: string
+  message: string
+  isRead: boolean
+  title: string
+  body: string
+  read: boolean
+  createdAt: string
+  userId?: string
+  metadata?: Record<string, any>
 }
 
 const initialState: State = {
@@ -18,7 +39,13 @@ const initialState: State = {
   isAuthenticated: false,
   isVerified: false,
   isPhoneVerified: false,
-  hasProduct: false
+  hasProduct: false,
+  notifications: {
+    data: [],
+    total: 0,
+    currentPage: 1,
+    totalPages: 0,
+  },
 };
 
 export const authSlice = createSlice({
@@ -68,6 +95,14 @@ export const authSlice = createSlice({
         state.user = payload.user;
         state.isAuthenticated = true;
       })
+      builder.addCase(getNotifications.fulfilled, (state, { payload }) => {
+        state.notifications = {
+          data: payload.data,
+          total: payload.total,
+          currentPage: payload.currentPage,
+          totalPages: payload.totalPages,
+        };
+      });
   },
 });
 
