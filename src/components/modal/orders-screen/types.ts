@@ -11,7 +11,8 @@ export interface OrderFormData {
   buyerId?: string;  // Added to store the user ID of the selected company
   supplierId?: string;  // Added to store the user ID of the selected company
   email: string | undefined;
-  location: string;
+  buyerLocation: string;
+  supplierLocation: string;
   product: string;
   paymentTerms:string;
   capacity: number | string;

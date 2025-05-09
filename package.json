@@ -17,6 +17,7 @@
     "@mui/material": "^6.1.7",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.6.5",
     "jspdf": "^3.0.1",
     "jwt-decode": "^4.0.0",

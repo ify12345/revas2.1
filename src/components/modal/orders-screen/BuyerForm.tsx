@@ -22,7 +22,9 @@ const BuyerForm: React.FC<FormProps> = ({
   user,
 }) => {
   const dispatch = useAppDispatch()
-  const { products,sellerProducts, loading } = useAppSelector(state => state.product)
+  const { products, sellerProducts, loading } = useAppSelector(
+    state => state.product
+  )
   const [searchTerm, setSearchTerm] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const [supplierSearchTerm, setSupplierSearchTerm] = useState('')
@@ -56,7 +58,7 @@ const BuyerForm: React.FC<FormProps> = ({
     }
   }
 
-  const handleCompanySelect = (product:Product) => {
+  const handleCompanySelect = (product: Product) => {
     console.log('handleCompanySelect function called with:', product)
 
     if (product && product.companyName) {
@@ -68,7 +70,7 @@ const BuyerForm: React.FC<FormProps> = ({
         ...prevFormData,
         buyerName: product.companyName,
         buyerId: product?.userId || '',
-        location: product?.location || '',
+        buyerLocation: product?.location || '',
         capacity: product?.capacity || '',
         pricePerTonne: product?.price || '',
       }))
@@ -123,6 +125,7 @@ const BuyerForm: React.FC<FormProps> = ({
         supplierName: product.companyName,
         supplierId: product?.userId || '',
         supplierPrice: product?.price || '',
+        supplierLocation: product?.location || '',
       }))
 
       setShowSupplierDropdown(false)
@@ -192,17 +195,15 @@ const BuyerForm: React.FC<FormProps> = ({
             </div>
           )}
         </div>
-
         <CustomInput
-          label="Location"
+          label="Buyer Location"
           name="capacity"
-          value={formData.location}
+          value={formData.buyerLocation}
           type="text"
           placeholder="Enter location"
           onChange={handleChange}
           onFocus={handleInputFocus}
         />
-
         {/* Product & Pricing */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <div className="flex flex-col text-gray_light gap-1 text-sm">
@@ -241,7 +242,7 @@ const BuyerForm: React.FC<FormProps> = ({
             onFocus={handleInputFocus}
           />
         </div>
-
+       
         {/* Shipping Type */}
         <div className="flex flex-col text-gray">
           <label htmlFor="shippingType">Shipping Type</label>
@@ -258,7 +259,6 @@ const BuyerForm: React.FC<FormProps> = ({
             <option value="EXW">EXW</option>
           </select>
         </div>
-
         <div className="flex flex-col text-gray">
           <label htmlFor="shippingType">Payment Terms</label>
           <select
@@ -274,7 +274,6 @@ const BuyerForm: React.FC<FormProps> = ({
             <option value="100">100% upfront</option>
           </select>
         </div>
-
         <div className="relative">
           <div className="flex items-center">
             <CustomInput
@@ -322,7 +321,15 @@ const BuyerForm: React.FC<FormProps> = ({
             </div>
           )}
         </div>
-
+        <CustomInput
+          label="Supplier Location"
+          name="supplierLocation"
+          value={formData.supplierLocation}
+          type="text"
+          placeholder="supplier location.."
+          onChange={handleChange}
+          onFocus={handleInputFocus}
+        />
         {/* Cost Breakdown */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
           <CustomInput
@@ -353,7 +360,6 @@ const BuyerForm: React.FC<FormProps> = ({
             onFocus={handleInputFocus}
           />
         </div>
-
         Other Costs
         <CustomInput
           label="Other Costs (USD)"
@@ -364,11 +370,7 @@ const BuyerForm: React.FC<FormProps> = ({
           onChange={handleChange}
           onFocus={handleInputFocus}
         />
-
-      
         <ProfitMarginDisplay profitMargin={profitMargin} />
-
-
         <SupplierSummary formData={formData} user={user} />
       </form>
     </div>

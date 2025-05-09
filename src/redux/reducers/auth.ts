@@ -30,6 +30,7 @@ interface Notification {
   read: boolean
   createdAt: string
   userId?: string
+  orderId?: string
   metadata?: Record<string, any>
 }
 

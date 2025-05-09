@@ -15,6 +15,7 @@ interface ModalProps {
 
 const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
   const savedOrder = useAppSelector(state => state.order.savedOrder)
+  // console.log(savedOrder)
   if (!isOpen) return null
 
   return (

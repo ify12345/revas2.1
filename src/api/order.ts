@@ -16,9 +16,10 @@ import {
   CreateOrderResponse,
   deleteOrderResponse,
   generateOrderResponse,
-  GetDraftResponse,
   GetOrderResponse,
 } from '@/types/apiResponse'
+import { Order } from '@/redux/reducers/orders'
+
 
 interface UploadPayload {
   orderId: string
@@ -55,7 +56,7 @@ export const getOrder = createAsyncThunk<
 })
 
 export const getDrafts = createAsyncThunk<
-  GetDraftResponse,
+  Order[],
   GetOrderPayload,
   AsyncThunkConfig
 >('/api/get-drafts', async (_, thunkAPI) => {

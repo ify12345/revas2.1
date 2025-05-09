@@ -106,7 +106,7 @@ export interface GetOrderResponse {
 export interface GetDraftResponse {
   success?: boolean;
   count?: number;
-  data?: Order[];
+  
 }
 
 export interface ApiError {

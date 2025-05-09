@@ -80,7 +80,8 @@ export interface GetProductsPayload {
 export interface CreateOrderPayload {
   companyName?: string
   email?: string | undefined;
-  location: string
+  buyerLocation: string
+  supplierLocation: string
   product: string
   capacity: number
   pricePerTonne: number
@@ -144,6 +145,7 @@ export interface Notification {
   read: boolean
   createdAt: string
   userId?: string
+  orderId?:string;
   metadata?: Record<string, any>
 }
 
@@ -154,6 +156,7 @@ export interface NotificationType {
   read: boolean
   createdAt: string
   userId?: string
+  orderId?:string;
   type?: 'info' | 'warning' | 'error' | 'success'
   metadata?: Record<string, any>
 }

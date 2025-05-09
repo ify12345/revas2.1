@@ -54,6 +54,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const notifications = useAppSelector(state => state.auth.notifications)
+  console.log(notifications.data)
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
 
