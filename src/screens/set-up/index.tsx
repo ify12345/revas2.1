@@ -152,9 +152,9 @@ export default function SetUp() {
   }
 
   return (
-    <div className="w-full flex flex-col lg:flex-row overflow-hidden p-7 max-h-screen items-center">
+    <div className="w-full flex flex-col lg:flex-row overflow-hidden lg:p-7 max-h-screen">
       <AuthPiece />
-      <div className="w-full lg:w-1/2 flex flex-col lg:p-[88px]">
+      <div className="w-full lg:w-1/2 flex flex-col lg:p-[28px] p-7 overflow-y-auto h-screen">
         <img src={logo} className="max-w-[172px] mb-[60px]" alt="Logo" />
         <form
           onSubmit={handleSubmit}
