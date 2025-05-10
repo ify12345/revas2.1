@@ -30,7 +30,7 @@ const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({ formData, user,save
       <div className="flex flex-col gap-2">
         <p className="text-gray font-bold">{formData.buyerName || 'Invalid company name'}</p>
         <p className="font-light text-sm">
-         {formData.location || 'No location provided'}
+         {formData.buyerLocation || 'No location provided'}
         </p>
       </div>
       <div className="flex flex-col lg:flex-row lg:justify-between">
@@ -72,7 +72,7 @@ const OrderSummaryView: React.FC<OrderSummaryViewProps> = ({ formData, user,save
 
       <div className="flex flex-col text-gray gap-1">
         <label className="text-sm font-medium text-gray_light">Location</label>
-        <p className="border border-stroke p-2 rounded-lg bg-gray-50">{formData.location || 'Not selected'}</p>
+        <p className="border border-stroke p-2 rounded-lg bg-gray-50">{formData.buyerLocation || 'Not selected'}</p>
       </div>
     </div>
   </div>
