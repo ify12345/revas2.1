@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -33,7 +34,8 @@ export default function All({ people }: Props) {
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
   const { getDocs } = useAppSelector(state => state.order)
-  // console.log(getDocs)
+
+  // console.log('hii',user)
 
   const openDetailsModal = (person: Order): void => {
     setSelectedPerson(person)
@@ -104,7 +106,7 @@ export default function All({ people }: Props) {
     if (document) {
       console.log('Download:', document.downloadUrl)
       // Redirect to the download URL
-      window.open(document.downloadUrl, '_blank')
+      window.open(document.fileUrl, '_blank')
     } else {
       showToast({ type: 'error', msg: 'No document available for download' })
     }
@@ -163,7 +165,7 @@ export default function All({ people }: Props) {
             'No recorded orders'
           ) : (
             <div className="overflow-hidden shadow-sm sm:rounded-lg p-[24px] border border-stroke rounded-xl">
-              <table className="min-w-full relative z-10">
+              <table className="min-w-full">
                 <thead className="bg-[#F8FAFC] relative z-10 text-gray">
                   <tr>
                     <th
@@ -217,12 +219,9 @@ export default function All({ people }: Props) {
                       <td
                         className={`py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 ${clientType !== 'Supplier' && clientType !== 'Buyer' ? 'cursor-pointer hover:scale-95 transition-all duration-300' : ''}`}
                         onClick={() => {
-                          if (
-                            clientType !== 'Supplier' &&
-                            clientType !== 'Buyer'
-                          ) {
+                         
                             openDetailsModal(person)
-                          }
+                      
                         }}
                       >
                         {person.supplierName}
@@ -237,7 +236,11 @@ export default function All({ people }: Props) {
                         {person.pricePerTonne}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                        {person.location}
+                      
+                        {
+                          user.role === 'buyer' || 'Buyer' ?  person.buyerLocation : person.supplierLocation
+                        }
+                       
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                         <Badge
@@ -251,26 +254,26 @@ export default function All({ people }: Props) {
                             {/* Check if there's a matching document for this order */}
                             <button
                               onClick={() => viewPurchase(person)}
-                              className={`text-gray-600 hover:text-gray-900 ${!hasMatchingDocument(person.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              className={`text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md border-primary ${!hasMatchingDocument(person.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
                               title="View PDF"
                               disabled={!hasMatchingDocument(person.id)}
                             >
-                              <FaEye className="h-5 w-5" />
+                              View
                             </button>
                             <button
                               onClick={() => handleDownload(person)}
-                              className={`text-gray-600 hover:text-gray-900 ${!hasMatchingDocument(person.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              className={`text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md bg-primary text-white ${!hasMatchingDocument(person.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
                               title="Download document to sign"
                               disabled={!hasMatchingDocument(person.id)}
                             >
-                              <FaDownload className="h-5 w-5" />
+                              Download 
                             </button>
                             <button
                               onClick={() => handleUpload(person)}
-                              className="text-gray-600 hover:text-gray-900"
+                              className="text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md bg-primary text-white"
                               title="Sign and Upload"
                             >
-                              <FaUpload className="h-5 w-5" />
+                              Upload 
                             </button>
                           </div>
                         ) : (

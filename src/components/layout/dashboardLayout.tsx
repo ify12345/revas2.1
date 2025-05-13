@@ -31,6 +31,7 @@ import {
 } from '@/api/order'
 import ManageCompany from '../ManageCompany'
 import Notification from '../Notification'
+import { fetchNigerianStates } from '@/api/auth'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -54,7 +55,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const notifications = useAppSelector(state => state.auth.notifications)
-  console.log(notifications.data)
+  // console.log(notifications.data)
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
 
@@ -72,6 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       dispatch(getOrder({}))
       dispatch(getDrafts({}))
       dispatch(getDocuments({}))
+      dispatch(fetchNigerianStates())
       dispatch(getNotifications({ userId: user.id }))
     }
   }, [dispatch, user?.id])

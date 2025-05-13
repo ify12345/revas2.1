@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import AxiosBase from './axios';
 import {
@@ -13,6 +14,7 @@ import {
   RegisterResponse,
 } from '@/types/apiResponse'
 import apiCall from './apiCall';
+import axios from 'axios';
 
 export const register = createAsyncThunk<
   RegisterResponse,
@@ -84,3 +86,13 @@ export const resetPassword = createAsyncThunk<
     thunkAPI
   )
 })
+
+export const fetchNigerianStates = createAsyncThunk<
+  string[],
+  void,
+  AsyncThunkConfig
+>('location/fetchNigerianStates', async (_, thunkAPI) => {
+
+    const response = await axios.get('https://nga-states-lga.onrender.com/fetch');
+    return response.data;
+});

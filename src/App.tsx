@@ -44,15 +44,10 @@ const App = () => {
             <Route path="/reset-pin" element={<ResetPin />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/reset-success" element={<ResetSuccess />} />
+            <Route path="/set-up" element={<SetUp />} />
           </>
         )}
-        {isAuthenticated && (!hasProduct && !isVerified ) && (
-          <>
-            <Route path="/" element={<SetUp />} />
-            <Route path="/sign-in" element={<UsersSignin />} />
-          </>
-        )}
-        {isAuthenticated && (hasProduct || isVerified) && (
+        {isAuthenticated && (
           <>
             <Route path="/" element={<Dashboard />} />
           </>

@@ -88,7 +88,7 @@ export const editStatus = createAsyncThunk<
   AsyncThunkConfig
 >('/api/edit-status', async (payload, thunkAPI) => {
   const Axios = await AxiosBase()
-  // console.log(payload.status)
+  console.log(payload.status)
   return apiCall(
     Axios.patch(`/api/orders/${payload.id}/status`, { status: payload.status }),
     thunkAPI

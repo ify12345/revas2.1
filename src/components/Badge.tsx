@@ -147,7 +147,7 @@ export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
       </div>
       
       {isOpen && !isEditingDisabled && (
-        <div className="fixed  z-50 mt-1 w-40 rounded-md shadow-lg bg-white">
+        <div className="absolute -top-24 z-50 mt-1 w-40 rounded-md shadow-lg bg-white">
           <div className="py-1">
             {Object.entries(statusConfig).map(([key, value]) => (
               <div

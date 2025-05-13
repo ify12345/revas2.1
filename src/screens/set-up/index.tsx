@@ -3,7 +3,7 @@
 import React, { useCallback, useState } from 'react'
 import logo from '@/assets/logo.png'
 import img from '@/assets/images/profile.png'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CustomInput from '@/components/CustomInput'
 import AuthPiece from '@/components/AuthPiece'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
@@ -11,6 +11,7 @@ import { showToast } from '@/components/Toast'
 import { RegisterProductPayload } from '@/types/api'
 import { registerProduct } from '@/api/products'
 import { useDropzone } from 'react-dropzone'
+import { fetchNigerianStates } from '@/api/auth'
 
 // Define the product options organized by category
 const productOptions = [
@@ -58,9 +59,14 @@ const productOptions = [
 export default function SetUp() {
   const navigate = useNavigate()
   const user = useAppSelector(state => state.auth.user)
-  console.log(user)
-  const userName = user?.firstName
   const dispatch = useAppDispatch()
+  React.useEffect(() => {
+    dispatch(fetchNigerianStates())
+  }, [dispatch])
+  const states = useAppSelector(state => state.auth.states)
+  // console.log(user)
+  const userName = user?.firstName
+
   const [loading, setLoading] = useState(false)
 
   const [preview, setPreview] = useState<string | null>(null)
@@ -154,7 +160,7 @@ export default function SetUp() {
   return (
     <div className="w-full flex flex-col lg:flex-row overflow-hidden lg:p-7 max-h-screen">
       <AuthPiece />
-      <div className="w-full lg:w-1/2 flex flex-col lg:p-[28px] p-7 overflow-y-auto h-screen">
+      <div className="w-full lg:w-1/2 flex flex-col lg:p-[28px] p-7 overflow-y-auto max-h-screen">
         <img src={logo} className="max-w-[172px] mb-[60px]" alt="Logo" />
         <form
           onSubmit={handleSubmit}
@@ -241,21 +247,30 @@ export default function SetUp() {
 
           <CustomInput
             label="Location"
-            type="text"
-            placeholder="United Kingdom"
+            type="select"
+            options={states?.map(state => ({ label: state, value: state }))}
+            placeholder="Select your location"
             name="location"
             value={formData.location}
             onChange={handleChange}
             required
           />
 
-          <button
-            type="submit"
-            className="py-2.5 w-full rounded-md bg-primary text-[#fff] justify-center items-center flex cursor-pointer"
-            disabled={loading}
-          >
-            {loading ? 'Registering...' : 'Register'}
-          </button>
+          <div className="flex items-center gap-2 w-full">
+            <button
+              type="submit"
+              className="py-2.5 w-full rounded-md bg-primary text-[#fff] justify-center items-center flex cursor-pointer"
+              disabled={loading}
+            >
+              {loading ? 'Registering...' : 'Register'}
+            </button>
+            <Link
+              className="text-primary mx-auto py-2.5 w-full rounded-md border border-primary justify-center items-center flex cursor-pointer"
+              to="/sign-in"
+            >
+              Skip
+            </Link>
+          </div>
         </form>
       </div>
     </div>

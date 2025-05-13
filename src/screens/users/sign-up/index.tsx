@@ -62,7 +62,7 @@ export default function UsersSignup() {
         console.log('Success:', response)
         console.log('Role:', payload.role)
         showToast({ type: 'success', msg: response.message })
-        navigate('/sign-in')
+        navigate('/set-up')
       })
       .catch(err => {
         setLoading(false)

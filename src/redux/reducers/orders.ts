@@ -1,4 +1,4 @@
-import { getDocuments, getDrafts, getOrder } from "@/api/order";
+import { generateOrder, getDocuments, getDrafts, getOrder } from "@/api/order";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Order {
@@ -19,8 +19,45 @@ export interface Order {
   docUrl: string | null;
   buyerId: string | null;
   supplierId: string | null;
+  buyer?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  supplier?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  buyerAccountManager?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  supplierAccountManager?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  buyerName?:string;
+  sellerName?:string;
+  supplierLocation?:string;
+  buyerLocation?:string;
 }
-
+interface GenerateOrderResponse {
+  message: string;
+  document?: {
+    id: string;
+    url: string;
+    type: string;
+    status: string;
+    generatedAt: string;
+  };
+  data?: {
+    docUrl: string;
+  };
+  isExisting?: boolean;
+}
 interface Document {
   id: string;
   orderId: string;
@@ -39,12 +76,14 @@ interface State {
   order: Order | Order[] | null;
   savedOrder: Order[] ;
   getDocs: Document[];
+  generateOrder: GenerateOrderResponse | null;
 }
 
 const initialState: State = {
   order: null,
   savedOrder: [],
-  getDocs: []
+  getDocs: [],
+  generateOrder: null
 };
 
 export const order = createSlice({
@@ -62,6 +101,10 @@ export const order = createSlice({
     });
     builder.addCase(getDocuments.fulfilled, (state, {payload}) => {
       state.getDocs = payload
+      console.log("getDocs:", payload);
+    });
+    builder.addCase(generateOrder.fulfilled, (state, {payload}) => {
+      state.generateOrder = payload
       console.log("getDocs:", payload);
     });
   },

@@ -47,11 +47,11 @@ export default function OrdersScreen() {
   const dispatch = useAppDispatch()
   const orders = useAppSelector(state => state.order)
   const { getDocs } = useAppSelector(state => state.order)
-  // console.log(getDocs)
 
   const list = Array.isArray(orders.order)
     ? orders.order
     : [orders.order].filter(Boolean)
+   
 
   // Fetch orders when component mounts
   useEffect(() => {
@@ -138,14 +138,14 @@ export default function OrdersScreen() {
 
   const getActiveScreen = () => {
     const filteredList = getFilteredList()
-
+    // console.log(filteredList)
     switch (activeScreen) {
       case 'all':
         return <All people={filteredList} />
 
       case 'pending':
         const pendingOrders = filteredList.filter(
-          (item): item is Order => item.savedStatus === 'not_matched'
+          (item): item is Order => item.savedStatus === 'confirmed'
         )
         return <All people={pendingOrders} />
 
@@ -153,7 +153,7 @@ export default function OrdersScreen() {
         return (
           <All
             people={filteredList.filter(
-              (item): item is Order => item.savedStatus === 'confirmed'
+              (item): item is Order => item.savedStatus === 'delivered'
             )}
           />
         )
@@ -206,14 +206,14 @@ export default function OrdersScreen() {
           {
             name: 'Pending orders',
             numer:
-              list?.filter(o => o && o.savedStatus === 'not_matched')?.length ||
+              list?.filter(o => o && o.savedStatus === 'confirmed')?.length ||
               '0',
             icon: <CurrencySvg />, // Use the icon that was previously for "All"
           },
           {
             name: 'Completed orders',
             numer:
-              list?.filter(o => o && o.savedStatus === 'confirmed')?.length ||
+              list?.filter(o => o && o.savedStatus === 'delivered')?.length ||
               '0',
             icon: <WalletSvg />, // Use the icon that was previously for "Pending"
           },
@@ -227,14 +227,14 @@ export default function OrdersScreen() {
           {
             name: 'Pending orders',
             numer:
-              list?.filter(o => o && o.savedStatus === 'not_matched')?.length ||
+              list?.filter(o => o && o.savedStatus === 'confirmed')?.length ||
               '0',
             icon: <WalletSvg />,
           },
           {
             name: 'Completed orders',
             numer:
-              list?.filter(o => o && o.savedStatus === 'confirmed')?.length ||
+              list?.filter(o => o && o.savedStatus === 'delivered')?.length ||
               '0',
             icon: <FaCheckCircle color="#059669" />,
           },

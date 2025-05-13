@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react'
 import { RiDraftLine } from 'react-icons/ri'
@@ -74,6 +75,7 @@ export default function HomeScreen() {
   )
   const [isDetailsModalOpen, setIsDetailsModalOpen] = React.useState(false)
   const [selectedPerson, setSelectedPerson] = React.useState<Order | null>(null)
+  const user = useAppSelector(state => state.auth.user)
   const [loading, setLoading] = React.useState(false)
   const dispatch = useAppDispatch()
   // React.useEffect(() => {
@@ -289,7 +291,9 @@ export default function HomeScreen() {
                               {person.pricePerTonne}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                              {person.location}
+                              {user.role === 'buyer' || 'Buyer'
+                                ? person.buyerLocation
+                                : person.supplierLocation}
                             </td>
                             <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                               <Badge

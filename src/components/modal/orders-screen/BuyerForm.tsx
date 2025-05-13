@@ -25,6 +25,7 @@ const BuyerForm: React.FC<FormProps> = ({
   const { products, sellerProducts, loading } = useAppSelector(
     state => state.product
   )
+  const states = useAppSelector(state => state.auth.states)
   const [searchTerm, setSearchTerm] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const [supplierSearchTerm, setSupplierSearchTerm] = useState('')

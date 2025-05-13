@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 // Modal.tsx
 import * as React from 'react'
 import { IoMdClose } from 'react-icons/io'
@@ -15,6 +16,7 @@ interface ModalProps {
 
 const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
   const savedOrder = useAppSelector(state => state.order.savedOrder)
+  const user = useAppSelector(state => state.auth.user)
   // console.log(savedOrder)
   if (!isOpen) return null
 
@@ -111,7 +113,9 @@ const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
                                   {person.pricePerTonne}
                                 </td>
                                 <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                                  {person.location}
+                                {user.role === 'buyer' || 'Buyer'
+                                ? person.buyerLocation
+                                : person.supplierLocation}
                                 </td>
                                 <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                                   <Badge

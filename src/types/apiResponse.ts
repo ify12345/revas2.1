@@ -65,6 +65,30 @@ export interface RegisterResponse {
     userId: string;
     createdAt: string; 
     updatedAt: string; 
+    buyer?:{
+      firstName?: string
+      lastName?: string
+      email?: string
+    }
+    supplier?:{
+      firstName?: string
+      lastName?: string
+      email?: string
+    }
+    buyerAccountManager?:{
+      firstName?: string
+      lastName?: string
+      email?: string
+    }
+    supplierAccountManager?:{
+      firstName?: string
+      lastName?: string
+      email?: string
+    }
+    buyerName?:string;
+    sellerName?:string;
+    supplierLocation?:string;
+    buyerLocation?:string;
     message?: string
     success?: boolean;
     data?:[]
@@ -83,11 +107,18 @@ export interface deleteOrderResponse {
   message: string;
 }
 export interface generateOrderResponse { 
-  data?:{
-    docUrl: string
-    message: string;
-  }
-  message?: string
+  message: string;
+  document?: {
+    id: string;
+    url: string;
+    type: string;
+    status: string;
+    generatedAt: string;
+  };
+  data?: {
+    docUrl: string;
+  };
+  isExisting?: boolean;
 }
 
  export interface CreateOrderResponse {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { login, register, registerUser, UserLogin } from '@/api/auth';
+import { fetchNigerianStates, login, register, registerUser, UserLogin } from '@/api/auth';
 import { getNotifications } from '@/api/order';
 import { User } from '@/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
@@ -9,6 +9,7 @@ interface State {
   user: User;
   profile: object;
   isAuthenticated: boolean;
+  states?: string[];
   isVerified: boolean;
   isPhoneVerified: boolean;
   hasProduct: boolean;
@@ -37,6 +38,7 @@ interface Notification {
 const initialState: State = {
   user: {}, 
   profile:{},
+  states: [],
   isAuthenticated: false,
   isVerified: false,
   isPhoneVerified: false,
@@ -64,6 +66,12 @@ export const authSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(register.fulfilled, (state, {payload}) => {
       state.user = payload;
+      console.log('payload:', payload);
+      
+      // state.isAuthenticated = true;
+    });
+    builder.addCase(fetchNigerianStates.fulfilled, (state, {payload}) => {
+      state.states = payload;
       console.log('payload:', payload);
       
       // state.isAuthenticated = true;
