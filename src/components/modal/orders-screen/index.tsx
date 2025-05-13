@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { showToast } from '@/components/Toast'
-import { createOrder, saveOrder } from '@/api/order'
+import { createOrder, getOrder, saveOrder } from '@/api/order'
 import { CreateOrderPayload } from '@/types/api'
 import BuyerForm from './BuyerForm'
 import OrderSummaryView from './OrderSummaryView'
@@ -176,6 +176,7 @@ supplierLocation: '',
         setLoading(false)
         // console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
+        dispatch(getOrder({}))
         onClose()
         resetForm()
       })

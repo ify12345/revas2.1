@@ -102,6 +102,7 @@ export interface Person {
   supplierLocation?:string;
   buyerLocation?:string;
   message?: string
+  price?: string
   success?: boolean;
   data?:[]
 }

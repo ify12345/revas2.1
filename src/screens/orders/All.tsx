@@ -34,8 +34,8 @@ export default function All({ people }: Props) {
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
   const { getDocs } = useAppSelector(state => state.order)
-
-  // console.log('hii',user)
+ 
+  console.log('hii',people)
 
   const openDetailsModal = (person: Order): void => {
     setSelectedPerson(person)

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from '../Modal'
 
-import { editOrder, generateOrder } from '@/api/order'
+import { editOrder, generateOrder, getOrder } from '@/api/order'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 
 import CustomInput from '@/components/CustomInput'
@@ -69,7 +69,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
 
         // Show success message
         showToast({ type: 'success', msg: response.message })
-
+         dispatch(getOrder({}))
         // Extract document URL from response
         let docUrl = null
 
@@ -130,6 +130,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
         onClose()
         console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
+         dispatch(getOrder({}))
       })
       .catch(err => {
         setLoading(false)

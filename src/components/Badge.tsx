@@ -6,7 +6,7 @@ import { FcCancel } from "react-icons/fc";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { FiChevronDown } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { editStatus } from '@/api/order';
+import { editStatus, getOrder } from '@/api/order';
 import { showToast } from '@/components/Toast';
 
 type StatusType = 'matched' | 'not_matched' | 'pending' | 'document_phase';
@@ -97,7 +97,7 @@ export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
     if (isEditingDisabled) {
       return; // Prevent status change if editing is disabled
     }
-    
+    console.log(newStatus)
     setLoading(true);
     
     if (newStatus === currentStatus) {
@@ -110,7 +110,7 @@ export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
       id: orderId,
       status: newStatus
     };
-    
+    console.log(payload)
     dispatch(editStatus(payload))
       .unwrap()
       .then(response => {
@@ -118,10 +118,11 @@ export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
         setLoading(false);
         console.log('Success:', response);
         showToast({ type: 'success', msg: response.message });
+        dispatch(getOrder({}))
       })
       .catch(err => {
         setLoading(false);
-        const errorMessage = err?.msg?.message || err?.response?.data?.detail || 'Failed to update status';
+        const errorMessage = err?.msg?.message || err?.msg;
         console.error('Error:', err);
         showToast({ type: 'error', msg: errorMessage });
       })
