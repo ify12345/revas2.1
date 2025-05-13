@@ -56,30 +56,54 @@ export type authStateType = {
   error: any;
 };
 export interface Person {
-  id: string;
-  supplierName: string;
+  id?: string;
   companyName?: string;
-  email: string;
-  location: string;
-  product: string;
-  capacity: number;
-  pricePerTonne: number;
-  supplier: string;
-  supplierPrice: number;
-  shippingCost: number;
-  negotiatePrice: boolean;
-  priceRange: number;
-  savedStatus: string;
-  status: string;
-  docUrl: string | null;
-  buyerId: string | null;
-  supplierId: string | null;
-  accountManagerId: string | null;
-  userId: string;
-  createdAt: string;
-  updatedAt: string;
-  price?:string;
-  grade?: string
+  email?: string;
+  location?: string;
+  product?: string;
+  capacity?: number;
+  pricePerTonne?: number;
+  supplierName?: string;
+  supplierPrice?: number;
+  shippingCost?: number;
+  negotiatePrice?: boolean;
+  priceRange?: number;
+  savedStatus?: string;
+  status?: string;
+  docUrl?: string | null;
+  buyerId?: string | null;
+  supplierId?: string | null;
+  accountManagerId?: string | null;
+  userId?: string;
+  createdAt?: string; 
+  updatedAt?: string; 
+  buyer?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  supplier?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  buyerAccountManager?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  supplierAccountManager?:{
+    firstName?: string
+    lastName?: string
+    email?: string
+  }
+  buyerName?:string;
+  sellerName?:string;
+  supplierLocation?:string;
+  buyerLocation?:string;
+  message?: string
+  success?: boolean;
+  data?:[]
 }
 
 export interface USERDATA {
