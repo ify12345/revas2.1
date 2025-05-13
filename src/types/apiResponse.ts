@@ -44,27 +44,27 @@ export interface RegisterResponse {
   token?: string
 }
   export interface Order {
-    id?: string;
-    companyName?: string;
-    email?: string;
-    location?: string;
-    product?: string;
-    capacity?: number;
-    pricePerTonne?: number;
-    supplierName?: string;
-    supplierPrice?: number;
-    shippingCost?: number;
-    negotiatePrice?: boolean;
-    priceRange?: number;
-    savedStatus?: string;
-    status?: string;
-    docUrl?: string | null;
-    buyerId?: string | null;
-    supplierId?: string | null;
-    accountManagerId?: string | null;
-    userId?: string;
-    createdAt?: string; 
-    updatedAt?: string; 
+    id: string;
+    companyName: string;
+    email: string;
+    location: string;
+    product: string;
+    capacity: number;
+    pricePerTonne: number;
+    supplierName: string;
+    supplierPrice: number;
+    shippingCost: number;
+    negotiatePrice: boolean;
+    priceRange: number;
+    savedStatus: string;
+    status: string;
+    docUrl: string | null;
+    buyerId: string | null;
+    supplierId: string | null;
+    accountManagerId: string | null;
+    userId: string;
+    createdAt: string; 
+    updatedAt: string; 
     buyer?:{
       firstName?: string
       lastName?: string
