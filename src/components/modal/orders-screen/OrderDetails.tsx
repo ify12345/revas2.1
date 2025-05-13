@@ -54,7 +54,6 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  // Handle PDF generation via API
   const handleGenerateDocument = () => {
     setDocumentLoading(true)
 
@@ -66,21 +65,15 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
       .unwrap()
       .then(response => {
         setDocumentLoading(false)
-
-        // Show success message
+        dispatch(getOrder({}))
         showToast({ type: 'success', msg: response.message })
-         dispatch(getOrder({}))
-        // Extract document URL from response
-        let docUrl = null
 
-        // Check for different possible response structures
-        if (response?.data?.docUrl) {
-          docUrl = response.data.docUrl
-        } else if (response?.document?.url) {
-          docUrl = response.document.url
-        }
+        // ✅ Robustly extract the document URL from the response
+        const docUrl =
+          response?.data?.docUrl ||
+          response?.document?.url ||
+          null
 
-        // Save document URL to state for preview
         if (docUrl) {
           setDocumentUrl(docUrl)
         }
@@ -88,13 +81,9 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
       .catch(err => {
         setDocumentLoading(false)
 
-        // Show error message
         const errorMessage =
           err?.msg?.message || err?.msg || 'An error occurred'
-        showToast({
-          type: 'error',
-          msg: errorMessage,
-        })
+        showToast({ type: 'error', msg: errorMessage })
 
         console.error('Error generating document:', err)
       })
@@ -129,8 +118,8 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
         setLoading(false)
         onClose()
         console.log('Success:', response)
+        dispatch(getOrder({}))
         showToast({ type: 'success', msg: response.message })
-         dispatch(getOrder({}))
       })
       .catch(err => {
         setLoading(false)
@@ -143,7 +132,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
         showToast({ type: 'error', msg: errorMessage })
       })
   }
-
+  // console.log('selected',person)
   return (
     <>
       {/* Full-screen PDF Viewer */}
@@ -310,15 +299,14 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
             </button>
 
             {/* Show Preview button when document URL is available */}
-            {documentUrl ||
-              (person.docUrl && (
-                <button
-                  onClick={handlePreviewDocument}
-                  className="bg-[#3b82f6] text-[#FFF] px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-95"
-                >
-                  Preview Document
-                </button>
-              ))}
+            {(documentUrl || person.docUrl) && (
+              <button
+                onClick={handlePreviewDocument}
+                className="bg-[#3b82f6] text-[#FFF] px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-95"
+              >
+                Preview Document
+              </button>
+            )}
 
             {!user.clientType && !person.docUrl && (
               <button

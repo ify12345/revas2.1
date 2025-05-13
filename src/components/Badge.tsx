@@ -117,7 +117,7 @@ export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
         setCurrentStatus(newStatus);
         setLoading(false);
         console.log('Success:', response);
-        showToast({ type: 'success', msg: response.message });
+        showToast({ type: 'success', msg: response.message || 'Status updated' });
         dispatch(getOrder({}))
       })
       .catch(err => {

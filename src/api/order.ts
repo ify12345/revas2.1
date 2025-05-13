@@ -52,7 +52,7 @@ export const getOrder = createAsyncThunk<
   AsyncThunkConfig
 >('/api/get-order', async (_, thunkAPI) => {
   const Axios = await AxiosBase()
-  return apiCall(Axios.get('/api/orders/dashboard'), thunkAPI)
+  return apiCall(Axios.get('/orders/dashboard'), thunkAPI)
 })
 
 export const getDrafts = createAsyncThunk<
