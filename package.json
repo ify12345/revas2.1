@@ -18,6 +18,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "date-fns": "^4.1.0",
+    "formik": "^2.4.6",
     "framer-motion": "^12.6.5",
     "jspdf": "^3.0.1",
     "jwt-decode": "^4.0.0",
@@ -30,7 +31,8 @@
     "react-router-dom": "^7.1.1",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
-    "rollup": "^4.29.1"
+    "rollup": "^4.29.1",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

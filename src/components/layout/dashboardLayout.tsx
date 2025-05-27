@@ -117,7 +117,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsNotificationsOpen(false)
     document.body.style.overflow = 'auto'
   }
-  // Define menu links based on client type
+
   const getMenuLinks = () => {
     // Default links for all users
     const defaultLinks = [
@@ -237,7 +237,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       <div className="flex-1 flex flex-col">
         <header
-          className={`bg-green-500 text-white p-3 px-6 border-b border-[#E7E7E7] shadow-md flex items-center ${
+          className={`text-white p-3 px-6 border-b border-[#E7E7E7] shadow-md flex items-center ${
             !isSidebarOpen ? 'justify-between' : 'justify-start'
           }`}
         >

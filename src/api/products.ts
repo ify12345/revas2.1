@@ -67,6 +67,7 @@ export const searchBuyerProduct = createAsyncThunk<
     thunkAPI
   );
 });
+
 export const searchSupplierProduct = createAsyncThunk<
   searchProductsResponse,
   searchProductsPayload,
