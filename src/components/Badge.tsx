@@ -9,11 +9,11 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { editStatus, getOrder } from '@/api/order';
 import { showToast } from '@/components/Toast';
 
-type StatusType = 'matched' | 'not_matched' | 'pending' | 'document_phase';
+type StatusType = 'matched' | 'not_matched' | 'pending_approval' | 'document_phase';
 
 interface BadgeProps {
   status: StatusType;
-  orderId: string;
+  orderId?: string;
   // disableEditing is now optional and only used to override the default behavior
   disableEditing?: boolean;
 }
@@ -31,7 +31,7 @@ const statusConfig: Record<StatusType, { text: string; color: string; bgColor: s
     bgColor: "#E7F6EC",
     icon: <FcCancel />
   },
-  pending: {
+  pending_approval: {
     text: "Pending",
     color: "#D97706",
     bgColor: "#FFFBEB",

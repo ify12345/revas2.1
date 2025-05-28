@@ -23,6 +23,9 @@ const productSlice = createSlice({
     },
     clearProducts: (state) => {
       state.products = [];
+    },
+    clearSupplierProducts: (state) => {
+      state.sellerProducts = [];
     }
   },
   extraReducers: (builder) => {
@@ -55,6 +58,6 @@ const productSlice = createSlice({
   }
 });
 
-export const { selectProduct, clearSelectedProduct, clearProducts } = productSlice.actions;
+export const { selectProduct, clearSelectedProduct, clearProducts,clearSupplierProducts } = productSlice.actions;
 
 export default productSlice.reducer;

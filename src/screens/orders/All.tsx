@@ -22,7 +22,7 @@ import {
 interface Props {
   people: Order[]
 }
-type StatusType = 'matched' | 'not_matched' | 'pending'
+export type StatusType = 'matched' | 'not_matched' | 'pending_approval'
 
 export default function All({ people }: Props) {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = React.useState(false)

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from '../Modal'
 
-import { editOrder, generateOrder, getOrder } from '@/api/order'
+import { approveOrder, generateOrder, getOrder } from '@/api/order'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 
 import CustomInput from '@/components/CustomInput'
@@ -10,6 +10,8 @@ import { Order } from '@/types/apiResponse'
 import { showToast } from '@/components/Toast'
 import Success from '@/components/svg/success'
 import PdfViewer from '@/components/PdfViewer'
+import Badge from '@/components/Badge'
+import { StatusType } from '@/screens/orders/All'
 
 interface OrderDetailsProps {
   isOpen: boolean
@@ -69,10 +71,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
         showToast({ type: 'success', msg: response.message })
 
         // ✅ Robustly extract the document URL from the response
-        const docUrl =
-          response?.data?.docUrl ||
-          response?.document?.url ||
-          null
+        const docUrl = response?.data?.docUrl || response?.document?.url || null
 
         if (docUrl) {
           setDocumentUrl(docUrl)
@@ -112,7 +111,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
       ...formData,
     }
 
-    dispatch(editOrder(payload))
+    dispatch(approveOrder(payload))
       .unwrap()
       .then(response => {
         setLoading(false)
@@ -132,7 +131,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
         showToast({ type: 'error', msg: errorMessage })
       })
   }
-  // console.log('selected',person)
+  console.log('selected',person)
   return (
     <>
       {/* Full-screen PDF Viewer */}
@@ -154,143 +153,49 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
               </div>
             ))}
 
-          <div className="text-sm flex flex-col w-full justify-between">
-            <CustomInput
-              label="Company Name"
-              type="text"
-              name="supplierName"
-              value={formData.supplierName}
-              onChange={handleChange}
-              disabled={person.status === 'matched'}
-            />
+          <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
+            <p className="text-[#98A2B3]">Supplier name</p>
+            <p className="text-primary">
+              {person.supplier?.firstName} {person.supplier?.lastName}
+            </p>
           </div>
-          <div className="text-sm flex flex-col w-full justify-between">
-            <CustomInput
-              label="Product"
-              type="text"
-              name="product"
-              value={formData.product}
-              onChange={handleChange}
-              disabled={person.status === 'matched'}
-            />
+          <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
+            <p className="text-[#98A2B3]">Account Manager (Supplier)</p>
+            <p className="text-primary">
+              {' '}
+              {person.supplierAccountManager?.firstName}{' '}
+              {person.supplierAccountManager?.lastName}
+            </p>
           </div>
-          <div className="text-sm flex flex-col w-full justify-between">
-            <CustomInput
-              label="Price/Tonne (USD)"
-              type="number"
-              name="pricePerTonne"
-              value={formData.pricePerTonne}
-              onChange={handleChange}
-              disabled={person.status === 'matched'}
-            />
+          <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
+            <p className="text-[#98A2B3]">Product</p>
+            <p className="text-primary">{formData.product}</p>
           </div>
-          {/* <div className="text-sm flex flex-col w-full justify-between">
-            <CustomInput
-              label="Location"
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              disabled={person.status === 'matched'}
-            />
-          </div> */}
-          <div className="text-sm flex flex-col w-full justify-between">
-            <CustomInput
-              label="Capacity"
-              type="number"
-              name="capacity"
-              value={formData.capacity}
-              onChange={handleChange}
-              disabled={person.status === 'matched'}
-            />
+          <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
+            <p className="text-[#98A2B3]">Price/tonne (USD)</p>
+            <p className="text-primary">{formData.pricePerTonne}</p>
+          </div>
+          <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
+            <p className="text-[#98A2B3]">Capacity (MT/month)</p>
+            <p className="text-primary">{formData.capacity}</p>
+          </div>
+
+          <div className="text-sm flex flex-col w-full justify-between gap-3">
+            <p className="text-[#98A2B3]">Buyer</p>
+            <p className="text-[#98A2B3] bg-stroke border border-stroke p-2.5 rounded-lg">
+              {person.buyer?.firstName} {person.buyer?.lastName}
+            </p>
           </div>
 
           {person.status !== 'matched' && (
-            <div className="text-sm flex flex-col w-full justify-between">
-              <CustomInput
-                label="Status"
-                type="select"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              />
-            </div>
-          )}
-          {/* Additional Information */}
-          {!user?.clientType && (
-            <div className="text-sm flex flex-col w-full gap-4 pt-4 border-t border-stroke mt-4">
-              {/* Buyer Info */}
-              <div>
-                <h3 className="font-semibold text-[#333] mb-2">
-                  Buyer Information
-                </h3>
-                <p>
-                  <strong>Name:</strong> {person.buyer?.firstName}{' '}
-                  {person.buyer?.lastName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {person.buyer?.email}
-                </p>
-                <p>
-                  <strong>Company:</strong> {person.buyerName}
-                </p>
-                <p>
-                  <strong>Location:</strong> {person.buyerLocation}
-                </p>
-              </div>
-
-              {/* Supplier Info */}
-              <div>
-                <h3 className="font-semibold text-[#333] mb-2">
-                  Supplier Information
-                </h3>
-                <p>
-                  <strong>Name:</strong> {person.supplier?.firstName}{' '}
-                  {person.supplier?.lastName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {person.supplier?.email}
-                </p>
-                <p>
-                  <strong>Company:</strong> {person.supplierName}
-                </p>
-                <p>
-                  <strong>Location:</strong> {person.supplierLocation}
-                </p>
-              </div>
-
-              {/* Buyer Account Manager */}
-              <div>
-                <h3 className="font-semibold text-[#333] mb-2">
-                  Buyer Account Manager
-                </h3>
-                <p>
-                  <strong>Name:</strong> {person.buyerAccountManager?.firstName}{' '}
-                  {person.buyerAccountManager?.lastName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {person.buyerAccountManager?.email}
-                </p>
-              </div>
-
-              {/* Supplier Account Manager */}
-              <div>
-                <h3 className="font-semibold text-[#333] mb-2">
-                  Supplier Account Manager
-                </h3>
-                <p>
-                  <strong>Name:</strong>{' '}
-                  {person.supplierAccountManager?.firstName}{' '}
-                  {person.supplierAccountManager?.lastName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {person.supplierAccountManager?.email}
-                </p>
-              </div>
+            <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
+               <p className="text-[#98A2B3]">Status</p>
+              <Badge status={person.status as StatusType} disableEditing />
             </div>
           )}
 
-          <div className="flex justify-end  gap-3 border-t border-stroke py-3 items-end">
+        </div>
+          <div className="flex justify-end  gap-3 border-t border-stroke py-3 items-end px-3">
             <button
               onClick={onClose}
               className="bg-[#fff] text-[#535353] px-4 py-2 border border-stroke rounded-lg text-sm transition-all duration-300 hover:scale-95"
@@ -298,7 +203,6 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
               Cancel
             </button>
 
-            {/* Show Preview button when document URL is available */}
             {(documentUrl || person.docUrl) && (
               <button
                 onClick={handlePreviewDocument}
@@ -324,11 +228,10 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
                   : person.status === 'matched' ||
                       person.status === 'document_phase'
                     ? `Generate ${user?.role === 'buyer' ? 'SO' : 'PO'}`
-                    : 'Edit Request'}
+                    : 'Approve'}
               </button>
             )}
           </div>
-        </div>
       </Modal>
     </>
   )

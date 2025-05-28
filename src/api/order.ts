@@ -73,13 +73,13 @@ export const deleteOrder = createAsyncThunk<
   return apiCall(Axios.delete(`/delete-orders/${payload}`, payload), thunkAPI)
 })
 
-export const editOrder = createAsyncThunk<
+export const approveOrder = createAsyncThunk<
   deleteOrderResponse,
   EditOrderPayload,
   AsyncThunkConfig
->('/api/edit-order', async (payload, thunkAPI) => {
+>('/api/approve-order', async (payload, thunkAPI) => {
   const Axios = await AxiosBase()
-  return apiCall(Axios.put(`/update-orders/${payload.id}`), thunkAPI)
+  return apiCall(Axios.post(`/orders/${payload.id}/approve`), thunkAPI)
 })
 
 export const editStatus = createAsyncThunk<

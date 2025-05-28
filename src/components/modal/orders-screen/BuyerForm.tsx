@@ -10,7 +10,7 @@ import { FormProps, OrderFormData } from './types'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { Product } from '@/types/product'
 import { FiSearch } from 'react-icons/fi'
-import { clearProducts, selectProduct } from '@/redux/reducers/products'
+import { clearProducts, clearSupplierProducts, selectProduct } from '@/redux/reducers/products'
 import { searchBuyerProduct, searchSupplierProduct } from '@/api/products'
 
 // Define the form values interface
@@ -18,7 +18,7 @@ interface BuyerFormValues {
   buyerName: string;
   buyerId: string;
   supplierId: string;
-  email?: string;  // Still optional if OrderFormData allows it
+  email?: string;  
   buyerLocation: string;
   supplierLocation: string;
   product: string;
@@ -196,7 +196,7 @@ const BuyerForm: React.FC<FormProps> = ({
       dispatch(searchSupplierProduct({ companyName: value }))
       setShowSupplierDropdown(true)
     } else {
-      dispatch(clearProducts())
+      dispatch(clearSupplierProducts())
       setShowSupplierDropdown(false)
     }
   }
