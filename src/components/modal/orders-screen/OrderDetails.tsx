@@ -169,15 +169,15 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
           </div>
           <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
             <p className="text-[#98A2B3]">Product</p>
-            <p className="text-primary">{formData.product}</p>
+            <p className="text-primary">{person.product}</p>
           </div>
           <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
             <p className="text-[#98A2B3]">Price/tonne (USD)</p>
-            <p className="text-primary">{formData.pricePerTonne}</p>
+            <p className="text-primary">{person.pricePerTonne}</p>
           </div>
           <div className="text-sm flex flex-col lg:flex-row w-full justify-between">
             <p className="text-[#98A2B3]">Capacity (MT/month)</p>
-            <p className="text-primary">{formData.capacity}</p>
+            <p className="text-primary">{person.capacity}</p>
           </div>
 
           <div className="text-sm flex flex-col w-full justify-between gap-3">

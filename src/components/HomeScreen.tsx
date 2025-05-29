@@ -272,7 +272,7 @@ export default function HomeScreen() {
                         .filter((person): person is Order => person !== null)
                         .map(person => (
                           <tr
-                            key={person.supplierName}
+                            key={person.id}
                             className="cursor-pointer hover:bg-gray-100"
                           >
                             <td

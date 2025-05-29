@@ -35,7 +35,7 @@ export default function All({ people }: Props) {
   const clientType = user?.clientType
   const { getDocs } = useAppSelector(state => state.order)
  
-  console.log('hii',people)
+  // console.log('hii',people)
 
   const openDetailsModal = (person: Order): void => {
     setSelectedPerson(person)
@@ -215,7 +215,7 @@ export default function All({ people }: Props) {
                 </thead>
                 <tbody className="divide-y divide-[#F8FAFC] bg-white relative z-10">
                   {people.map(person => (
-                    <tr key={person.supplierName} className="hover:bg-gray-100">
+                    <tr key={person.id} className="hover:bg-gray-100">
                       <td
                         className={`py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 ${clientType !== 'Supplier' && clientType !== 'Buyer' ? 'cursor-pointer hover:scale-95 transition-all duration-300' : ''}`}
                         onClick={() => {

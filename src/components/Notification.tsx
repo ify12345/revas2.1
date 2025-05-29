@@ -152,7 +152,8 @@ const Notification: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
   }
 
   if (!isOpen) return null
-
+  // console.log(notifications.data);
+  
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-end bg-[#000] bg-opacity-50 p-6"
