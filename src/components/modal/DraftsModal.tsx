@@ -22,7 +22,7 @@ const DraftsModal = ({ isOpen, onClose }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start pt-[19%]  bg-[#000] bg-opacity-50 p-6"
+      className="fixed inset-0 z-50 flex items-start pt-[19%] bg-[#000] bg-opacity-50 p-6"
       onClick={onClose}
     >
       <div

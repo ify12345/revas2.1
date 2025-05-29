@@ -52,17 +52,17 @@ export default function UsersSignup() {
       clientType: formData.clientType,
     }
 
-    console.log(payload)
+    // console.log(payload)
     setLoading(true)
 
     dispatch(registerUser(payload))
       .unwrap()
       .then(response => {
         setLoading(false)
-        console.log('Success:', response)
-        console.log('Role:', payload.role)
+        // console.log('Success:', response)
+        // console.log('Role:', payload.role)
         showToast({ type: 'success', msg: response.message })
-        navigate('/set-up')
+        navigate('/sign-in')
       })
       .catch(err => {
         setLoading(false)

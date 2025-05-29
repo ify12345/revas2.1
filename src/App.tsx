@@ -23,7 +23,7 @@ const App = () => {
   )
 
   
-  console.log('user:', user)
+  // console.log('user:', user)
   // console.log('logged in', isAuthenticated, isVerified,hasProduct)
 
   return (

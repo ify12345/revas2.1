@@ -27,4 +27,4 @@ export interface Product {
     selectedProduct: Product | null;
   }
 
-  export type StatusType = 'matched' | 'not_matched' | 'pending';
+  export type StatusType = 'matched' | 'not_matched' | 'pending_approval';

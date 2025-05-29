@@ -21,7 +21,7 @@ import { showToast } from './Toast.js'
 import CreateOrderForm from './modal/orders-screen/index.js'
 import OrderDetails from './modal/orders-screen/OrderDetails.js'
 
-type StatusType = 'matched' | 'not_matched' | 'pending'
+type StatusType = 'matched' | 'not_matched' | 'pending_approval'
 
 const details = [
   {

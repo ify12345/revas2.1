@@ -131,7 +131,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
         showToast({ type: 'error', msg: errorMessage })
       })
   }
-  console.log('selected',person)
+  // console.log('selected',person)
   return (
     <>
       {/* Full-screen PDF Viewer */}
