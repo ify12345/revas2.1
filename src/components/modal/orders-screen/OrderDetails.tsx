@@ -18,7 +18,47 @@ interface OrderDetailsProps {
   onClose: () => void
   person: Order
 }
-
+const productOptions = [
+  {
+    category: 'Plastics',
+    options: [
+      { label: 'PET Bales', value: 'PET Bales' },
+      { label: 'Pet Flakes', value: 'Pet Flakes' },
+      { label: 'Granules(pellets)', value: 'Granules(pellets)' },
+      {
+        label: 'High Density Polyethylene (HDPE)',
+        value: 'High Density Polyethylene (HDPE)',
+      },
+      { label: 'Polyvinyl Chloride (PVC)', value: 'Polyvinyl Chloride (PVC)' },
+      { label: 'Polypropylene (PP)', value: 'Polypropylene (PP)' },
+    ],
+  },
+  {
+    category: 'Metal',
+    options: [
+      { label: 'Aluminium', value: 'Aluminium' },
+      { label: 'UBC(Cans)', value: 'UBC(Cans)' },
+      { label: 'Ingots', value: 'Ingots' },
+      { label: 'Scraps', value: 'Scraps' },
+      { label: 'Sheets', value: 'Sheets' },
+      { label: 'Castings', value: 'Castings' },
+    ],
+  },
+  {
+    category: 'Paper',
+    options: [
+      { label: 'White Office Paper', value: 'White Office Paper' },
+      { label: 'Newspaper', value: 'Newspaper' },
+      { label: 'Colored Office Paper', value: 'Colored Office Paper' },
+      { label: 'Cardboard', value: 'Cardboard' },
+      { label: 'White Computer Paper', value: 'White Computer Paper' },
+      { label: 'Magazines', value: 'Magazines' },
+      { label: 'Catalogs', value: 'Catalogs' },
+      { label: 'Phone Books', value: 'Phone Books' },
+      { label: 'Cartons', value: 'Cartons' },
+    ],
+  },
+]
 const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false)
@@ -115,9 +155,9 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
       .unwrap()
       .then(response => {
         setLoading(false)
+        dispatch(getOrder({}))
         onClose()
         console.log('Success:', response)
-        dispatch(getOrder({}))
         showToast({ type: 'success', msg: response.message })
       })
       .catch(err => {

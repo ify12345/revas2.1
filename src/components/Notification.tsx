@@ -126,9 +126,9 @@ const Notification: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
   const getStatusIcon = (type: string) => {
     switch (type) {
       case 'status_changed':
-        return <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+        return <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 border-blue-500 border"></div>
       default:
-        return <div className="w-2 h-2 bg-gray-500 rounded-full mt-2"></div>
+        return <div className="w-2 h-2 bg-zinc-300 rounded-full mt-2 border-zinc-300 border"></div>
     }
   }
 

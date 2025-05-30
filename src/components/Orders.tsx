@@ -52,7 +52,7 @@ export default function OrdersScreen() {
     ? orders.order
     : [orders.order].filter(Boolean)
    
-
+// console.log(list)
   // Fetch orders when component mounts
   useEffect(() => {
     dispatch(getOrder({}))
@@ -101,7 +101,7 @@ export default function OrdersScreen() {
     // Filter by product
     if (productFilter) {
       filteredList = filteredList.filter(item =>
-        item.product?.toLowerCase().includes(productFilter.toLowerCase())
+        item.product[0]?.toLowerCase().includes(productFilter.toLowerCase())
       )
     }
 
@@ -186,16 +186,18 @@ export default function OrdersScreen() {
     new Set(
       list
         .filter((item): item is Order => item !== null)
-        .map(item => item.product)
+        .map(item => item.product[0])
     )
   ).filter(Boolean)
 
   // Status options
   const statusOptions = [
-    { value: 'matched', label: 'Matched' },
+    { value: 'pending_approval', label: 'Pending' },
     { value: 'not_matched', label: 'Not Matched' },
-    { value: 'pending', label: 'Pending' },
+    { value: 'matched', label: 'Matched' },
     { value: 'document_phase', label: 'Documentation' },
+    { value: 'processing', label: 'Processing' },
+    { value: 'shipping', label: 'Shipping' },
     { value: 'completed', label: 'Completed' },
   ]
 
