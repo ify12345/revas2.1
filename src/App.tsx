@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Signup from './screens/Signup/index.js'
 import Signin from './screens/sign-in/index.js'
@@ -16,22 +15,32 @@ import ResetSuccess from './screens/reset-success/index.js'
 import About from './screens/about/index.js'
 import How from './screens/how/index.js'
 import Browse from './screens/browse/index.js'
+import PreLoader from './components/PreLoader.js'
+
 
 const App = () => {
-  const { isAuthenticated, isVerified, user, hasProduct } = useAppSelector(
-    store => store.auth
-  )
+  const { isAuthenticated } = useAppSelector(store => store.auth)
 
-  
-  // console.log('user:', user)
-  // console.log('logged in', isAuthenticated, isVerified,hasProduct)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate app loading for 2 seconds
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) {
+    return <PreLoader />
+  }
 
   return (
     <Router>
       <Routes>
         {!isAuthenticated && (
           <>
-            {/* Admin routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/categories" element={<Browse />} />
