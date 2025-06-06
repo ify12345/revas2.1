@@ -99,7 +99,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     dispatch(logout())
     localStorage.removeItem('revas')
     persistor.purge()
-    navigate('/sign-in')
   }
 
   const userName = user?.firstName
@@ -189,7 +188,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? 'translate-x-0 bg-[#fff]' : '-translate-x-full'
-        } md:relative md:translate-x-0 w-20  text-white p-4 border-r border-[#E7E7E7] transition-transform duration-300 ease-in-out z-10`}
+        } md:relative md:translate-x-0 w-20  text-white p-4 border-r border-[#E7E7E7] transition-transform duration-300 ease-in-out z-50`}
       >
         <ul className="flex flex-col items-center space-y-6">
           <li>
@@ -255,18 +254,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </button>
 
           {!isSidebarOpen && (
-            <h1 className="text-base font-medium text-primary">{activeView}</h1>
+            <h1 className="text-base font-medium text-primary hidden lg:block">
+              {activeView}
+            </h1>
           )}
 
           {!isSidebarOpen && (
             <div className="flex items-center">
-              <div className="flex gap-4 lg:px-[24px] pr-1 border-r border-[#E7E7E7]">
+              <div className="flex lg:gap-4 lg:px-[24px] pr-1 border-r border-[#E7E7E7]">
                 <Message />
+
                 <button
                   onClick={() => setIsNotificationsOpen(true)}
                   className="relative"
                 >
-                  <div className="text-purple absolute -right-1 -top-1">
+                  <div className="text-purple absolute text-sm right-1 top-0">
                     {notifications.data.length}
                   </div>
                   <Notifications />

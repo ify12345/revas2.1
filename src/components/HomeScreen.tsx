@@ -20,6 +20,7 @@ import { Order } from '@/types/apiResponse.js'
 import { showToast } from './Toast.js'
 import CreateOrderForm from './modal/orders-screen/index.js'
 import OrderDetails from './modal/orders-screen/OrderDetails.js'
+import Loader from './Loader.js'
 
 type StatusType = 'matched' | 'not_matched' | 'pending_approval'
 
@@ -330,94 +331,7 @@ export default function HomeScreen() {
           person={selectedPerson}
         />
       )}
-      {/* <div className=" p-4 border border-stroke rounded-lg mt-4">
-        <div className="sm:flex sm:items-center border-b border-stroke pb-3">
-          <div className="sm:flex-auto">Request</div>
-        </div>
-        <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <div className="overflow-hidden shadow-sm  sm:rounded-lg">
-                <table className="min-w-full ">
-                  <thead className="bg-[#F8FAFC]">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                      >
-                        ID
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Name
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Price
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Country
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Capacity (MT/month)
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Grade
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {people.map(person => (
-                      <tr key={person.id}>
-                        <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6">
-                          {person.id}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.name}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.status}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.price}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.country}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.quantity}
-                        </td>
-                        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                          {person.grade}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
+      <Loader visible={loading} />
     </div>
   )
 }

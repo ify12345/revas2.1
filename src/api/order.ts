@@ -121,8 +121,8 @@ export const uploadDocument = createAsyncThunk<
 >('/upload-doc', async ({ orderId, file }, thunkAPI) => {
   const Axios = await AxiosBase()
   const formData = new FormData()
-  formData.append('file', file)
-  // console.log('file', orderId)
+  formData.append('signedDocument', file)
+  // console.log('file', formData)
   return apiCall(
     Axios.post(`/documents/orders/${orderId}/upload`, formData, {
       headers: {

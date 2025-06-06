@@ -17,14 +17,13 @@ import How from './screens/how/index.js'
 import Browse from './screens/browse/index.js'
 import PreLoader from './components/PreLoader.js'
 
-
 const App = () => {
   const { isAuthenticated } = useAppSelector(store => store.auth)
 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate app loading for 2 seconds
+ 
     const timer = setTimeout(() => {
       setLoading(false)
     }, 2000)

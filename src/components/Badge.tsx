@@ -8,6 +8,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { editStatus, getOrder } from '@/api/order';
 import { showToast } from '@/components/Toast';
+import Loader from './Loader';
 
 type StatusType = 'matched' | 'not_matched' | 'pending_approval' | 'document_phase';
 
@@ -163,6 +164,7 @@ export default function Badge({ status, orderId, disableEditing }: BadgeProps) {
           </div>
         </div>
       )}
+      <Loader visible={loading} />
     </div>
   );
 }

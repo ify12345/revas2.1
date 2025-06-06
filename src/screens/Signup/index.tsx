@@ -10,6 +10,7 @@ import { RegisterPayload } from '@/types/api';
 import { FormData } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import AuthPiece from '@/components/AuthPiece';
+import Loader from '@/components/Loader';
 
 
 export default function Signup() {
@@ -169,6 +170,7 @@ export default function Signup() {
           Already have an account? <Link to="/account-manager/sign-in" className="text-primary font-extralight">Sign in</Link>
         </p>
       </div>
+       <Loader visible={loading}/>
     </div>
   );
 }

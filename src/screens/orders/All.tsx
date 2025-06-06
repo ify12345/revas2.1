@@ -4,6 +4,7 @@
 
 import { deleteOrder, getDocuments, uploadDocument } from '@/api/order'
 import Badge from '@/components/Badge'
+import Loader from '@/components/Loader'
 import ActionDropdown from '@/components/modal/ActionDropdown'
 import OrderDetails from '@/components/modal/orders-screen/OrderDetails'
 import Status from '@/components/Status'
@@ -34,7 +35,7 @@ export default function All({ people }: Props) {
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
   const { getDocs } = useAppSelector(state => state.order)
- 
+
   // console.log('hii',people)
 
   const openDetailsModal = (person: Order): void => {
@@ -128,15 +129,15 @@ export default function All({ people }: Props) {
     const input = document.createElement('input')
     input.type = 'file'
     input.accept = 'application/pdf'
-
     input.onchange = async () => {
       if (input.files && input.files[0]) {
         const file = input.files[0]
-
+        
         if (file.type !== 'application/pdf') {
           showToast({ type: 'error', msg: 'Only PDF files are allowed.' })
           return
         }
+        setLoading(true)
         dispatch(uploadDocument({ orderId, file }))
           .unwrap()
           .then(response => {
@@ -219,9 +220,7 @@ export default function All({ people }: Props) {
                       <td
                         className={`py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 ${clientType !== 'Supplier' && clientType !== 'Buyer' ? 'cursor-pointer hover:scale-95 transition-all duration-300' : ''}`}
                         onClick={() => {
-                         
-                            openDetailsModal(person)
-                      
+                          openDetailsModal(person)
                         }}
                       >
                         {person.supplierName}
@@ -236,11 +235,9 @@ export default function All({ people }: Props) {
                         {person.pricePerTonne}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-                      
-                        {
-                          user.role === 'buyer' || 'Buyer' ?  person.buyerLocation : person.supplierLocation
-                        }
-                       
+                        {user.role === 'buyer' || 'Buyer'
+                          ? person.buyerLocation
+                          : person.supplierLocation}
                       </td>
                       <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
                         <Badge
@@ -266,14 +263,14 @@ export default function All({ people }: Props) {
                               title="Download document to sign"
                               disabled={!hasMatchingDocument(person.id)}
                             >
-                              Download 
+                              Download
                             </button>
                             <button
                               onClick={() => handleUpload(person)}
                               className="text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md bg-primary text-white"
                               title="Sign and Upload"
                             >
-                              Upload 
+                              Upload
                             </button>
                           </div>
                         ) : (
@@ -339,6 +336,7 @@ export default function All({ people }: Props) {
           </div>
         </div>
       )}
+      <Loader visible={loading} />
     </div>
   )
 }

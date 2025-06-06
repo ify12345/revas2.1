@@ -8,6 +8,7 @@ import { useAppDispatch } from '@/redux/store'
 import { login } from '@/api/auth'
 import { showToast } from '@/components/Toast'
 import AuthPiece from '@/components/AuthPiece'
+import Loader from '@/components/Loader'
 
 interface FormData {
   email: string
@@ -118,6 +119,7 @@ export default function Signin() {
             Sign up
           </Link>
         </p>
+        <Loader visible={loading}/>
       </div>
     </div>
   )

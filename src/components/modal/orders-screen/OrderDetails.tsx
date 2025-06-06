@@ -12,6 +12,7 @@ import Success from '@/components/svg/success'
 import PdfViewer from '@/components/PdfViewer'
 import Badge from '@/components/Badge'
 import { StatusType } from '@/screens/orders/All'
+import Loader from '@/components/Loader'
 
 interface OrderDetailsProps {
   isOpen: boolean
@@ -98,7 +99,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
 
   const handleGenerateDocument = () => {
     setDocumentLoading(true)
-
+    setLoading(true)
     const payload = {
       id: person.id,
     }
@@ -107,6 +108,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
       .unwrap()
       .then(response => {
         setDocumentLoading(false)
+        setLoading(false)
         dispatch(getOrder({}))
         showToast({ type: 'success', msg: response.message })
 
@@ -119,7 +121,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
       })
       .catch(err => {
         setDocumentLoading(false)
-
+         setLoading(false)
         const errorMessage =
           err?.msg?.message || err?.msg || 'An error occurred'
         showToast({ type: 'error', msg: errorMessage })
@@ -273,6 +275,7 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
             )}
           </div>
       </Modal>
+      <Loader visible={loading} />
     </>
   )
 }

@@ -8,6 +8,7 @@ import { CreateOrderPayload } from '@/types/api'
 import BuyerForm from './BuyerForm'
 import OrderSummaryView from './OrderSummaryView'
 import { CreateOrderModalProps, OrderFormData } from './types'
+import Loader from '@/components/Loader'
 
 const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
   isOpen,
@@ -49,7 +50,7 @@ const CreateOrderForm: React.FC<CreateOrderModalProps> = ({
       buyerId: '',
       email: user.user.email,
       buyerLocation: '',
-supplierLocation: '',
+      supplierLocation: '',
       supplierId: '',
       product: '',
       capacity: '',
@@ -68,7 +69,7 @@ supplierLocation: '',
     setProfitMargin(null)
     setIsSecondView(false)
   }
-  
+
   const [profitMargin, setProfitMargin] = useState<number | null>(null)
 
   // Handle clicking outside the modal to close it
@@ -183,9 +184,7 @@ supplierLocation: '',
       .catch(err => {
         setLoading(false)
         const errorMessage =
-          err?.msg?.message ||
-          err?.msg ||
-          'An error occurred'
+          err?.msg?.message || err?.msg || 'An error occurred'
 
         console.error('Error:', err)
         showToast({ type: 'error', msg: errorMessage })
@@ -199,7 +198,7 @@ supplierLocation: '',
       buyerId: formData.buyerId,
       supplierId: formData.supplierId,
       // email: formData.email,
-      buyerLocation: formData.buyerLocation, 
+      buyerLocation: formData.buyerLocation,
       supplierLocation: formData.supplierLocation,
       product: formData.product,
       capacity: Number(formData.capacity),
@@ -216,8 +215,8 @@ supplierLocation: '',
 
     // console.log('Order payload:', payload)
     setLoading(true)
-    console.log(payload);
-    
+    console.log(payload)
+
     dispatch(saveOrder(payload))
       .unwrap()
       .then(response => {
@@ -229,9 +228,7 @@ supplierLocation: '',
       .catch(err => {
         setLoading(false)
         const errorMessage =
-          err?.msg?.message ||
-          err?.msg ||
-          'An error occurred'
+          err?.msg?.message || err?.msg || 'An error occurred'
 
         console.error('Error:', err)
         showToast({ type: 'error', msg: errorMessage })
@@ -271,7 +268,11 @@ supplierLocation: '',
       >
         <div className="">
           {isSecondView ? (
-            <OrderSummaryView formData={formData} user={user} save={handleSave} />
+            <OrderSummaryView
+              formData={formData}
+              user={user}
+              save={handleSave}
+            />
           ) : (
             <BuyerForm
               formData={formData}
@@ -312,6 +313,7 @@ supplierLocation: '',
           </button>
         </div>
       </div>
+      <Loader visible={loading} />
     </div>
   )
 }

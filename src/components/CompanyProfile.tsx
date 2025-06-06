@@ -2,12 +2,14 @@ import React, { useCallback, useState } from 'react'
 import { SlCloudUpload } from 'react-icons/sl'
 import { useDropzone } from 'react-dropzone'
 import CustomInput from './CustomInput'
-import { useAppDispatch } from '@/redux/store'
-import { updateProduct } from '@/api/products' 
+import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { updateProduct } from '@/api/products'
 import { showToast } from '@/components/Toast'
 
 export default function CompanyProfile() {
   const dispatch = useAppDispatch()
+  const user = useAppSelector(state => state.auth.user)
+  // console.log(user)
 
   const [formData, setFormData] = useState({
     companyName: '',
@@ -41,7 +43,12 @@ export default function CompanyProfile() {
   }
 
   const handleUpdate = () => {
-    if (!formData.companyName || !formData.product || !formData.capacity || !formData.location) {
+    if (
+      !formData.companyName ||
+      !formData.product ||
+      !formData.capacity ||
+      !formData.location
+    ) {
       showToast({ type: 'error', msg: 'Please fill out all fields' })
       return
     }
@@ -66,7 +73,8 @@ export default function CompanyProfile() {
         setLoading(false)
       })
       .catch(err => {
-        const message = err?.msg || err?.response?.data?.detail || 'Update failed'
+        const message =
+          err?.msg || err?.response?.data?.detail || 'Update failed'
         showToast({ type: 'error', msg: message })
         setLoading(false)
       })
@@ -97,7 +105,7 @@ export default function CompanyProfile() {
         <div className="lg:w-[60%] w-full">
           <CustomInput
             name="companyName"
-            placeholder="name"
+            placeholder={`${user.firstName} ${user.lastName}`}
             value={formData.companyName}
             onChange={handleChange}
           />
@@ -107,11 +115,19 @@ export default function CompanyProfile() {
       <div className="flex flex-col w-full lg:flex-row border-b border-stroke pb-6 mb-6">
         <div className="lg:w-[40%] w-full flex flex-col">
           <p>Brand logo</p>
-          <p className="text-primaryLight">This will be displayed on your profile</p>
+          <p className="text-primaryLight">
+            This will be displayed on your profile
+          </p>
         </div>
         <div className="lg:w-[60%] w-full flex gap-5 items-center">
           <div className="bg-[#D9D9D9] size-[100px] rounded-full overflow-hidden">
-            {preview && <img src={preview} alt="Preview" className="w-full h-full object-cover" />}
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
           <div
             {...getRootProps()}
@@ -121,9 +137,12 @@ export default function CompanyProfile() {
               <SlCloudUpload />
             </div>
             <p>
-              Click to upload <span className="text-gray_light">or drag and drop</span>
+              Click to upload{' '}
+              <span className="text-gray_light">or drag and drop</span>
             </p>
-            <p className="text-[#B3B3B3]">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+            <p className="text-[#B3B3B3]">
+              SVG, PNG, JPG or GIF (max. 800x400px)
+            </p>
             <input type="file" {...getInputProps()} className="hidden" />
           </div>
         </div>
