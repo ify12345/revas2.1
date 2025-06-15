@@ -57,7 +57,6 @@ export default function Buyers() {
     setIsDetailsModalOpen(false)
     document.body.style.overflow = 'auto'
   }
-
   return (
     <div className="flow-root ">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -79,7 +78,7 @@ export default function Buyers() {
                   >
                     Product
                   </th>
-                  
+
                   <th
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm text-gray-900"
