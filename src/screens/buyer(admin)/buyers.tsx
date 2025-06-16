@@ -71,7 +71,6 @@ export default function Buyers() {
                   >
                     Company Name
                   </th>
-
                   <th
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm text-gray-900"
