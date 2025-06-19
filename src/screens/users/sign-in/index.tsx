@@ -8,6 +8,7 @@ import CustomInput from '@/components/CustomInput'
 import { useAppDispatch } from '@/redux/store'
 import { UserLogin } from '@/api/auth'
 import { showToast } from '@/components/Toast'
+import Loader from '@/components/Loader'
 
 interface FormData {
   email: string
@@ -119,6 +120,7 @@ export default function UsersSignin() {
           </Link>
         </p>
       </div>
+       <Loader visible={loading}/>
     </div>
   )
 }

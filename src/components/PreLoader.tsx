@@ -6,7 +6,7 @@ export default function PreLoader() {
       <div className="flex justify-center items-center h-full w-full z-10 relative">
         <img
           className="max-w-[50px] duration-100 animate-bounce"
-          src="/src/assets/images/favicon.png"
+          src="/src/assets/images/load.png"
           alt="favicon icon"
         />
       </div>

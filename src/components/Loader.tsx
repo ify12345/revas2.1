@@ -10,7 +10,7 @@ export default function Loader({ visible }: LoaderProps) {
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center">
       <img
-        src="/src/assets/images/favicon.png"
+        src="/src/assets/images/load.png"
         alt="Loading..."
         className="w-[50px] h-[50px] animate-pulse"
       />
