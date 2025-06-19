@@ -82,32 +82,32 @@ export default function All({ people }: Props) {
     openDetailsModal(person)
   }
 
-  // Helper function to check if a document exists for a specific order
-  const hasMatchingDocument = (orderId: string) => {
-    return getDocs.some(doc => doc.orderId === orderId)
-  }
 
-  // Get the document for a specific order (if it exists)
-  const getDocumentForOrder = (orderId: string) => {
-    return getDocs.find(doc => doc.orderId === orderId)
-  }
+ const hasMatchingDocument = (person: Order) => person.status === 'document_phase' ? true : false;
+
+ 
+  const getDocumentForOrder = (person: Order) => person.status === 'document_phase' ? true : false;
 
   const viewPurchase = (person: Order) => {
-    const document = getDocumentForOrder(person.id)
+    const document = person.docUrl
+
     if (document) {
-      // Open the PDF viewer with the file URL
-      openPdfViewer(document.fileUrl)
+      openPdfViewer(document)
     } else {
       showToast({ type: 'error', msg: 'No document available for this order' })
     }
   }
 
   const handleDownload = (person: Order) => {
-    const document = getDocumentForOrder(person.id)
+    const document = getDocumentForOrder(person)
+
     if (document) {
-      console.log('Download:', document.downloadUrl)
-      // Redirect to the download URL
-      window.open(document.fileUrl, '_blank')
+     
+      if (person.docUrl) {
+        window.open(person.docUrl, '_blank')
+      } else {
+        showToast({ type: 'error', msg: 'No document URL available for download' })
+      }
     } else {
       showToast({ type: 'error', msg: 'No document available for download' })
     }
@@ -251,17 +251,17 @@ export default function All({ people }: Props) {
                             {/* Check if there's a matching document for this order */}
                             <button
                               onClick={() => viewPurchase(person)}
-                              className={`text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md border-primary ${!hasMatchingDocument(person.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              className={`text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md border-primary ${!hasMatchingDocument(person) ? 'opacity-50 cursor-not-allowed' : ''}`}
                               title="View PDF"
-                              disabled={!hasMatchingDocument(person.id)}
+                              disabled={!hasMatchingDocument(person)}
                             >
                               View
                             </button>
                             <button
                               onClick={() => handleDownload(person)}
-                              className={`text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md bg-primary text-white ${!hasMatchingDocument(person.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              className={`text-gray-600 hover:text-gray-900 px-2 py-1 border rounded-md bg-primary text-white ${!hasMatchingDocument(person) ? 'opacity-50 cursor-not-allowed' : ''}`}
                               title="Download document to sign"
-                              disabled={!hasMatchingDocument(person.id)}
+                              disabled={!hasMatchingDocument(person)}
                             >
                               Download
                             </button>

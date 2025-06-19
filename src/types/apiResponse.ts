@@ -89,7 +89,7 @@ export interface RegisterResponse {
     sellerName?:string;
     supplierLocation?:string;
     buyerLocation?:string;
-    message?: string
+    message?: string;
     success?: boolean;
     data?:[]
   }
