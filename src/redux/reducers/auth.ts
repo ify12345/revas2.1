@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { fetchNigerianStates, login, register, registerUser, UserLogin } from '@/api/auth';
+import { fetchNigerianStates, getPendingUsers, login, register, registerUser, UserLogin } from '@/api/auth';
 import { getNotifications } from '@/api/order';
 import { User } from '@/types';
+import { PendingUser } from '@/types/apiResponse';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface State {
@@ -19,6 +20,7 @@ interface State {
     currentPage: number;
     totalPages: number;
   };
+  pendingUsers: PendingUser[];
 }
 
 interface Notification {
@@ -49,6 +51,7 @@ const initialState: State = {
     currentPage: 1,
     totalPages: 0,
   },
+  pendingUsers: [],
 };
 
 export const authSlice = createSlice({
@@ -112,8 +115,12 @@ export const authSlice = createSlice({
           totalPages: payload.totalPages,
         };
       });
-  },
-});
-
+      builder.addCase(getPendingUsers.fulfilled, (state, { payload }) => {
+        // Ensure payload is an array of User objects
+        state.pendingUsers = Array.isArray(payload) ? payload : [];
+        console.log('pending users:', payload);
+      })
+    }}
+);
 export const {getUserDetails, success, logout} = authSlice.actions;
 export default authSlice.reducer;

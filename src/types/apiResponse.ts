@@ -101,6 +101,36 @@ export interface GetProductsResponse {
   success: boolean;
   message: string;
 }
+export interface approveResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface PendingUser {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  isInvitedUser: boolean
+  role: string
+  clientType: string
+  whatsappNumber: string | null
+  resetToken: string | null
+  resetTokenExpiry: string | null
+  resetCode: string | null
+  resetCodeExpiry: string | null
+  hasRegisteredProduct: boolean
+  passwordChangedAt: string | null
+  lastLogin: string | null
+  status: string
+  rejectionReason: string | null
+  approvedAt: string | null
+  approvedById: string | null
+  invitedBy: string | null
+  invitedUserId: string | null
+  createdAt: string
+  updatedAt: string
+}
 
 export interface deleteOrderResponse {
   success: boolean;

@@ -6,14 +6,17 @@ import { MdPeopleOutline, MdOutlineInventory } from 'react-icons/md'
 import { IoReceiptOutline, IoStatsChartOutline } from 'react-icons/io5'
 import { TfiHeadphoneAlt } from 'react-icons/tfi'
 import { FiMenu, FiSettings } from 'react-icons/fi'
-import { IoClose } from 'react-icons/io5'
+import { IoClose, IoPersonOutline } from 'react-icons/io5'
 import {
   FaCaretDown,
   FaSignOutAlt,
   FaBoxOpen,
   FaWarehouse,
+  FaClock,
+  FaUserClock,
 } from 'react-icons/fa'
 import { RiSettingsLine } from 'react-icons/ri'
+import { MdPendingActions } from 'react-icons/md'
 import HomeScreen from '../HomeScreen'
 import OrdersScreen from '../Orders'
 import ClientsScreen from '../Clients'
@@ -31,7 +34,16 @@ import {
 } from '@/api/order'
 import ManageCompany from '../ManageCompany'
 import Notification from '../Notification'
-import { fetchNigerianStates } from '@/api/auth'
+import {
+  approveUsers,
+  fetchNigerianStates,
+  getPendingUsers,
+  rejectUsers,
+} from '@/api/auth'
+import { PendingUser } from '@/types/apiResponse'
+import UserAuthenticationModal from '../UserAuthentication'
+import { showToast } from '../Toast'
+import Loader from '../Loader'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -51,12 +63,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isPendingDropdownOpen, setIsPendingDropdownOpen] = useState(false)
+  const [selectedPendingUser, setSelectedPendingUser] =
+    useState<PendingUser | null>(null)
+  const [isUserDetailModalOpen, setIsUserDetailModalOpen] = useState(false)
+
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const pendingDropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(false)
   const notifications = useAppSelector(state => state.auth.notifications)
-  // console.log(notifications.data)
   const user = useAppSelector(state => state.auth.user)
+  const pendingUsers = useAppSelector(state => state.auth.pendingUsers)
   const clientType = user?.clientType
 
   // Set default active view based on client type
@@ -75,6 +94,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       dispatch(getDocuments({}))
       dispatch(fetchNigerianStates())
       dispatch(getNotifications({ userId: user.id }))
+      dispatch(getPendingUsers())
     }
   }, [dispatch, user?.id])
 
@@ -86,6 +106,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsDropdownOpen(false)
+      }
+      if (
+        pendingDropdownRef.current &&
+        !pendingDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsPendingDropdownOpen(false)
       }
     }
 
@@ -112,9 +138,56 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsOrderModalOpen(true)
     console.log('clicked')
   }
+
   const closeModal = () => {
     setIsNotificationsOpen(false)
     document.body.style.overflow = 'auto'
+  }
+
+  const handleSeeMore = (pendingUser: PendingUser) => {
+    setSelectedPendingUser(pendingUser)
+    setIsUserDetailModalOpen(true)
+    setIsPendingDropdownOpen(false)
+  }
+
+  const handleApprove = (userId: string) => {
+    console.log('Approving user:', userId)
+    setLoading(true)
+
+    dispatch(approveUsers({ userId }))
+      .unwrap()
+      .then(response => {
+        setLoading(false)
+        console.log('Success:', response)
+        showToast({ type: 'success', msg: response.message })
+        dispatch(getPendingUsers())
+      })
+      .catch(err => {
+        setLoading(false)
+        const errorMessage = err?.msg || err?.response?.data?.detail || ''
+        console.error('Error:', err)
+        showToast({ type: 'error', msg: errorMessage })
+      })
+  }
+
+  const handleReject = (userId: string) => {
+    console.log('Rejecting user:', userId)
+    setLoading(true)
+
+    dispatch(rejectUsers({ userId }))
+      .unwrap()
+      .then(response => {
+        setLoading(false)
+        console.log('Success:', response)
+        showToast({ type: 'success', msg: response.message })
+        dispatch(getPendingUsers())
+      })
+      .catch(err => {
+        setLoading(false)
+        const errorMessage = err?.msg || err?.response?.data?.detail || ''
+        console.error('Error:', err)
+        showToast({ type: 'error', msg: errorMessage })
+      })
   }
 
   const getMenuLinks = () => {
@@ -262,7 +335,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {!isSidebarOpen && (
             <div className="flex items-center">
               <div className="flex lg:gap-4 lg:px-[24px] pr-1 border-r border-[#E7E7E7]">
-                <Message />
+                {/* <Message /> */}
 
                 <button
                   onClick={() => setIsNotificationsOpen(true)}
@@ -273,29 +346,83 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </div>
                   <Notifications />
                 </button>
+
+                {clientType === 'Supplier' || clientType === 'Buyer' ? (
+                  ''
+                ) : (
+                  <div ref={pendingDropdownRef} className="relative w-full">
+                    <button
+                      onClick={() =>
+                        setIsPendingDropdownOpen(!isPendingDropdownOpen)
+                      }
+                      className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      {pendingUsers?.length > 0 && (
+                        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          {pendingUsers.length}
+                        </div>
+                      )}
+                      <MdPendingActions
+                        size={28}
+                        className="text-orange-500 text-xl"
+                      />
+                    </button>
+
+                    {/* Pending Users Dropdown */}
+                    {isPendingDropdownOpen && (
+                      <div className="absolute top-full -left-28 md:right-0 mt-4 w-80 md:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+                        <div className="p-3 border-b border-gray-200">
+                          <h3 className="text-sm font-extrabold text-primary">
+                            Pending Approvals ({pendingUsers?.length || 0})
+                          </h3>
+                        </div>
+                        {pendingUsers.length > 0 ? (
+                          <div className="py-1">
+                            {pendingUsers.map((user: PendingUser) => {
+                              return (
+                                <div
+                                  key={user.id}
+                                  className="px-4 py-3 hover:bg-gray-50 border-b border-stroke last:border-b-0"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <div>
+                                          <p className=" text-gray/80 font-semibold text-sm">
+                                            {user.firstName} {user.lastName}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button
+                                      onClick={() => handleSeeMore(user)}
+                                      className="ml-2 px-3 py-1 text-xs hover:underline text-gray/60 rounded-md transition-all "
+                                    >
+                                      See More
+                                    </button>
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ) : (
+                          <div className="p-4 text-center text-gray-500 text-sm">
+                            No pending approvals
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+                {/* Pending Users Icon */}
               </div>
+
               {/* Profile Section */}
               <div
                 ref={dropdownRef}
-                className="relative flex lg:gap-4 ml-1 lg:mx-[24px] border border-[#E7E7E7] p-[4px] items-center rounded-lg cursor-pointer"
+                className="relative flex lg:gap-4 ml-1 lg:mx-[24px] border border-[#E7E7E7] px-3 py-1 items-center rounded-lg cursor-pointer"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
-                <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.96875 14.25C0.96875 6.37995 7.3487 0 15.2188 0C23.0888 0 29.4688 6.37995 29.4688 14.25V15.75C29.4688 23.6201 23.0888 30 15.2188 30C7.3487 30 0.96875 23.6201 0.96875 15.75V14.25Z"
-                    fill="#F1F5F9"
-                  />
-                  <path
-                    d="M11.9495 14.3685C12.2578 13.2179 13.4406 12.0352 14.5912 11.7268L21.7645 9.80445C22.9151 9.4961 23.5979 10.1789 23.2896 11.3295L21.3672 18.5029C21.0588 19.6535 19.8761 20.8362 18.7255 21.1445L11.5521 23.0669C10.4015 23.3753 9.71876 22.6925 10.0271 21.5419L11.9495 14.3685Z"
-                    fill="#9E77ED"
-                  />
-                </svg>
                 <div className="flex flex-col">
                   <p className="text-sm text-primary">{userName}</p>
                   <p className="text-[#98A2B3] text-[10px]">{user?.email}</p>
@@ -340,7 +467,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <div className="hidden">{children}</div>
       </div>
+
+      {/* User Detail Modal */}
+      {isUserDetailModalOpen && selectedPendingUser && (
+        <UserAuthenticationModal
+          isOpen={isUserDetailModalOpen}
+          user={selectedPendingUser}
+          onClose={() => setIsUserDetailModalOpen(false)}
+          onApprove={handleApprove}
+          onReject={handleReject}
+        />
+      )}
+
       <Notification isOpen={isNotificationsOpen} onClose={closeModal} />
+      <Loader visible={loading} />
     </div>
   )
 }

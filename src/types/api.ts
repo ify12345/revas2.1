@@ -44,6 +44,9 @@ export interface RegisterPayload {
   clientType?: string
 }
 
+export interface approveUsersPayload {
+  userId: string
+}
 export interface LoginPayload {
   email: string
   password: string

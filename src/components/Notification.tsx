@@ -21,6 +21,8 @@ const Notification: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const user = useAppSelector(state => state.auth.user)
   const notifications = useAppSelector(state => state.auth.notifications)
+  const pendingUsers = useAppSelector(state => state.auth.pendingUsers)
+  console.log('pending users:', pendingUsers)
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -126,9 +128,13 @@ const Notification: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
   const getStatusIcon = (type: string) => {
     switch (type) {
       case 'status_changed':
-        return <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 border-blue-500 border"></div>
+        return (
+          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 border-blue-500 border"></div>
+        )
       default:
-        return <div className="w-2 h-2 bg-zinc-300 rounded-full mt-2 border-zinc-300 border"></div>
+        return (
+          <div className="w-2 h-2 bg-zinc-300 rounded-full mt-2 border-zinc-300 border"></div>
+        )
     }
   }
 
@@ -153,7 +159,7 @@ const Notification: React.FC<CreateOrderModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null
   // console.log(notifications.data);
-  
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-end bg-[#000] bg-opacity-50 p-6"
