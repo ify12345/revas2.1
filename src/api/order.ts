@@ -11,12 +11,14 @@ import {
   GetNotificationsPayload,
   GetOrderPayload,
   NotificationResponse,
+  signDocumentPayload,
 } from '@/types/api'
 import {
   CreateOrderResponse,
   deleteOrderResponse,
   generateOrderResponse,
   GetOrderResponse,
+  signDocumentResponse,
 } from '@/types/apiResponse'
 import { Order } from '@/redux/reducers/orders'
 
@@ -112,6 +114,27 @@ export const getDocuments = createAsyncThunk<
 >('/get-doc', async (_, thunkAPI) => {
   const Axios = await AxiosBase()
   return apiCall(Axios.get(`/documents/client`), thunkAPI)
+})
+
+export const signDocument = createAsyncThunk<
+  signDocumentResponse,
+  signDocumentPayload,
+  AsyncThunkConfig
+>('/sign-doc', async (payload, thunkAPI) => {
+  const Axios = await AxiosBase()
+  
+  // Create FormData for multipart/form-data
+  const formData = new FormData()
+  formData.append('signature', payload.file) 
+  
+  return apiCall(
+    Axios.post(`/documents/orders/${payload.orderId}/sign`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
+    thunkAPI
+  )
 })
 
 export const uploadDocument = createAsyncThunk<

@@ -156,10 +156,10 @@ const OrderDetails = ({ isOpen, onClose, person }: OrderDetailsProps) => {
     dispatch(approveOrder(payload))
       .unwrap()
       .then(response => {
-        setLoading(false)
         dispatch(getOrder({}))
+        setLoading(false)
         onClose()
-        console.log('Success:', response)
+        // console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
       })
       .catch(err => {

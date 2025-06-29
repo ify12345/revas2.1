@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { order } from './../redux/reducers/orders';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { AppDispatch } from '@/redux/store'
@@ -123,6 +125,11 @@ export interface EditOrderPayload {
 export interface GetOrderPayload {
   
 
+}
+
+export interface signDocumentPayload {
+  orderId: string
+  file: File
 }
 export interface Document {
   id: string

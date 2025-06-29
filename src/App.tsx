@@ -18,8 +18,8 @@ import Browse from './screens/browse/index.js'
 import PreLoader from './components/PreLoader.js'
 
 const App = () => {
-  const { isAuthenticated } = useAppSelector(store => store.auth)
-
+  const { isAuthenticated,hasProduct } = useAppSelector(store => store.auth)
+ 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -52,10 +52,15 @@ const App = () => {
             <Route path="/reset-pin" element={<ResetPin />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/reset-success" element={<ResetSuccess />} />
-            <Route path="/set-up" element={<SetUp />} />
           </>
         )}
-        {isAuthenticated && (
+        {isAuthenticated && !hasProduct && (
+          <>
+            <Route path="/" element={<SetUp />} />
+          </>
+        )}
+
+        {isAuthenticated && hasProduct && (
           <>
             <Route path="/" element={<Dashboard />} />
           </>

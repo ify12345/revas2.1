@@ -151,6 +151,18 @@ export interface generateOrderResponse {
   isExisting?: boolean;
 }
 
+export interface signDocumentResponse {
+  signedAs: string;
+  success?: boolean;
+  message?: string;
+  data?: {
+    docUrl: string;
+  };
+  signedPdfUrl?: string;
+  signatureImageUrl?: string;
+  documentId?: string;
+  status?: string;
+  };
  export interface CreateOrderResponse {
   orders?: Order[]; 
   message?:string;

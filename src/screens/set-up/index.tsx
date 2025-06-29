@@ -12,6 +12,7 @@ import { RegisterProductPayload } from '@/types/api'
 import { registerProduct } from '@/api/products'
 import { useDropzone } from 'react-dropzone'
 import { fetchNigerianStates } from '@/api/auth'
+import Loader from '@/components/Loader'
 
 // Define the product options organized by category
 const productOptions = [
@@ -146,7 +147,7 @@ export default function SetUp() {
         setLoading(false)
         console.log('Success:', response)
         showToast({ type: 'success', msg: response.message })
-        navigate('/sign-in')
+        navigate('/')
       })
       .catch(err => {
         setLoading(false)
@@ -264,15 +265,16 @@ export default function SetUp() {
             >
               {loading ? 'Registering...' : 'Register'}
             </button>
-            <Link
+            {/* <Link
               className="text-primary mx-auto py-2.5 w-full rounded-md border border-primary justify-center items-center flex cursor-pointer"
               to="/sign-in"
             >
               Skip
-            </Link>
+            </Link> */}
           </div>
         </form>
       </div>
+      <Loader visible={loading} />
     </div>
   )
 }

@@ -9,6 +9,7 @@ import { RegisterPayload } from '@/types/api'
 import { FormData } from '@/types'
 import { useNavigate } from 'react-router-dom'
 import AuthPiece from '@/components/AuthPiece'
+import Loader from '@/components/Loader'
 
 export default function UsersSignup() {
   const dispatch = useAppDispatch()
@@ -185,6 +186,7 @@ export default function UsersSignup() {
           </Link>
         </p>
       </div>
+      <Loader visible={loading}/>
     </div>
   )
 }

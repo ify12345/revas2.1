@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { fetchNigerianStates, getPendingUsers, login, register, registerUser, UserLogin } from '@/api/auth';
 import { getNotifications } from '@/api/order';
+import { registerProduct } from '@/api/products';
 import { User } from '@/types';
 import { PendingUser } from '@/types/apiResponse';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
@@ -85,6 +87,10 @@ export const authSlice = createSlice({
       
       // state.isAuthenticated = true;
     });
+    builder.addCase(registerProduct.fulfilled, (state, {payload}) => {
+    
+      state.hasProduct = true;
+    });
     builder
       .addCase(login.pending, state => {
         state.isAuthenticated = false;
@@ -95,7 +101,9 @@ export const authSlice = createSlice({
         state.user = payload.user;
         state.isVerified = true;
         state.isAuthenticated = true;
+        state.hasProduct = true;
       })
+      
     builder
       .addCase(UserLogin.pending, state => {
         state.isAuthenticated = false;
