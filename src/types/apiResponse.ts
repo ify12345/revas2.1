@@ -91,7 +91,14 @@ export interface RegisterResponse {
     buyerLocation?:string;
     message?: string;
     success?: boolean;
-    data?:[]
+    data?:[];
+    documents?: {
+      id: string;
+      fileUrl: string;
+      type: string;
+      status: string;
+      generatedAt: string;
+    }[];
   }
 export interface RegisterProductResponse {
   success: boolean;

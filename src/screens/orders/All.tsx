@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { deleteOrder, getDocuments, uploadDocument, signDocument } from '@/api/order'
+import {
+  deleteOrder,
+  getDocuments,
+  uploadDocument,
+  signDocument,
+} from '@/api/order'
 import Badge from '@/components/Badge'
 import DocumentSigner from '@/components/DocumentSigner'
 import Loader from '@/components/Loader'
@@ -45,10 +50,12 @@ export default function All({ people }: Props) {
   const [currentPdfUrl, setCurrentPdfUrl] = React.useState('')
   const [isSignerModalOpen, setIsSignerModalOpen] = React.useState(false)
   const [orderToSign, setOrderToSign] = React.useState<Order | null>(null)
-  
+
   // Add state for signed documents
-  const [signedDocuments, setSignedDocuments] = React.useState<Record<string, SignedDocumentData>>({})
-  
+  const [signedDocuments, setSignedDocuments] = React.useState<
+    Record<string, SignedDocumentData>
+  >({})
+
   const dispatch = useAppDispatch()
   const user = useAppSelector(state => state.auth.user)
   const clientType = user?.clientType
@@ -110,24 +117,34 @@ export default function All({ people }: Props) {
     openDetailsModal(person)
   }
 
-  const hasMatchingDocument = (person: Order) => person.status === 'document_phase' ? true : false;
+  const hasMatchingDocument = (person: Order) =>
+    person.status === 'document_phase' ? true : false
 
-  const getDocumentForOrder = (person: Order) => person.status === 'document_phase' ? true : false;
+  const getDocumentForOrder = (person: Order) =>
+    person.status === 'document_phase' ? true : false
 
   // Check if order has a signed document
   const hasSignedDocument = (person: Order) => {
     return signedDocuments[person.id] !== undefined
   }
 
+  const isPartiallySigned = (person: Order) => {
+    return person.documents?.some(doc => doc.status === 'partially_signed')
+  }
   // Get the appropriate document URL (signed or original)
   const getDocumentUrl = (person: Order) => {
+    const partialDoc = person.documents?.find(
+      doc => doc.status === 'partially_signed'
+    )
+    if (partialDoc) return partialDoc.fileUrl
+
     const signedDoc = signedDocuments[person.id]
     return signedDoc ? signedDoc.signedPdfUrl : person.docUrl
   }
 
   const viewPurchase = (person: Order) => {
     const documentUrl = getDocumentUrl(person)
-      console.log('Document URL:', person)
+    console.log('Document URL:', person)
     if (documentUrl) {
       openPdfViewer(documentUrl)
     } else {
@@ -143,7 +160,10 @@ export default function All({ people }: Props) {
       if (documentUrl) {
         window.open(documentUrl, '_blank')
       } else {
-        showToast({ type: 'error', msg: 'No document URL available for download' })
+        showToast({
+          type: 'error',
+          msg: 'No document URL available for download',
+        })
       }
     } else {
       showToast({ type: 'error', msg: 'No document available for download' })
@@ -169,7 +189,7 @@ export default function All({ people }: Props) {
     input.onchange = async () => {
       if (input.files && input.files[0]) {
         const file = input.files[0]
-        
+
         if (file.type !== 'application/pdf') {
           showToast({ type: 'error', msg: 'Only PDF files are allowed.' })
           return
@@ -207,19 +227,21 @@ export default function All({ people }: Props) {
     if (!orderToSign) return
 
     setLoading(true)
-    
+
     try {
       // Convert Blob to File
-      const file = new File([signatureBlob], 'signature.png', { type: 'image/png' })
+      const file = new File([signatureBlob], 'signature.png', {
+        type: 'image/png',
+      })
       console.log('File to upload:', file)
-      
+
       // Using the Redux dispatch pattern like your other API calls
       dispatch(signDocument({ orderId: orderToSign.id, file }))
         .unwrap()
         .then(response => {
           setLoading(false)
           console.log('Success:', response)
-          
+
           // Store the signed document data
           if (response.signedPdfUrl) {
             setSignedDocuments(prev => ({
@@ -228,21 +250,24 @@ export default function All({ people }: Props) {
                 signedPdfUrl: response.signedPdfUrl ?? '',
                 signatureImageUrl: response.signatureImageUrl ?? '',
                 status: response.status ?? '',
-                signedAs: response.signedAs ?? ''
-              }
+                signedAs: response.signedAs ?? '',
+              },
             }))
           }
-          
-          showToast({ 
-            type: 'success', 
-            msg: response.message || 'Document signed successfully! You can now view the signed document.' 
+
+          showToast({
+            type: 'success',
+            msg:
+              response.message ||
+              'Document signed successfully! You can now view the signed document.',
           })
           closeSignerModal()
           dispatch(getDocuments({})) // Refresh documents list
         })
         .catch(err => {
           setLoading(false)
-          const errorMessage = err?.msg || err?.response?.data?.detail || 'Failed to sign document'
+          const errorMessage =
+            err?.msg || err?.response?.data?.detail || 'Failed to sign document'
           console.error('Error:', err)
           showToast({ type: 'error', msg: errorMessage })
         })
@@ -320,7 +345,7 @@ export default function All({ people }: Props) {
                       >
                         {person.supplierName}
                         {/* Show signed indicator */}
-                        {hasSignedDocument(person) && (
+                        {hasSignedDocument(person) && isPartiallySigned(person) && (
                           <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
                             <FaFileContract className="mr-1 h-3 w-3" />
                             Signed
@@ -354,35 +379,53 @@ export default function All({ people }: Props) {
                             <button
                               onClick={() => viewPurchase(person)}
                               className={`text-gray-600 hover:text-gray-900 transition-all hover:scale-95 duration-500 px-2 py-1 border rounded-md border-primary ${!hasMatchingDocument(person) && !hasSignedDocument(person) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                              title={hasSignedDocument(person) ? "View Signed Document" : "View Document"}
-                              disabled={!hasMatchingDocument(person) && !hasSignedDocument(person)}
+                              title={
+                                hasSignedDocument(person)
+                                  ? 'View Signed Document'
+                                  : 'View Document'
+                              }
+                              disabled={
+                                !hasMatchingDocument(person) &&
+                                !hasSignedDocument(person)
+                              }
                             >
-                              {hasSignedDocument(person) ? 'View Signed' : 'View'}
+                              {!hasSignedDocument(person) &&
+                                !isPartiallySigned(person)
+                                ? 'View Signed'
+                                : 'View'}
                             </button>
-                            
+
                             {/* Download Button - Updated to download signed or original document */}
                             <button
                               onClick={() => handleDownload(person)}
                               className={`text-gray-600 hover:text-gray-900 transition-all hover:scale-95 duration-500 px-2 py-1 border rounded-md bg-primary text-white ${!hasMatchingDocument(person) && !hasSignedDocument(person) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                              title={hasSignedDocument(person) ? "Download Signed Document" : "Download Document"}
-                              disabled={!hasMatchingDocument(person) && !hasSignedDocument(person)}
+                              title={
+                                hasSignedDocument(person)
+                                  ? 'Download Signed Document'
+                                  : 'Download Document'
+                              }
+                              disabled={
+                                !hasMatchingDocument(person) &&
+                                !hasSignedDocument(person)
+                              }
                             >
                               Download
                             </button>
-                            
+
                             {/* Sign Button - Hide if already signed */}
-                            {!hasSignedDocument(person) && (
-                              <button
-                                onClick={() => handleSignDocument(person)}
-                                className={`text-white hover:bg-green-700 transition-all hover:scale-95 duration-500 px-2 py-1 border rounded-md bg-green-600 border-green-600 flex items-center gap-1 ${!hasMatchingDocument(person) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                title="Sign document"
-                                disabled={!hasMatchingDocument(person)}
-                              >
-                                <FaPen className="h-3 w-3" />
-                                Sign
-                              </button>
-                            )}
-                            
+                            {!hasSignedDocument(person) ||
+                              (!isPartiallySigned(person) && (
+                                <button
+                                  onClick={() => handleSignDocument(person)}
+                                  className={`text-white hover:bg-green-700 transition-all hover:scale-95 duration-500 px-2 py-1 border rounded-md bg-green-600 border-green-600 flex items-center gap-1 ${!hasMatchingDocument(person) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                  title="Sign document"
+                                  disabled={!hasMatchingDocument(person)}
+                                >
+                                  <FaPen className="h-3 w-3" />
+                                  Sign
+                                </button>
+                              ))}
+
                             {/* Show signature status if signed */}
                             {hasSignedDocument(person) && (
                               <div className="px-2 py-1 text-xs bg-green-50 text-green-700 rounded border border-green-200 flex items-center gap-1">
@@ -390,7 +433,7 @@ export default function All({ people }: Props) {
                                 {signedDocuments[person.id]?.status || 'Signed'}
                               </div>
                             )}
-                            
+
                             {/* Upload Button */}
                             <button
                               onClick={() => handleUpload(person)}
@@ -437,7 +480,9 @@ export default function All({ people }: Props) {
           <div className="bg-white rounded-lg shadow-xl w-5/6 h-5/6 max-w-6xl flex flex-col">
             <div className="flex justify-between items-center p-4 border-b border-stroke">
               <h3 className="text-lg font-medium">
-                {currentPdfUrl.includes('signed') ? 'Signed Document Viewer' : 'Document Viewer'}
+                {currentPdfUrl.includes('signed')
+                  ? 'Signed Document Viewer'
+                  : 'Document Viewer'}
               </h3>
               <button
                 onClick={closePdfViewer}
@@ -471,7 +516,9 @@ export default function All({ people }: Props) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-xl w-4/5 h-4/5 max-w-4xl flex flex-col">
             <div className="flex justify-between items-center p-4 border-b border-stroke">
-              <h3 className="text-lg font-medium">Sign Document - {orderToSign.supplierName}</h3>
+              <h3 className="text-lg font-medium">
+                Sign Document - {orderToSign.supplierName}
+              </h3>
               <button
                 onClick={closeSignerModal}
                 className="text-gray-500 hover:text-gray-700"
@@ -480,8 +527,8 @@ export default function All({ people }: Props) {
               </button>
             </div>
             <div className="flex-grow p-4 overflow-auto">
-              <DocumentSigner 
-                orderId={orderToSign.id} 
+              <DocumentSigner
+                orderId={orderToSign.id}
                 onSignatureSubmit={handleSignatureSubmit}
               />
             </div>
